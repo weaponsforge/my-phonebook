@@ -6,5 +6,9 @@ My Phonebook will consist of a front-end website (client) and a secure REST API 
 
 > This project will also serve as a practice for catching up and implementing best practices for using React, Firebase, Express and general software development.
 
+## Software Documentation
+
+- [project plan v1.0](/project-plan.pdf)
+
 @weaponsforge<br>
 20220222
