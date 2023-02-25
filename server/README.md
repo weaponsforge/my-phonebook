@@ -12,7 +12,7 @@ The following dependecies are used for this project. Feel free to experiment usi
 2. nvm version 1.1.9 (for Windows)
 3. NodeJS 16.19.1 installed using nvm
    - node v16.19.1
-   - pm v8.19.3
+   - npm v8.19.3
 
 ### Core Libraries/Frameworks
 
