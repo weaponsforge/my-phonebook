@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index",
+    "dev": "nodemon src/index.js",
     "lint": "eslint src --ignore-path .gitignore",
     "lint:fix": "eslint --ignore-path .gitignore --fix src"
   },
@@ -19,6 +20,7 @@
   "devDependencies": {
     "eslint": "^8.34.0",
     "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.20"
   }
 }
