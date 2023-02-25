@@ -1,0 +1,25 @@
+version: "3"
+services:
+  # NextJS v13 app running on development mode
+  client-dev:
+    container_name: client-dev
+    image: weaponsforge/my-phonebook-client:dev
+    env_file:
+      - ./client/.env
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: development
+    networks:
+      - my-phonebook-dev
+    volumes:
+      - ./client:/opt/client
+      - /opt/client/node_modules
+      - /opt/client/.next
+    ports:
+      - "3000:3000"
+
+networks:
+  my-phonebook-dev:
+    name: my-phonebook-dev
+    external: false
