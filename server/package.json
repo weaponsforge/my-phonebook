@@ -4,7 +4,9 @@
   "description": "This directory contains the backend express app that serves My Phonebook's API endpoints.",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index"
+    "start": "node src/index",
+    "lint": "eslint src --ignore-path .gitignore",
+    "lint:fix": "eslint --ignore-path .gitignore --fix src"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +15,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-promise": "^6.1.1"
   }
 }
