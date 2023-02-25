@@ -12,7 +12,7 @@ The following dependecies are used for this project. Feel free to experiment usi
 3. NodeJS LTS v19.7.0 installed using nvm
    - node v19.7.0
    - npm v9.5.0
-   - >**NOTE:** We will use v19.7.0 for the official production builds but feel free to use other NodeJS versions by setting `engine-strict=false` in the `.npmrc` file when working on localhost development as needed, but please use **v19.7.0** when installing new modules. Do not commit the package.json or package-lock.json files should they change when `engine-strict=false`.
+   - >**NOTE:** We will use v19.7.0 for the official production builds but feel free to use other NodeJS versions by setting `"engine-strict=false"` in the `.npmrc` file when working on localhost development as needed, but please use **v19.7.0** when installing new modules. Do not commit the package.json or package-lock.json files should they change when `"engine-strict=false"`.
 
 ### Core Libraries/Frameworks
 
@@ -21,11 +21,22 @@ The following dependecies are used for this project. Feel free to experiment usi
 1. NextJS 13.2.0
 2. React 18.2.0
 3. Material UI v5.11.10
+4. Redux Toolkit v1.9.3
+   - Redux v8.0.5
 
 ## Installation
 
 1. Install dependencies.<br>
 `npm install`
+
+## Usage
+
+1. Run the project in development mode:<br>
+`npm run dev`
+
+2. Create or update React files and other scripts.
+
+3. Run the `"npm run lint"` script to check for lint errors before committing to the repository.
 
 
 ## Available Scripts

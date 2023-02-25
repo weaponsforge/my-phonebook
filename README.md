@@ -20,6 +20,7 @@ The following dependecies are used for this project. Feel free to experiment usi
 3. NodeJS LTS v19.7.0 installed using nvm
    - node v19.7.0
    - npm v9.5.0
+   - >**NOTE:** We will use v19.7.0 for the official production client and server builds but feel free to use other NodeJS versions by setting `"engine-strict=false"` in the `.npmrc` file when working on localhost development as needed, but please use **v19.7.0** when installing new modules. Do not commit the package.json or package-lock.json files should they change when `"engine-strict=false"`.
 
 ### Core Libraries and Frameworks
 
