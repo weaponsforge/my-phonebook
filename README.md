@@ -54,7 +54,7 @@ The following dependencies are used to build and run the image. Please feel feel
    docker compose -f docker-compose.dev.yml down
    docker compose -f docker-compose.prod.yml up
    ```
-4. Edit any of the files under the `/client` or `/server` directory after running step no. 2.2 and wait for their live reload on `http://localhost:3000` (client) and `http://localhost:3001` (server).
+5. Edit any of the files under the `/client` or `/server` directory after running step no. 2.2 and wait for their live reload on `http://localhost:3000` (client) and `http://localhost:3001` (server).
    ```
    # 2.1. Build the client and server containers for localhost development.
    docker compose -f docker-compose.dev.yml build
@@ -72,15 +72,16 @@ The following docker-compose commands build a small client image targeted for cr
 
 1. Follow step numbers 1 - 3 in the [Docker for Localhost Development](#docker-for-localhost-development) section.
 
-2. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server).
-   ```
-   # Build the client and server containers for production deployment.
-   docker compose -f docker-compose.prod.yml build
+2. Build the client and server containers for production deployment.<br>
+   - > **NOTE:** Run this step only once or as needed when housekeeping docker images or if there are new source code updates in the **/client** or **/server** directories.
+   - `docker compose -f docker-compose.prod.yml build`
 
-   # Create and start the production client and server containers.
+3. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server) after running step no. 3.2.
+   ```
+   # 3.1. Create and start the production client and server containers.
    docker compose -f docker-compose.prod.yml up
 
-   # Stop and remove the production containers, networks, images and volumes
+   # 3.3. Stop and remove the production containers, networks, images and volumes
    docker compose -f docker-compose.prod.yml down
    ```
 
