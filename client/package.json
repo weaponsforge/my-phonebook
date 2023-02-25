@@ -1,0 +1,33 @@
+{
+  "name": "my-phonebook",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "19.7.0",
+    "npm": "9.5.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix .",
+    "export": "npm run build && next export"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.10.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/material": "^5.11.10",
+    "@mui/x-data-grid": "^5.17.25",
+    "@reduxjs/toolkit": "^1.9.3",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.2.0",
+    "next": "13.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.5"
+  }
+}
