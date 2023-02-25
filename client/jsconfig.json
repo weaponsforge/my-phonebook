@@ -3,7 +3,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/store/*": ["./src/lib/store/*"]
+      "@/hooks/*": ["./src/lib/hooks/*"],
+      "@/services/*": ["./src/lib/services/*"],
+      "@/store/*": ["./src/lib/store/*"],
+      "@/utils/*": ["./src/lib/utils/*"]
     }
   }
 }

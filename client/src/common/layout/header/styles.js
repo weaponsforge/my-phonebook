@@ -9,7 +9,8 @@ const styles = {
     '& button': {
       '& a, span': {
         color: theme.palette.primary.light,
-        textDecoration: 'none'
+        textDecoration: 'none',
+        marginRight: '8px'
       },
       '& a:visited': {
         color: theme.palette.primary.light
