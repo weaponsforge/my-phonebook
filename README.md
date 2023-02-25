@@ -10,5 +10,27 @@ My Phonebook will consist of a front-end website (client) and a secure REST API 
 
 - [project plan v1.0](/project-plan.pdf)
 
+## Requirements
+
+The following dependecies are used for this project. Feel free to experiment using other dependencies and versions.
+
+1. Windows 64-bit OS
+2. nvm version 1.1.9 (for Windows)
+   - > **NOTE:** Using nvm is optional if you want to continue using your pre-installed NodeJS.
+3. NodeJS LTS v19.7.0 installed using nvm
+   - node v19.7.0
+   - npm v9.5.0
+
+### Core Libraries and Frameworks
+
+1. NextJS 13.2.0 and React 18.2.0 on client app
+
+## Installation
+
+1. Clone this repository.<br>
+`https://github.com/weaponsforge/my-phonebook.git`
+
+2. Follow the instructions on the **README** files inside the `/client` and `/server` directories for more information on configuring and using the client and backend.
+
 @weaponsforge<br>
 20220222
