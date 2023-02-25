@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  lint-app:
+  lint-client:
     name: Lint Client
     runs-on: ubuntu-latest
     steps:
@@ -21,5 +21,21 @@ jobs:
       - name: Install Dependencies and Lint
         run: |
           cd client
+          npm install
+          npm run lint
+
+  lint-server:
+    name: Lint Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Use NodeJS v19.7.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.7.0
+      - name: Install Dependencies and lint
+        run: |
+          cd server
           npm install
           npm run lint
