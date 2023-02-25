@@ -18,7 +18,7 @@ function HomeComponent() {
         </Typography>
 
         <Image
-          src="/vercel.svg"
+          src="./vercel.svg"
           alt="Vercel Logo"
           width={100}
           height={24}

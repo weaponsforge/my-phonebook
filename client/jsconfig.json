@@ -4,6 +4,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/hooks/*": ["./src/lib/hooks/*"],
+      "@/public/*": ["public/*"],
       "@/services/*": ["./src/lib/services/*"],
       "@/store/*": ["./src/lib/store/*"],
       "@/utils/*": ["./src/lib/utils/*"]
