@@ -29,7 +29,9 @@ The following dependecies are used for this project. Feel free to experiment usi
 1. Install dependencies.<br>
 `npm install`
 
-2. Set up the environment variables. Create a `.env` file inside the root project directory with reference to the `.env.example` file.
+2. Stop any process that might be using port `3000` because the NextJS client app will use this port in the proceeding steps.
+
+3. Set up the environment variables. Create a `.env` file inside the root project directory with reference to the `.env.example` file.
 
    | Variable Name         | Description                                                                                                                                                                                                                                                                                                                                              |
    | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
