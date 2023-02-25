@@ -48,7 +48,7 @@ The following dependencies are used to build and run the image. Please feel feel
 ### Docker for Localhost Development
 
 1. Set up the environment variables for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
-2. Verify that ports 3000 and 3001 are free because the client and server apps will use these ports.
+2. Verify that ports 3000 and 3001 are free because the client and server containers will use these ports.
 3. Stop current-running my-phonebook containers, if any.
    ```
    docker compose -f docker-compose.dev.yml down
@@ -70,13 +70,9 @@ The following dependencies are used to build and run the image. Please feel feel
 
 The following docker-compose commands build a small client image targeted for creating optimized dockerized apps running on self-managed production servers. An Nginx service serves the frontend client on port 3000. Hot reload is NOT available when editing source codes from the `/client` and `/server` directories.
 
-1. Stop any process that might be using ports 3000 and 3001 because the client and server apps will use these ports in the proceeding steps.
-2. Stop current-running my-phonebook containers, if any.
-   ```
-   docker compose -f docker-compose.dev.yml down
-   docker compose -f docker-compose.prod.yml up
-   ```
-3. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server).
+1. Follow step numbers 1 - 3 in the [Docker for Localhost Development](#docker-for-localhost-development) section.
+
+2. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server).
    ```
    # Build the client and server containers for production deployment.
    docker compose -f docker-compose.prod.yml build
