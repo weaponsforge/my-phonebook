@@ -76,12 +76,12 @@ The following docker-compose commands build a small client image targeted for cr
    - > **NOTE:** Run this step only once or as needed when housekeeping docker images or if there are new source code updates in the **/client** or **/server** directories.
    - `docker compose -f docker-compose.prod.yml build`
 
-3. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server) after running step no. 3.2.
+3. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server) after running step no. 3.1.
    ```
    # 3.1. Create and start the production client and server containers.
    docker compose -f docker-compose.prod.yml up
 
-   # 3.3. Stop and remove the production containers, networks, images and volumes
+   # 3.2. Stop and remove the production containers, networks, images and volumes
    docker compose -f docker-compose.prod.yml down
    ```
 
