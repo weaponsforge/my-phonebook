@@ -1,8 +1,8 @@
 version: "3"
 services:
   # NextJS exported app running on an nginx webserver
-  client-prod:
-    container_name: client-prod
+  my-phonebook-client-prod:
+    container_name: my-phonebook-client-prod
     image: weaponsforge/my-phonebook-client:latest
     restart: always
     build:
@@ -13,6 +13,22 @@ services:
       - my-phonebook-prod
     ports:
       - "3000:3000"
+
+  # Express web server app running in production mode
+  my-phonebook-server-prod:
+    container_name: my-phonebook-server-prod
+    image: weaponsforge/my-phonebook-server:latest
+    restart: always
+    env_file:
+      - ./server/.env
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: production
+    networks:
+      - my-phonebook-prod
+    ports:
+      - "3001:3001"
 
 networks:
   my-phonebook-prod:

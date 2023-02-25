@@ -26,12 +26,67 @@ The following dependecies are used for this project. Feel free to experiment usi
 
 1. NextJS 13.2.0 and React 18.2.0 on client app
 
-## Installation
+## Manual Installation
 
 1. Clone this repository.<br>
 `https://github.com/weaponsforge/my-phonebook.git`
 
 2. Follow the instructions on the **README** files inside the `/client` and `/server` directories for more information on configuring and using the client and backend.
+
+## Installation Using Docker
+
+We can use Docker to run dockerized client and server apps for local development and production mode. The following methods require Docker and Docker compose correctly installed and set up on your development machine.
+
+### Docker Dependencies
+
+The following dependencies are used to build and run the image. Please feel feel free to use other OS and versions as needed.
+
+1. Ubuntu 22.04.1
+2. Docker version 23.0.1, build a5eeb1
+3. Docker Compose v2.16.0
+
+### Docker for Localhost Development
+
+1. Set up the environment variables for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
+2. Verify that ports 3000 and 3001 are free because the client and server apps will use these ports.
+3. Stop current-running my-phonebook containers, if any.
+   ```
+   docker compose -f docker-compose.dev.yml down
+   docker compose -f docker-compose.prod.yml up
+   ```
+4. Edit any of the files under the `/client` or `/server` directory after running step no. 2.2 and wait for their live reload on `http://localhost:3000` (client) and `http://localhost:3001` (server).
+   ```
+   # 2.1. Build the client and server containers for localhost development.
+   docker compose -f docker-compose.dev.yml build
+
+   # 2.2. Create and start the development client and server containers
+   docker compose -f docker-compose.dev.yml up
+
+   # 2.3. Stop and remove the development containers, networks, images and volumes
+   docker compose -f docker-compose.dev.yml down
+   ```
+
+### Docker for Production Deployment
+
+The following docker-compose commands build a small client image targeted for creating optimized dockerized apps running on self-managed production servers. An Nginx service serves the frontend client on port 3000. Hot reload is NOT available when editing source codes from the `/client` and `/server` directories.
+
+1. Stop any process that might be using ports 3000 and 3001 because the client and server apps will use these ports in the proceeding steps.
+2. Stop current-running my-phonebook containers, if any.
+   ```
+   docker compose -f docker-compose.dev.yml down
+   docker compose -f docker-compose.prod.yml up
+   ```
+3. Load the production mode apps on `http://localhost:3000` (client) and `http://localhost:3001` (server).
+   ```
+   # Build the client and server containers for production deployment.
+   docker compose -f docker-compose.prod.yml build
+
+   # Create and start the production client and server containers.
+   docker compose -f docker-compose.prod.yml up
+
+   # Stop and remove the production containers, networks, images and volumes
+   docker compose -f docker-compose.prod.yml down
+   ```
 
 @weaponsforge<br>
 20220222

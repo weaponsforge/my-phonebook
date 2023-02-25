@@ -25,13 +25,23 @@ The following dependecies are used for this project. Feel free to experiment usi
 1. Install dependencies.<br>
 `npm install`
 
-2. Run the localhost express web server for development:
+2. Stop any process that might be using port `3001` because the server apps will use this port in the proceeding steps.
+
+3. Set up the environment variables. Create a `.env `file inside the **/server** directory with reference to the `.env.example` file.<br>
+
+   | Variable Name   | Description                                                                                                                                                                                                                                           |
+   | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | ALLOW_CORS      | Allow Cross-Origin Resource Sharing (CORS) on the API endpoints.<br><br>Default value is `1`, allowing access to domains listed in `ALLOWED_ORIGINS`.<br> Setting to `0` will make all endpoints accept requests from all domains, including Postman. |
+   | ALLOWED_ORIGINS | IP/domain origins in comma-separated values that are allowed to access the API if `ALLOW_CORS=1`.<br> Include `http://localhost:3000` by default to allow CORS access to the **/client** app.                                                         |
+
+
+4. Run the localhost express web server for development:<br>
 `npm run dev`
 
-3. Load the localhost development website on:<br>
+5. Load the localhost development website on:<br>
 `http://localhost:3002`
 
-4. View available NPM scripts in the [Available Scripts](#available-scripts) section for more information.
+6. View available NPM scripts in the [Available Scripts](#available-scripts) section for more information.
 
 ## Available Scripts
 
