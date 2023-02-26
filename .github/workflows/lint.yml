@@ -1,5 +1,7 @@
 name: Lint Files
 
+# This workflow lints the client and server directories
+# And will trigger on push *any* branch
 on:
   push:
     branches-ignore:
