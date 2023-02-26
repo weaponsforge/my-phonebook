@@ -23,7 +23,7 @@ The following dependecies are used for this project. Feel free to experiment usi
 
 (See package.json for more information)
 
-1. NextJS 13.2.0
+1. NextJS 13.2.1
 2. React 18.2.0
 3. Firebase 9.17.1
 4. Material UI v5.11.10

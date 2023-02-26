@@ -29,7 +29,7 @@ The following dependecies are used for this project. Feel free to experiment usi
 ### Core Libraries and Frameworks
 
 1. Client app
-   - NextJS 13.2.0
+   - NextJS 13.2.1
    - React 18.2.0
    - Firebase 9.17.1
 2. Server app
