@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "my-phonebook-dev"
+  },
+  "targets": {
+    "my-phonebook-dev": {
+      "hosting": {
+        "dev": [
+          "my-phonebook-dev"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
