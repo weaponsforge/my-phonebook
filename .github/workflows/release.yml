@@ -1,0 +1,82 @@
+name: Deploy to Production Environment
+
+# This workflow deploys the backend, a full-server express app to Vercel
+# as opposed to their recommended approach of deploying serverless functions
+# using NextJS "pages/api". Vercel CLI v28.2.0 is used for deployment
+
+# This workflow will trigger on any tag/release created on *any* branch
+# Make sure to create tags/releases only from the "master" branch for consistency
+on:
+  push:
+    branches-ignore:
+      - 'dev'
+      - 'feature/weaponsforge-7'
+
+jobs:
+  lint-client:
+    name: Lint and Export client
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_PATH: ${{ secrets.NEXT_PUBLIC_BASE_PATH }}
+      BASE_API_URL: ${{ secrets.BASE_API_URL }}
+      NEXT_PUBLIC_FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY_PROD }}
+      NEXT_PUBLIC_FIREBASE_WEB_AUTHDOMAIN: ${{ secrets.FIREBASE_WEB_AUTHDOMAIN_PROD }}
+      NEXT_PUBLIC_FIREBASE_WEB_PROJECT_ID: ${{ secrets.FIREBASE_WEB_PROJECT_ID_PROD }}
+      NEXT_PUBLIC_FIREBASE_WEB_STORAGE_BUCKET: ${{ secrets.FIREBASE_WEB_STORAGE_BUCKET_PROD }}
+      NEXT_PUBLIC_FIREBASE_WEB_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_WEB_MESSAGING_SENDER_ID_PROD }}
+      NEXT_PUBLIC_FIREBASE_WEB_APP_ID: ${{ secrets.FIREBASE_WEB_APP_ID_PROD }}
+      NEXT_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID: ${{ secrets.FIREBASE_WEB_MEASUREMENT_ID_PROD }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Use NodeJS v19.7.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.7.0
+      - name: Install Dependencies
+        run: |
+          cd client
+          npm install
+
+      - name: Lint Client
+        run: |
+          cd client
+          npm run lint
+
+      - name: Export static files
+        run: |
+          cd client
+          npm run export
+          mv out/404/index.html out/404.html
+
+      - name: Disable Jekyll
+        run: |
+          cd client
+          touch out/.nojekyll
+
+      - name: Archive Development Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: main-out
+          path: client/out
+          retention-days: 3
+
+  deploy-client:
+    name: Deploy client to Github Pages
+    needs: lint-client
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: main-out
+
+      - name: List files for publish
+        run: ls -l -a
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
