@@ -20,8 +20,9 @@ The following dependecies are used for this project. Feel free to experiment usi
 
 1. NextJS 13.2.0
 2. React 18.2.0
-3. Material UI v5.11.10
-4. Redux Toolkit v1.9.3
+3. Firebase 9.17.1
+4. Material UI v5.11.10
+5. Redux Toolkit v1.9.3
    - Redux v8.0.5
 
 ## Installation
@@ -33,9 +34,16 @@ The following dependecies are used for this project. Feel free to experiment usi
 
 3. Set up the environment variables. Create a `.env` file inside the root project directory with reference to the `.env.example` file.
 
-   | Variable Name         | Description                                                                                                                                                                                                                                                                                                                                              |
-   | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | NEXT_PUBLIC_BASE_PATH | This variable is the directory name where NextJS loads the app.<br><br>Set its value to blank `''` when working on development mode in localhost.<br>Set its value to the sub-directory name where the exported NextJS app is to be deployed, i.e. `/<YOUR_REPOSITORY_NAME>` when deploying on a repository (sub-directory) of a root GitHub Pages site. |
+   | Variable Name                                | Description                                                                                                                                                                                                                                                                                                                                              |
+   | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | NEXT_PUBLIC_BASE_PATH                        | This variable is the directory name where NextJS loads the app.<br><br>Set its value to blank `''` when working on development mode in localhost.<br>Set its value to the sub-directory name where the exported NextJS app is to be deployed, i.e. `/<YOUR_REPOSITORY_NAME>` when deploying on a repository (sub-directory) of a root GitHub Pages site. |
+   | NEXT_PUBLIC_FIREBASE_WEB_API_KEY             | Firebase web API key from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                              |
+   | NEXT_PUBLIC_FIREBASE_WEB_AUTHDOMAIN          | Firebase web auth domain key from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                      |
+   | NEXT_PUBLIC_FIREBASE_WEB_PROJECT_ID          | Firebase web project ID from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                           |
+   | NEXT_PUBLIC_FIREBASE_WEB_STORAGE_BUCKET      | Firebase web storage bucket key from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                   |
+   | NEXT_PUBLIC_FIREBASE_WEB_MESSAGING_SENDER_ID | Firebase web messaging sender ID from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                  |
+   | NEXT_PUBLIC_FIREBASE_WEB_APP_ID              | Firebase web web app key from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                          |
+   | NEXT_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID      | Firebase web measurement ID from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                       |
 
 ## Usage
 
