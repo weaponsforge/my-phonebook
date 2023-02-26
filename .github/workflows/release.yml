@@ -9,8 +9,7 @@ name: Deploy to Production Environment
 on:
   push:
     branches-ignore:
-      - 'dev'
-      - 'feature/weaponsforge-7'
+      - feature/weaponsforge-7
 
 jobs:
   lint-client:
