@@ -23,10 +23,10 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
-      - name: Use NodeJS v19.7.0
+      - name: Use NodeJS v18.14.2
         uses: actions/setup-node@v3
         with:
-          node-version: 19.7.0
+          node-version: 18.14.2
       - name: Install Dependencies
         run: |
           cd client

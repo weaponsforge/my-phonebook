@@ -21,15 +21,15 @@ The following dependecies are used for this project. Feel free to experiment usi
 1. Windows 64-bit OS
 2. nvm version 1.1.9 (for Windows)
    - > **NOTE:** Using nvm is optional if you want to continue using your pre-installed NodeJS.
-3. NodeJS LTS v19.7.0 installed using nvm
-   - node v19.7.0
+3. NodeJS LTS v18.14.2 installed using nvm
+   - node v18.14.2
    - npm v9.5.0
-   - >**NOTE:** We will use v19.7.0 for the official production client and server builds but feel free to use other NodeJS versions by setting `"engine-strict=false"` in the `.npmrc` file when working on localhost development as needed, but please use **v19.7.0** when installing new modules. Do not commit the package.json or package-lock.json files should they change when `"engine-strict=false"`.
+   - >**NOTE:** We will use v18.14.2 for the official production client and server builds but feel free to use other NodeJS versions by setting `"engine-strict=false"` in the `.npmrc` file when working on localhost development as needed, but please use **v18.14.2** when installing new modules. Do not commit the package.json or package-lock.json files should they change when `"engine-strict=false"`.
 
 ### Core Libraries and Frameworks
 
 1. Client app
-   - NextJS 13.2.0
+   - NextJS 13.2.1
    - React 18.2.0
    - Firebase 9.17.1
 2. Server app
@@ -63,6 +63,13 @@ The following dependencies are used to build and run the image. Please feel feel
    docker compose -f docker-compose.dev.yml down
    docker compose -f docker-compose.prod.yml up
    ```
+4. Stop and delete all docker instances for a fresh start.
+   - > **NOTE:** Running this script will delete all docker images, containers, volumes, and networks. Run this script if you feel like everything is piling but do not proceed if you have important work on other running Docker containers.
+   - ```
+     sudo chmod u+x scripts/docker-cleanup.sh
+     ./scripts/docker-cleanup.sh
+     # Answer all proceeding prompts
+     ```
 5. Edit any of the files under the `/client` or `/server` directory after running step no. 2.2 and wait for their live reload on `http://localhost:3000` (client) and `http://localhost:3001` (server).
    ```
    # 2.1. Build the client and server containers for localhost development.
@@ -79,7 +86,7 @@ The following dependencies are used to build and run the image. Please feel feel
 
 The following docker-compose commands build a small client image targeted for creating optimized dockerized apps running on self-managed production servers. An Nginx service serves the frontend client on port 3000. Hot reload is NOT available when editing source codes from the `/client` and `/server` directories.
 
-1. Follow step numbers 1 - 3 in the [Docker for Localhost Development](#docker-for-localhost-development) section.
+1. Follow step numbers 1 - 4 in the [Docker for Localhost Development](#docker-for-localhost-development) section.
 
 2. Build the client and server containers for production deployment.<br>
    - > **NOTE:** Run this step only once or as needed when housekeeping docker images or if there are new source code updates in the **/client** or **/server** directories.
