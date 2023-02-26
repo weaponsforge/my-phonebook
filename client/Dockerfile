@@ -1,4 +1,4 @@
-FROM node:19.7.0-alpine as base
+FROM node:18.14.2-alpine as base
 RUN mkdir -p /opt/client
 WORKDIR /opt/client
 RUN adduser -S client
