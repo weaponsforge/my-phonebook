@@ -63,6 +63,13 @@ The following dependencies are used to build and run the image. Please feel feel
    docker compose -f docker-compose.dev.yml down
    docker compose -f docker-compose.prod.yml up
    ```
+4. Stop and delete all docker instances for a fresh start.
+   - > **NOTE:** Running this script will delete all docker images, containers, volumes, and networks. Run this script if you feel like everything is piling but do not proceed if you have important work on other running Docker containers.
+   - ```
+     sudo chmod u+x scripts/docker-cleanup.sh
+     ./scripts/docker-cleanup.sh
+     # Answer all proceeding prompts
+     ```
 5. Edit any of the files under the `/client` or `/server` directory after running step no. 2.2 and wait for their live reload on `http://localhost:3000` (client) and `http://localhost:3001` (server).
    ```
    # 2.1. Build the client and server containers for localhost development.
@@ -79,7 +86,7 @@ The following dependencies are used to build and run the image. Please feel feel
 
 The following docker-compose commands build a small client image targeted for creating optimized dockerized apps running on self-managed production servers. An Nginx service serves the frontend client on port 3000. Hot reload is NOT available when editing source codes from the `/client` and `/server` directories.
 
-1. Follow step numbers 1 - 3 in the [Docker for Localhost Development](#docker-for-localhost-development) section.
+1. Follow step numbers 1 - 4 in the [Docker for Localhost Development](#docker-for-localhost-development) section.
 
 2. Build the client and server containers for production deployment.<br>
    - > **NOTE:** Run this step only once or as needed when housekeeping docker images or if there are new source code updates in the **/client** or **/server** directories.
