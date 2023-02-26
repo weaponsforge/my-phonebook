@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Stops and deletes ALL Docker resources
 docker image prune
 docker rmi $(docker images -a -q)
 docker stop $(docker ps -a -q)
