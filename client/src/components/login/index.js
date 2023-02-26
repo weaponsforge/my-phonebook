@@ -5,6 +5,7 @@ import Page from '@/common/layout/page'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
+import Button from '@mui/material/Button';
 function LoginComponent ({ simcards, stringNames }) {
   return (
     <Page>
@@ -51,7 +52,11 @@ function LoginComponent ({ simcards, stringNames }) {
             minWidth: '300px',
             maxWidth: '500px'
           }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', textDecoration: 'underline'}}>
+            <Typography variant="h5" sx={{
+              fontWeight: 'bold',
+              textDecoration: 'underline',
+              color:'black',
+            }}>
               Login :
             </Typography>
             <TextField
@@ -64,6 +69,7 @@ function LoginComponent ({ simcards, stringNames }) {
               id="password"
               size="small"
             />
+            <Button variant="contained">LOGIN</Button>
           </Box>
         </Paper>
       </Box>
