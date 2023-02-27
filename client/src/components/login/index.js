@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 // import Image from "next/image";
 import Typography from '@mui/material/Typography'
 import Page from '@/common/layout/page'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
-import Button from '@mui/material/Button';
-function LoginComponent ({ simcards, stringNames }) {
+import Button from '@mui/material/Button'
+function LoginComponent () {
   return (
     <Page>
       <Box sx={{
@@ -77,9 +77,9 @@ function LoginComponent ({ simcards, stringNames }) {
   )
 }
 
-LoginComponent.propTypes = {
-  simcards: PropTypes.array,
-  stringNames: PropTypes.string
-}
+// LoginComponent.propTypes = {
+//   simcards: PropTypes.array,
+//   stringNames: PropTypes.string
+// }
 
 export default LoginComponent
