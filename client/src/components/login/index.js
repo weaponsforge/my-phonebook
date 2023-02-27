@@ -16,7 +16,7 @@ function LoginComponent () {
         gap: '20px',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url(/loginBgResized.jpg)',
+        backgroundImage: `url(${process.env.NEXT_PUBLIC_MEDIA_BG1 || '/loginBgResized.jpg'})`,
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed',
         backgroundOrigin: 'border-box',
@@ -31,7 +31,7 @@ function LoginComponent () {
         marginBottom: '-50px',
       }}>
         <Paper elevation={20} sx={{
-          margin: '20px', 
+          margin: '20px',
           flex: 10,
           borderRadius: '30px',
           position: 'relative',
