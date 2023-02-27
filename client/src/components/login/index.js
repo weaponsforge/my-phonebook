@@ -16,7 +16,7 @@ function LoginComponent () {
         gap: '20px',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url(/pexels-pixabay-101529.jpg)',
+        backgroundImage: 'url(/loginBgResized.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundAttachment: 'fixed',
         backgroundOrigin: 'border-box',
