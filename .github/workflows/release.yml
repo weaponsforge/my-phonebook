@@ -20,6 +20,7 @@ jobs:
       NEXT_PUBLIC_FIREBASE_WEB_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_WEB_MESSAGING_SENDER_ID_PROD }}
       NEXT_PUBLIC_FIREBASE_WEB_APP_ID: ${{ secrets.FIREBASE_WEB_APP_ID_PROD }}
       NEXT_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID: ${{ secrets.FIREBASE_WEB_MEASUREMENT_ID_PROD }}
+      NEXT_PUBLIC_MEDIA_BG1: ${{ secrets.NEXT_PUBLIC_MEDIA_BG1 }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
