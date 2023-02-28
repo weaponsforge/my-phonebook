@@ -5,14 +5,19 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link'
+
+// Icons
 import LoginIcon from '@mui/icons-material/Login';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import MenuIcon from '@mui/icons-material/Menu';
+
 
 const pages = [''];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -21,6 +26,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isLoggedIn, setLoggedIn] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,7 +57,6 @@ function Header() {
             <Typography
               variant="h6"
               noWrap
-              component="a"
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
@@ -106,7 +111,6 @@ function Header() {
             variant="h5"
             noWrap
             component="a"
-            href=""
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -167,7 +171,6 @@ function Header() {
             :
             <Link href='/login' style={{ textDecoration: "none" }}>
               <Button
-                href='/login'
                 sx={{ 
                   my: 2,
                   color: 'black',
@@ -175,11 +178,10 @@ function Header() {
                 }}
               >
               <Typography variant="h8" sx={{ fontWeight: 'bold' }}>
-                Login / Register
+                Login
               </Typography>
               </Button>
               <Button
-                href='/login'
                 sx={{ 
                   my: 2,
                   color: 'black',
@@ -190,6 +192,13 @@ function Header() {
               </Button>
             </Link>
           }
+          <Box onClick={()=>setDarkMode((prev)=>!prev)}>
+            {darkMode ?
+              <LightModeIcon sx={{ marginLeft: '10px', verticalAlign: 'middle' }}/>
+              :
+              <DarkModeIcon sx={{ marginLeft:'10px', verticalAlign: 'middle'}}/>
+            }
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

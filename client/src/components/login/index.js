@@ -40,14 +40,14 @@ function LoginComponent () {
             id="email"
             size="small"
             type="email"
-            fullwidth
+            fullwidth="true"
           />
           <TextField
             label="password"
             id="password"
             size="small"
             type="password"
-            fullwidth
+            fullwidth="true"
           />
           <Button variant="contained" sx={{
             fontWeight:'bold',
