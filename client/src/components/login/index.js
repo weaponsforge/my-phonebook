@@ -31,7 +31,7 @@ function LoginComponent () {
         }}>
           <Typography variant="h6" sx={{
             fontWeight: 'bold',
-            color:(theme)=>theme.palette.primary.contrastText,
+            color:(theme)=>theme.palette.text.primary,
           }}>
             Login :
           </Typography>
@@ -51,7 +51,7 @@ function LoginComponent () {
           />
           <Button variant="contained" sx={{
             fontWeight:'bold',
-            color: (theme)=>theme.palette.primary.contrastText,  
+            color: (theme)=>theme.palette.primary.contrastText
           }}>LOGIN</Button>
           <Link href="/register">
             <Typography
@@ -59,7 +59,7 @@ function LoginComponent () {
                 fontSize: '12px',
                 textAlign: 'center',
                 marginTop: '-10px',
-                color: (theme)=> theme.palette.primary.contrastText
+                color: (theme)=>theme.palette.text.primary,
               }}
             >
               Don't have an account? Register instead

@@ -12,8 +12,9 @@ import { store } from '@/store/store'
 import themeDefault from '@/lib/mui/theme'
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 import { createTheme } from '@mui/material/styles';
+import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 
-const themeOptions = {
+const themeOptionsLight = {
   palette: {
     mode: 'light',
     primary: {
@@ -37,7 +38,31 @@ const themeOptions = {
   },
 };
 
-let theme = createTheme(themeOptions)
+const themeOptionsDark = {
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#e0c2a3',
+    },
+    secondary: {
+      main: '#d6a3e0',
+    },
+    error: {
+      main: '#e0a3a3',
+    },
+    warning: {
+      main: '#e0bea3',
+    },
+    info: {
+      main: '#a3c9e0',
+    },
+    success: {
+      main: '#a3e0aa',
+    },
+  },
+};
+const lightTheme = createTheme(themeOptionsLight)
+const darkTheme = createTheme(themeOptionsDark)
 
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
@@ -45,6 +70,7 @@ let theme = createTheme(themeOptions)
 const clientSideEmotionCache = createEmotionCache()
 
 export default function MyApp(props) {
+  const [activeTheme, setActiveTheme] = useActiveTheme()
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (
@@ -52,7 +78,7 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={activeTheme === 'light' ? lightTheme : darkTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Provider store={store}>

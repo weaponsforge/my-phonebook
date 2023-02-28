@@ -11,13 +11,13 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link'
-
+import Image from 'next/image'
 // Icons
 import LoginIcon from '@mui/icons-material/Login';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import { setActiveTheme, useActiveTheme } from '@/lib/hooks/useActiveTheme';
 
 const pages = [''];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -26,7 +26,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isLoggedIn, setLoggedIn] = useState(false)
-  const [darkMode, setDarkMode] = useState(false)
+  const [activeTheme, setActiveTheme] = useActiveTheme()
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -53,7 +53,7 @@ function Header() {
     }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link href='/' style={{ textDecoration: "none" }}>
+          <Link href='/' style={{ textDecoration: "none", display: 'flex' }}>
             <Typography
               variant="h6"
               noWrap
@@ -64,7 +64,7 @@ function Header() {
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 textDecoration: 'none',
-                color: (theme)=>theme.palette.primary.contrastText
+                color: (theme)=>theme.palette.text.primary,
               }}
             >
               myPhonebook
@@ -117,9 +117,9 @@ function Header() {
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: '.2rem',
               textDecoration: 'none',
-              color: (theme)=>theme.palette.primary.contrastText,
+              color: (theme)=>theme.palette.text.primary,
             }}
           >
             myPhonebook
@@ -130,7 +130,7 @@ function Header() {
                 key={page}
                 href={`/${page}`}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color:(theme)=>theme.palette.primary.contrastText, display: 'block' }}
+                sx={{ my: 2, color:(theme)=>theme.palette.text.primary, display: 'block' }}
               >
                 {page}
               </Button>
@@ -177,7 +177,7 @@ function Header() {
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
-              <Typography variant="h8" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
                 Login
               </Typography>
               </Button>
@@ -188,12 +188,17 @@ function Header() {
                   display: { xs: 'flex', md: 'none' },
                 }}
               >
-                <LoginIcon/>
+                <LoginIcon sx={activeTheme === 'dark' && {
+                  filter: "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)"
+                }}/>
               </Button>
             </Link>
           }
-          <Box onClick={()=>setDarkMode((prev)=>!prev)}>
-            {darkMode ?
+          <Box onClick={()=>{
+            setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
+          }}>
+            {activeTheme === 'dark' 
+              ?
               <LightModeIcon sx={{ marginLeft: '10px', verticalAlign: 'middle' }}/>
               :
               <DarkModeIcon sx={{ marginLeft:'10px', verticalAlign: 'middle'}}/>

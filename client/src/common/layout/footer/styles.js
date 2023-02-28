@@ -5,10 +5,8 @@ const styles = {
     padding: (theme) => theme.spacing(2),
     textAlign: 'center',
     marginTop: 'auto',
-    position:'sticky',
-    top: 0,
     zIndex: 100,
-    backgroundColor: 'hsla(30,40%,80%,0%)',
+    background: 'inherit',
     backdropFilter: 'blur(5px)',
   }
 }
