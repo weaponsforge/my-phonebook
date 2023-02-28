@@ -4,17 +4,29 @@ import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
 
+import styles from './index.module.css'
+
 function Page ({ children }) {
   return (
-    <Box sx={{ width: '100%', height: '100vh' }}>
-      <Header />
+    <>
+      <div className={styles.background} >
+      </div>
+      <Box sx={{
+        width: '100%', 
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+      }}>
+        <Header />
+        <Section>
+          { children }
+        </Section>
 
-      <Section>
-        { children }
-      </Section>
-
-      <Footer />
-    </Box>
+        <Footer />
+      </Box>
+    </>
   )
 }
 
