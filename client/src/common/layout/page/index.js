@@ -21,7 +21,7 @@ function Page ({ children }) {
           height: '100vh',
           width: '100vmax',
           height: '100vmax',
-          background: `hsla(${randomPastelBgColor},40%,80%,50%)`,
+          background: `hsla(${randomPastelBgColor},40%,80%,20%)`,
           animation: 'animate 90s linear infinite',
         },
         '&:after':{
