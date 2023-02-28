@@ -8,6 +8,7 @@ const styles = {
     zIndex: 100,
     background: 'inherit',
     backdropFilter: 'blur(5px)',
+    fontWeight: 'bold',
   }
 }
 

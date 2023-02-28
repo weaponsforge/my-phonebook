@@ -142,7 +142,7 @@ function Header() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {/* will use google profile picture ? */}
+                  {/* will use google profile picture from firebase ? */}
                   <Avatar alt="avatarPicture" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
