@@ -10,8 +10,8 @@ function Page ({ children }) {
   return (
     <>
       <Box sx={{
-        animation: 'theme 21s linear infinite',
-        '&:after,&:before' : {
+        animation: 'colorSwitcher 21s linear infinite',
+        '&:after,:before' : {
           content: '""',
           display: 'block',
           position: 'fixed',
@@ -32,7 +32,7 @@ function Page ({ children }) {
           animationDelay: '-30s',
           animationDirection: 'reverse',
         },
-        '@keyframes theme': {
+        '@keyframes colorSwitcher': {
           '0%': {
               background: '#74C390',
           },
@@ -65,6 +65,7 @@ function Page ({ children }) {
         }
       }}>
       </Box>
+      
       <Box sx={{
         width: '100%', 
         minHeight: '100vh',

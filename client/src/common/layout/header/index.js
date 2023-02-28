@@ -188,9 +188,14 @@ function Header() {
                   display: { xs: 'flex', md: 'none' },
                 }}
               >
-                <LoginIcon sx={activeTheme === 'dark' && {
-                  filter: "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)"
-                }}/>
+                {activeTheme === 'dark'
+                  ?
+                  <LoginIcon style={{
+                    filter: "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)"
+                  }}/>
+                  :
+                  <LoginIcon />
+                }
               </Button>
             </Link>
           }
