@@ -6,19 +6,32 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
+import { useEffect, useState } from 'react'
+import { getRandomJoke } from '@/lib/services/random'
 
 function LoginComponent () {
+  const [joke, setJoke] = useState()
+  useEffect(()=>{
+    setTimeout(async()=>{
+      const randomJoke = await getRandomJoke()
+      setJoke(randomJoke)
+    })
+  },[])
   return (
     <Page>
       <Paper sx={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '20px',
+        gap: '10px',
         alignItems: 'center',
         justifyContent: 'center',
         flex:1,
         background: 'inherit',
+        flexWrap: 'wrap-reverse'
       }}>
+        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', padding: '20px', maxWidth: '50vw' }}>
+          `{joke ? joke.joke : '. . .'}`
+        </Typography>
         <Paper elevation={0} sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -29,12 +42,6 @@ function LoginComponent () {
           padding: '40px',
           background: 'inherit',
         }}>
-          <Typography variant="h6" sx={{
-            fontWeight: 'bold',
-            color:(theme)=>theme.palette.text.primary,
-          }}>
-            Login :
-          </Typography>
           <TextField
             label="email"
             id="email"
