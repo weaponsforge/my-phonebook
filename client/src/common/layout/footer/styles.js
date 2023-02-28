@@ -8,7 +8,7 @@ const styles = {
     position:'sticky',
     top: 0,
     zIndex: 100,
-    backgroundColor: 'hsla(30,40%,80%,70%)',
+    backgroundColor: 'hsla(30,40%,80%,0%)',
     backdropFilter: 'blur(5px)',
   }
 }

@@ -4,7 +4,7 @@ import styles from './styles'
 
 function Footer () {
   return (
-    <Box sx={styles.footer} component='footer'>
+    <Box elevation={10} sx={styles.footer} component='footer'>
       My Phonebook @2023
     </Box>
   )

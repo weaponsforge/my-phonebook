@@ -16,7 +16,7 @@ function LoginComponent () {
         gap: '20px',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+        flex:1,
       }}>
         <Paper elevation={20} sx={{
           margin: '20px',

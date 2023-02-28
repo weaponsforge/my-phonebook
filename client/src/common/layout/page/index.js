@@ -20,6 +20,7 @@ function Page ({ children }) {
         height: '100%',
       }}>
         <Header />
+
         <Section>
           { children }
         </Section>

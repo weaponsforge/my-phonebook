@@ -4,8 +4,8 @@ const styles = {
     // marginBottom: (theme) => theme.spacing(10),
     minHeight: '100%',
     flex: 1,
-    marginLeft: '0px',
-    paddingLeft: '0px',
+    display: 'flex',
+    flexDirection: 'column',
   }
 }
 
