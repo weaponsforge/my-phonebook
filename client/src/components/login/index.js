@@ -29,7 +29,7 @@ function LoginComponent () {
         background: 'inherit',
         flexWrap: 'wrap-reverse'
       }}>
-        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', padding: '20px', maxWidth: '50vw' }}>
+        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', paddingLeft: '20px',paddingRight:'20px', maxWidth: '50vw' }}>
           `{joke ? joke.joke : '. . .'}`
         </Typography>
         <Paper elevation={0} sx={{

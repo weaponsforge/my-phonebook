@@ -35,7 +35,7 @@ function HomeComponent() {
           style={activeTheme === 'dark' && { filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)' }}
           priority
         />
-        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled }}>
+        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled,textAlign: 'center', paddingLeft: '20px',paddingRight:'20px',maxWidth: '70vw' }}>
           "{joke ? joke.joke : '. . .'}"
         </Typography>
       </Box>
