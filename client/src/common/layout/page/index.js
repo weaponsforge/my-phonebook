@@ -3,9 +3,11 @@ import Box from '@mui/material/Box'
 import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
+import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 
 
 function Page ({ children }) {
+  const [activeTheme] = useActiveTheme()
   const randomPastelBgColor = Math.floor(Math.random()*255)
   return (
     <>
@@ -21,7 +23,7 @@ function Page ({ children }) {
           height: '100vh',
           width: '100vmax',
           height: '100vmax',
-          background: `hsla(${randomPastelBgColor},40%,80%,20%)`,
+          background: `hsla(${randomPastelBgColor},40%,80%,${activeTheme === 'dark' ? '10%' : '80%'})`,
           animation: 'animate 90s linear infinite',
         },
         '&:after':{
