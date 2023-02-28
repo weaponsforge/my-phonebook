@@ -42,7 +42,7 @@ function Header() {
       position:'sticky',
       top: 0,
       zIndex: 100,
-      backgroundColor: 'hsla(30,40%,80%,0%)',
+      background: 'inherit',
       backdropFilter: 'blur(5px)',
     }}>
       <Container maxWidth="xl">
@@ -59,7 +59,7 @@ function Header() {
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 textDecoration: 'none',
-                color: 'black',
+                color: (theme)=>theme.palette.primary.contrastText
               }}
             >
               myPhonebook
@@ -115,7 +115,7 @@ function Header() {
               fontWeight: 700,
               letterSpacing: '.3rem',
               textDecoration: 'none',
-              color: 'black',
+              color: (theme)=>theme.palette.primary.contrastText,
             }}
           >
             myPhonebook
@@ -126,7 +126,7 @@ function Header() {
                 key={page}
                 href={`/${page}`}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
+                sx={{ my: 2, color:(theme)=>theme.palette.primary.contrastText, display: 'block' }}
               >
                 {page}
               </Button>
@@ -137,7 +137,8 @@ function Header() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {/* will use google profile picture ? */}
+                  <Avatar alt="avatarPicture" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu

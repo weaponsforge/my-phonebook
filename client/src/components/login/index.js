@@ -2,61 +2,71 @@
 // import Image from "next/image";
 import Typography from '@mui/material/Typography'
 import Page from '@/common/layout/page'
-import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import Link from '@mui/material/Link'
 
 function LoginComponent () {
   return (
     <Page>
-      <Box sx={{
+      <Paper sx={{
         display: 'flex',
         flexWrap: 'wrap',
         gap: '20px',
         alignItems: 'center',
         justifyContent: 'center',
         flex:1,
+        background: 'inherit',
       }}>
-        <Paper elevation={20} sx={{
-          margin: '20px',
-          flex: 10,
-          position: 'relative',
-          background: 'inherit',
+        <Paper elevation={0} sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
           minWidth: '300px',
-          maxWidth: '500px',
+          width: '500px',
+          borderRadius: '30px',
+          padding: '40px',
+          background: 'inherit',
         }}>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '13px',
-            padding: '40px',
-            position: 'relative',
-            zIndex: 9,
-            minWidth: '300px',
-            maxWidth: '500px'
+          <Typography variant="h6" sx={{
+            fontWeight: 'bold',
+            color:(theme)=>theme.palette.primary.contrastText,
           }}>
-            <Typography variant="h5" sx={{
-              fontWeight: 'bold',
-              textDecoration: 'underline',
-              color:'black',
-            }}>
-              Login :
+            Login :
+          </Typography>
+          <TextField
+            label="email"
+            id="email"
+            size="small"
+            type="email"
+            fullwidth
+          />
+          <TextField
+            label="password"
+            id="password"
+            size="small"
+            type="password"
+            fullwidth
+          />
+          <Button variant="contained" sx={{
+            fontWeight:'bold',
+            color: (theme)=>theme.palette.primary.contrastText,  
+          }}>LOGIN</Button>
+          <Link href="/register">
+            <Typography
+              sx={{
+                fontSize: '12px',
+                textAlign: 'center',
+                marginTop: '-10px',
+                color: (theme)=> theme.palette.primary.contrastText
+              }}
+            >
+              Don't have an account? Register instead
             </Typography>
-            <TextField
-              label="email"
-              id="email"
-              size="small"
-            />
-            <TextField
-              label="password"
-              id="password"
-              size="small"
-            />
-            <Button variant="contained">LOGIN</Button>
-          </Box>
+          </Link>
         </Paper>
-      </Box>
+      </Paper>
     </Page>
   )
 }
