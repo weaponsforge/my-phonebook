@@ -34,33 +34,33 @@ function Page ({ children }) {
         },
         '@keyframes colorSwitcher': {
           '0%': {
-              background: '#74C390',
+            background: '#74C390',
           },
           '16%': {
-              background: '#5DBDB6',
+            background: '#5DBDB6',
           },
           '33%': {
-              background: '#59D4E1',
+            background: '#59D4E1',
           },
           '50%': {
-              background: '#51BCE8',
+            background: '#51BCE8',
           },
           '66%': {
-              background: '#FA5374',
+            background: '#FA5374',
           },    
           '83%': {
-              background: '#E46653',
+            background: '#E46653',
           },
           '100%': {
-              background: '#74C390',
+            background: '#74C390',
           }
         },
         '@keyframes animate': {
           '0%': {
-              transform: 'rotate(0deg)',
+            transform: 'rotate(0deg)',
           },
           '100%': {
-              transform: 'rotate(360deg)'
+            transform: 'rotate(360deg)'
           }
         }
       }}>

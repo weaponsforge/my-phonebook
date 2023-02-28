@@ -9,9 +9,8 @@ import { Provider } from 'react-redux'
 import { store } from '@/store/store'
 
 // MUI
-import themeDefault from '@/lib/mui/theme'
 import createEmotionCache from '@/lib/mui/createEmotionCache'
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 
 const themeOptionsLight = {
@@ -36,7 +35,7 @@ const themeOptionsLight = {
       main: '#a3e0aa',
     },
   },
-};
+}
 
 const themeOptionsDark = {
   palette: {
@@ -60,7 +59,7 @@ const themeOptionsDark = {
       main: '#a3e0aa',
     },
   },
-};
+}
 const lightTheme = createTheme(themeOptionsLight)
 const darkTheme = createTheme(themeOptionsDark)
 
@@ -70,7 +69,7 @@ const darkTheme = createTheme(themeOptionsDark)
 const clientSideEmotionCache = createEmotionCache()
 
 export default function MyApp(props) {
-  const [activeTheme, setActiveTheme] = useActiveTheme()
+  const [activeTheme] = useActiveTheme()
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (

@@ -62,7 +62,7 @@ function LoginComponent () {
                 color: (theme)=>theme.palette.text.primary,
               }}
             >
-              Don't have an account? Register instead
+              Don`t have an account? Register instead
             </Typography>
           </Link>
         </Paper>

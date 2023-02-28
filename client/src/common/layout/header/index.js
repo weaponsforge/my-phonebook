@@ -1,47 +1,47 @@
-import { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/material/Menu'
+import Container from '@mui/material/Container'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import MenuItem from '@mui/material/MenuItem'
 import Link from 'next/link'
-import Image from 'next/image'
-// Icons
-import LoginIcon from '@mui/icons-material/Login';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import MenuIcon from '@mui/icons-material/Menu';
-import { setActiveTheme, useActiveTheme } from '@/lib/hooks/useActiveTheme';
 
-const pages = [''];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// Icons
+import LoginIcon from '@mui/icons-material/Login'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import MenuIcon from '@mui/icons-material/Menu'
+import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
+
+const pages = ['']
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 function Header() {
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const [isLoggedIn, setLoggedIn] = useState(false)
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
+  const [isLoggedIn] = useState(false)
   const [activeTheme, setActiveTheme] = useActiveTheme()
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    setAnchorElUser(null)
+  }
 
   return (
     <AppBar elevation={10} sx={{
@@ -53,7 +53,7 @@ function Header() {
     }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link href='/' style={{ textDecoration: "none", display: 'flex' }}>
+          <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
             <Typography
               variant="h6"
               noWrap
@@ -169,7 +169,7 @@ function Header() {
               </Menu>
             </Box>
             :
-            <Link href='/login' style={{ textDecoration: "none" }}>
+            <Link href='/login' style={{ textDecoration: 'none' }}>
               <Button
                 sx={{ 
                   my: 2,
@@ -177,9 +177,9 @@ function Header() {
                   display: { xs: 'none', md: 'flex' },
                 }}
               >
-              <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
                 Login
-              </Typography>
+                </Typography>
               </Button>
               <Button
                 sx={{ 
@@ -191,7 +191,7 @@ function Header() {
                 {activeTheme === 'dark'
                   ?
                   <LoginIcon style={{
-                    filter: "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)"
+                    filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
                   }}/>
                   :
                   <LoginIcon />
@@ -212,6 +212,6 @@ function Header() {
         </Toolbar>
       </Container>
     </AppBar>
-  );
+  )
 }
-export default Header;
+export default Header
