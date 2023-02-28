@@ -9,7 +9,7 @@ import styles from './styles'
 
 function Header () {
   return (
-    <AppBar position='sticky' sx={styles.appbar}>
+    <AppBar position='fixed' sx={styles.appbar}>
       <Toolbar variant='dense' disableGutters sx={styles.toolbar}>
         <Container maxWidth='lg' sx={styles.container}>
           <Button sx={styles.button}>

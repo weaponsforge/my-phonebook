@@ -9,8 +9,35 @@ import { Provider } from 'react-redux'
 import { store } from '@/store/store'
 
 // MUI
-import theme from '@/lib/mui/theme'
+import themeDefault from '@/lib/mui/theme'
 import createEmotionCache from '@/lib/mui/createEmotionCache'
+import { createTheme } from '@mui/material/styles';
+
+const themeOptions = {
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#e0c2a3',
+    },
+    secondary: {
+      main: '#d6a3e0',
+    },
+    error: {
+      main: '#e0a3a3',
+    },
+    warning: {
+      main: '#e0bea3',
+    },
+    info: {
+      main: '#a3c9e0',
+    },
+    success: {
+      main: '#a3e0aa',
+    },
+  },
+};
+
+let theme = createTheme(themeOptions)
 
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
