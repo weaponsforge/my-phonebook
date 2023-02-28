@@ -19,7 +19,7 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 
-const pages = ['']
+const pages = ['about']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 function Header() {
@@ -107,33 +107,34 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.2rem',
-              textDecoration: 'none',
-              color: (theme)=>theme.palette.text.primary,
-            }}
-          >
-            myPhonebook
-          </Typography>
+          <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
+            <Typography
+              variant="h5"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.2rem',
+                textDecoration: 'none',
+                color: (theme)=>theme.palette.text.primary,
+              }}
+            >
+              myPhonebook
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                href={`/${page}`}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color:(theme)=>theme.palette.text.primary, display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link key={page} href={`/${page}`} style={{ textDecoration:'none'}}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color:(theme)=>theme.palette.text.primary, display: 'block', fontWeight: 'bold' }}
+                >
+                  {page}
+                </Button>
+              </Link>
             ))}
           </Box>
 
