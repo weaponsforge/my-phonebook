@@ -75,7 +75,7 @@ function LoginComponent () {
             size="small"
             type="text"
             fullwidth="true"
-            required="true"
+            required={true}
             color={username.color}
             helperText={username.helperText}
             value={username.value}
@@ -88,7 +88,7 @@ function LoginComponent () {
             size="small"
             type="password"
             fullwidth="true"
-            required="true"
+            required={true}
             value={password.value}
             error={password.error}
             color={password.color}

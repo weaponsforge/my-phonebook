@@ -4,11 +4,20 @@ import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
+import { useEffect, useState } from 'react'
 
 
 function Page ({ children }) {
   const [activeTheme] = useActiveTheme()
-  const backgroundColor = (new Date().getHours()*10)%255
+  const [backgroundColor, setBackgroundColor] = useState((new Date().getMinutes()*10)%255)
+
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      setBackgroundColor((prev)=> (prev + 10)%255)
+      console.log(backgroundColor)
+    },10000)
+  },[])
+
   return (
     <>
       <Box sx={{
