@@ -75,7 +75,11 @@ const RegisterComponent = () => {
         <Paper elevation={0} sx={{
           display: 'grid',
           gridTemplateColumns: '1fr 20px',
-          // border: '1px solid red',
+          gridTemplateAreas:
+            `"username icon1"
+            "password icon2"
+            "passwordConfirmation icon3"
+            "register ."`,
           alignItems:"stretch",
           gap: '10px',
           minWidth: '300px',
@@ -86,6 +90,7 @@ const RegisterComponent = () => {
         }}>
           {/* registration form goes here */}
           <TextField
+            sx={{ gridArea:'username'}}
             label="Username"
             id="username"
             size="small"
@@ -98,9 +103,11 @@ const RegisterComponent = () => {
             error={username.error}
             onChange={usernameHandler}
           />
-          {}
-          <CheckIcon fontSize="large" color="success"/>
+          {!username.error &&
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon1" }}/>
+          }
           <TextField
+            sx={{ gridArea:'password'}}
             label="Password"
             id="userPassword"
             size="small"
@@ -113,7 +120,11 @@ const RegisterComponent = () => {
             helperText={password.helperText}
             onChange={passwordHandler}
           />
+          {!password.error &&
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon2" }}/>
+          }
           <TextField
+          sx={{ gridArea:'passwordConfirmation'}}
             label="PasswordConfirmation"
             id="userPasswordConfirmation"
             size="small"
@@ -126,14 +137,18 @@ const RegisterComponent = () => {
             helperText={passwordConfirmation.helperText}
             onChange={passwordConfirmationHandler}
           />
+          {!passwordConfirmation.error &&
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon3" }}/>
+          }
           <Button 
             variant="contained" 
             sx={{
+              gridArea:"register",
               fontWeight:'bold',
               color: (theme)=>theme.palette.primary.contrastText
             }}
           >
-                        REGISTER
+            REGISTER
           </Button>
         </Paper>
       </Paper>
