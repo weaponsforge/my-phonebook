@@ -1,5 +1,4 @@
 // import PropTypes from 'prop-types'
-// import Image from "next/image";
 import Typography from '@mui/material/Typography'
 import Page from '@/common/layout/page'
 import Paper from '@mui/material/Paper'
@@ -95,10 +94,15 @@ function LoginComponent () {
             helperText={password.helperText}
             onChange={passwordHandler}
           />
-          <Button variant="contained" sx={{
-            fontWeight:'bold',
-            color: (theme)=>theme.palette.primary.contrastText
-          }}>LOGIN</Button>
+          <Button 
+            variant="contained" 
+            sx={{
+              fontWeight:'bold',
+              color: (theme)=>theme.palette.primary.contrastText
+            }}
+          >
+            LOGIN
+          </Button>
           <Link href="/recoverPassword">
             <Typography
               sx={{
