@@ -8,9 +8,25 @@ import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import { useEffect, useState } from 'react'
 import { getRandomJoke } from '@/lib/services/random'
+import { Validate } from '@/lib/utils/textValidation'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
+  const [username, setUsername] = useState({ error:true, helperText:" ",value:"", color:"text" })
+
+  const usernameHandler = (e) => {
+    const {helperText, error, color} = Validate.email(e.target.value)
+    
+    const newUsername = {
+      ...username,
+      value: e.target.value,
+      error,
+      helperText,
+      color
+    }
+
+    setUsername(newUsername)
+  }
   useEffect(()=>{
     setTimeout(async()=>{
       const randomJoke = await getRandomJoke()
@@ -35,7 +51,7 @@ function LoginComponent () {
         <Paper elevation={0} sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px',
+          gap: '10px',
           minWidth: '300px',
           width: '500px',
           borderRadius: '30px',
@@ -43,33 +59,42 @@ function LoginComponent () {
           background: 'inherit',
         }}>
           <TextField
-            label="email"
-            id="email"
+            label="Username"
+            id="username"
             size="small"
-            type="email"
+            type="text"
             fullwidth="true"
+            required="true"
+            color={username.color}
+            helperText={username.helperText}
+            value={username.value}
+            error={username.error}
+            onChange={usernameHandler}
           />
           <TextField
-            label="password"
-            id="password"
+            label="Password"
+            id="userPassword"
             size="small"
             type="password"
             fullwidth="true"
+            required="true"
+            color="text"
+            helperText=" "
           />
           <Button variant="contained" sx={{
             fontWeight:'bold',
             color: (theme)=>theme.palette.primary.contrastText
           }}>LOGIN</Button>
-          <Link href="/register">
+          <Link href="/recoverPassword">
             <Typography
               sx={{
                 fontSize: '12px',
                 textAlign: 'center',
-                marginTop: '-10px',
+                marginTop: '-5px',
                 color: (theme)=>theme.palette.text.primary,
               }}
             >
-              Don`t have an account? Register instead
+              Forgot your password ?
             </Typography>
           </Link>
         </Paper>
