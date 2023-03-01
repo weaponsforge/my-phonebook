@@ -1,10 +1,10 @@
-import { RegisterComponent } from "@/components/register"
+import { RegisterComponent } from '@/components/register'
 
 
 const Register = () => {
-    return (
-        <RegisterComponent/>
-    )
+  return (
+    <RegisterComponent/>
+  )
 }
 
 export default Register
