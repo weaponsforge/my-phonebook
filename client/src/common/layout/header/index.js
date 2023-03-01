@@ -138,7 +138,8 @@ function Header() {
             ))}
           </Box>
 
-          {isLoggedIn ?
+          {isLoggedIn 
+            ?
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -170,18 +171,37 @@ function Header() {
               </Menu>
             </Box>
             :
-            <Link href='/login' style={{ textDecoration: 'none' }}>
-              <Button
-                sx={{ 
-                  my: 2,
-                  color: 'black',
-                  display: { xs: 'none', md: 'flex' },
-                }}
-              >
-                <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
-                Login
-                </Typography>
-              </Button>
+            <Box sx={{
+              display: 'flex',
+            }}>
+              <Link href='/login' style={{ textDecoration: 'none' }}>
+                <Button
+                  sx={{ 
+                    my: 2,
+                    color: 'black',
+                    display: { xs: 'none', md: 'flex' },
+                  }}
+                >
+                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                    Login
+                  </Typography>
+                </Button>
+              </Link>
+              <Link href='/register' style={{ textDecoration: 'none' }}>
+                <Button
+                  sx={{ 
+                    my: 2,
+                    color: 'black',
+                    display: { xs: 'none', md: 'flex' },
+                  }}
+                >
+                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                    Register
+                  </Typography>
+                </Button>
+              </Link>
+            </Box>
+          }
               <Button
                 sx={{ 
                   my: 2,
@@ -198,8 +218,6 @@ function Header() {
                   <LoginIcon />
                 }
               </Button>
-            </Link>
-          }
           <Box onClick={()=>{
             setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
           }}>
