@@ -14,7 +14,8 @@ const RegisterComponent = () => {
   const [joke, setJoke] = useState()
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  const [passwordConfirmation, setPasswordConfirmation] = useState({ error:false, helperText:' ',value:'', color:'text' })
+  const [passwordConfirmation, setPasswordConfirmation] = useState({ error:true, helperText:' ',value:'', color:'text' })
+  
   useEffect(()=>{
     setTimeout(async()=>{
       const randomJoke = await getRandomJoke()
@@ -47,7 +48,7 @@ const RegisterComponent = () => {
   }
 
   const passwordConfirmationHandler = (e) => {
-    const { helperText, error, color } = Validate.password(e.target.value)
+    const { helperText, error, color } = Validate.passwordConfirmation(password, e.target.value)
     const newPasswordConfirmation = {
       ...passwordConfirmation,
       value: e.target.value,
