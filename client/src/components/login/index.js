@@ -69,7 +69,7 @@ function LoginComponent () {
           background: 'inherit',
         }}>
           <TextField
-            label="Username"
+            label="Username (email)"
             id="username"
             size="small"
             type="text"

@@ -15,7 +15,7 @@ const RegisterComponent = () => {
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [passwordConfirmation, setPasswordConfirmation] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  
+
   useEffect(()=>{
     setTimeout(async()=>{
       const randomJoke = await getRandomJoke()
@@ -58,6 +58,20 @@ const RegisterComponent = () => {
     }
     setPasswordConfirmation(newPasswordConfirmation)
   }
+
+  const registerHandler = (e) => {
+    // only proceed when no error
+    const allFieldAreValid = !username.error && !password.error && !passwordConfirmation.error
+    if (!allFieldAreValid) return
+
+    // gather all data to dispatch
+    const request = {
+      username:username.value,
+      password:password.value
+    }
+
+
+  }
   return (
     <Page>
       <Paper sx={{
@@ -92,7 +106,7 @@ const RegisterComponent = () => {
           {/* registration form goes here */}
           <TextField
             sx={{ gridArea:'username'}}
-            label="Username"
+            label="Username (email)"
             id="username"
             size="small"
             type="text"
@@ -102,7 +116,7 @@ const RegisterComponent = () => {
             helperText={username.helperText}
             value={username.value}
             error={username.error}
-            onChange={usernameHandler}
+            onInput={usernameHandler}
           />
           {!username.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon1" }}/>
@@ -119,14 +133,14 @@ const RegisterComponent = () => {
             error={password.error}
             color={password.color}
             helperText={password.helperText}
-            onChange={passwordHandler}
+            onInput={passwordHandler}
           />
           {!password.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon2" }}/>
           }
           <TextField
           sx={{ gridArea:'passwordConfirmation'}}
-            label="PasswordConfirmation"
+            label="Password confirmation"
             id="userPasswordConfirmation"
             size="small"
             type="password"
@@ -136,7 +150,7 @@ const RegisterComponent = () => {
             error={passwordConfirmation.error}
             color={passwordConfirmation.color}
             helperText={passwordConfirmation.helperText}
-            onChange={passwordConfirmationHandler}
+            onInput={passwordConfirmationHandler}
           />
           {!passwordConfirmation.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon3" }}/>
@@ -148,6 +162,7 @@ const RegisterComponent = () => {
               fontWeight:'bold',
               color: (theme)=>theme.palette.primary.contrastText
             }}
+            onClick={registerHandler}
           >
             REGISTER
           </Button>
