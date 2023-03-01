@@ -12,11 +12,11 @@ import { Validate } from '@/lib/utils/textValidation'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
-  const [username, setUsername] = useState({ error:false, helperText:" ",value:"", color:"text" })
-  const [password, setPassword] = useState({ error:false, helperText:" ",value:"", color:"text" })
+  const [username, setUsername] = useState({ error:false, helperText:' ',value:'', color:'text' })
+  const [password, setPassword] = useState({ error:false, helperText:' ',value:'', color:'text' })
 
   const usernameHandler = (e) => {
-    const {helperText, error, color} = Validate.email(e.target.value)
+    const {helperText, color} = Validate.email(e.target.value)
     const newUsername = {
       ...username,
       value: e.target.value,
@@ -28,7 +28,7 @@ function LoginComponent () {
   }
 
   const passwordHandler = (e) => {
-    const {helperText, error, color } = Validate.password(e.target.value)
+    const {helperText, color } = Validate.password(e.target.value)
     const newPassword = {
       ...password,
       value: e.target.value,

@@ -12,9 +12,8 @@ function Page ({ children }) {
   const [backgroundColor, setBackgroundColor] = useState((new Date().getMinutes()*10)%255)
 
   useEffect(()=>{
-    const interval = setInterval(()=>{
+    setInterval(()=>{
       setBackgroundColor((prev)=> (prev + 10)%255)
-      console.log(backgroundColor)
     },10000)
   },[])
 
