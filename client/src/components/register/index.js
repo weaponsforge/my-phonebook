@@ -7,10 +7,13 @@ import Typography from '@mui/material/Typography'
 import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
+import CheckIcon from '@mui/icons-material/Check';
+import theme from '@/lib/mui/theme'
+
 const RegisterComponent = () => {
   const [joke, setJoke] = useState()
-  const [username, setUsername] = useState({ error:false, helperText:' ',value:'', color:'text' })
-  const [password, setPassword] = useState({ error:false, helperText:' ',value:'', color:'text' })
+  const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
+  const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [passwordConfirmation, setPasswordConfirmation] = useState({ error:false, helperText:' ',value:'', color:'text' })
   useEffect(()=>{
     setTimeout(async()=>{
@@ -20,11 +23,11 @@ const RegisterComponent = () => {
   },[])
 
   const usernameHandler = (e) => {
-    const {helperText, color} = Validate.email(e.target.value)
+    const {helperText, error, color} = Validate.email(e.target.value)
     const newUsername = {
       ...username,
       value: e.target.value,
-      error: false,
+      error,
       helperText,
       color
     }
@@ -32,11 +35,11 @@ const RegisterComponent = () => {
   }
 
   const passwordHandler = (e) => {
-    const {helperText, color } = Validate.password(e.target.value)
+    const {helperText, error, color } = Validate.password(e.target.value)
     const newPassword = {
       ...password,
       value: e.target.value,
-      error: false,
+      error,
       helperText,
       color
     }
@@ -44,11 +47,11 @@ const RegisterComponent = () => {
   }
 
   const passwordConfirmationHandler = (e) => {
-    const { helperText, color } = Validate.password(e.target.value)
+    const { helperText, error, color } = Validate.password(e.target.value)
     const newPasswordConfirmation = {
       ...passwordConfirmation,
       value: e.target.value,
-      error: false,
+      error,
       helperText,
       color
     }
@@ -70,8 +73,10 @@ const RegisterComponent = () => {
                     `{joke && joke.joke}`
         </Typography>
         <Paper elevation={0} sx={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: 'grid',
+          gridTemplateColumns: '1fr 20px',
+          // border: '1px solid red',
+          alignItems:"stretch",
           gap: '10px',
           minWidth: '300px',
           width: '500px',
@@ -93,6 +98,8 @@ const RegisterComponent = () => {
             error={username.error}
             onChange={usernameHandler}
           />
+          {}
+          <CheckIcon fontSize="large" color="success"/>
           <TextField
             label="Password"
             id="userPassword"

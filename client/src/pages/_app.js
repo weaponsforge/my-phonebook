@@ -17,22 +17,22 @@ const themeOptionsLight = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#e0c2a3',
+      main: '#e6d5b3',
     },
     secondary: {
       main: '#d6a3e0',
     },
     error: {
-      main: '#e0a3a3',
+      main: '#d32f2f',
     },
     warning: {
-      main: '#e0bea3',
+      main: '#ed6c02',
     },
     info: {
-      main: '#a3c9e0',
+      main: '#0288d1',
     },
     success: {
-      main: '#a3e0aa',
+      main: '#2e7d32',
     },
   },
 }

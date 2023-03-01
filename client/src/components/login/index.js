@@ -15,11 +15,11 @@ function LoginComponent () {
   const [password, setPassword] = useState({ error:false, helperText:' ',value:'', color:'text' })
 
   const usernameHandler = (e) => {
-    const {helperText, color} = Validate.email(e.target.value)
+    const {helperText, error, color} = Validate.email(e.target.value)
     const newUsername = {
       ...username,
       value: e.target.value,
-      error: false,
+      error,
       helperText,
       color
     }
@@ -27,11 +27,11 @@ function LoginComponent () {
   }
 
   const passwordHandler = (e) => {
-    const {helperText, color } = Validate.password(e.target.value)
+    const {helperText, error, color } = Validate.password(e.target.value)
     const newPassword = {
       ...password,
       value: e.target.value,
-      error: false,
+      error,
       helperText,
       color
     }
