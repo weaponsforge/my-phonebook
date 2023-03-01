@@ -12,20 +12,31 @@ import { Validate } from '@/lib/utils/textValidation'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
-  const [username, setUsername] = useState({ error:true, helperText:" ",value:"", color:"text" })
+  const [username, setUsername] = useState({ error:false, helperText:" ",value:"", color:"text" })
+  const [password, setPassword] = useState({ error:false, helperText:" ",value:"", color:"text" })
 
   const usernameHandler = (e) => {
     const {helperText, error, color} = Validate.email(e.target.value)
-    
     const newUsername = {
       ...username,
       value: e.target.value,
-      error,
+      error: false,
       helperText,
       color
     }
-
     setUsername(newUsername)
+  }
+
+  const passwordHandler = (e) => {
+    const {helperText, error, color } = Validate.password(e.target.value)
+    const newPassword = {
+      ...password,
+      value: e.target.value,
+      error: false,
+      helperText,
+      color
+    }
+    setPassword(newPassword)
   }
   useEffect(()=>{
     setTimeout(async()=>{
@@ -46,7 +57,7 @@ function LoginComponent () {
         flexWrap: 'wrap-reverse'
       }}>
         <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', paddingLeft: '20px',paddingRight:'20px', maxWidth: '50vw' }}>
-          `{joke ? joke.joke : '. . .'}`
+          `{joke && joke.joke}`
         </Typography>
         <Paper elevation={0} sx={{
           display: 'flex',
@@ -78,8 +89,11 @@ function LoginComponent () {
             type="password"
             fullwidth="true"
             required="true"
-            color="text"
-            helperText=" "
+            value={password.value}
+            error={password.error}
+            color={password.color}
+            helperText={password.helperText}
+            onChange={passwordHandler}
           />
           <Button variant="contained" sx={{
             fontWeight:'bold',
