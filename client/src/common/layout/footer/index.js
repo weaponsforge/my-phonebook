@@ -1,12 +1,12 @@
-import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 
 import styles from './styles'
 
 function Footer () {
   return (
-    <Box sx={styles.footer} component='footer'>
-      My Phonebook @2023
-    </Box>
+    <Paper elevation={10} sx={styles.footer} component='footer'>
+      myPhonebook @2023
+    </Paper>
   )
 }
 

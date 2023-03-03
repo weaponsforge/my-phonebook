@@ -4,7 +4,11 @@ const styles = {
     minHeight: (theme) => theme.spacing(4),
     padding: (theme) => theme.spacing(2),
     textAlign: 'center',
-    backgroundColor: (theme) => theme.palette.primary.light
+    marginTop: 'auto',
+    zIndex: 100,
+    background: 'inherit',
+    backdropFilter: 'blur(5px)',
+    fontWeight: 'bold',
   }
 }
 

@@ -1,78 +1,122 @@
 // import PropTypes from 'prop-types'
-// import Image from "next/image";
 import Typography from '@mui/material/Typography'
 import Page from '@/common/layout/page'
-import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import Link from '@mui/material/Link'
+import { useEffect, useState } from 'react'
+import { getRandomJoke } from '@/lib/services/random'
+import { Validate } from '@/lib/utils/textValidation'
+
 function LoginComponent () {
+  const [joke, setJoke] = useState()
+  const [username, setUsername] = useState({ error:false, helperText:' ',value:'', color:'text' })
+  const [password, setPassword] = useState({ error:false, helperText:' ',value:'', color:'text' })
+
+  const usernameHandler = (e) => {
+    const {helperText, color} = Validate.email(e.target.value)
+    const newUsername = {
+      ...username,
+      value: e.target.value,
+      error: false,
+      helperText,
+      color
+    }
+    setUsername(newUsername)
+  }
+
+  const passwordHandler = (e) => {
+    const {helperText, color } = Validate.password(e.target.value)
+    const newPassword = {
+      ...password,
+      value: e.target.value,
+      error: false,
+      helperText,
+      color
+    }
+    setPassword(newPassword)
+  }
+  useEffect(()=>{
+    setTimeout(async()=>{
+      const randomJoke = await getRandomJoke()
+      setJoke(randomJoke)
+    })
+  },[])
   return (
     <Page>
-      <Box sx={{
-        outline: '3px solid green',
+      <Paper sx={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '20px',
+        gap: '10px',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: `url(${process.env.NEXT_PUBLIC_MEDIA_BG1 || '/loginBgResized.jpg'})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed',
-        backgroundOrigin: 'border-box',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        position: 'relative',
-        width: '100%',
-        height: '80vh',
-        overflow: 'hidden',
-        boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 10px 0px inset',
-        borderRadius: '20px',
-        marginBottom: '-50px',
+        flex:1,
+        background: 'inherit',
+        flexWrap: 'wrap-reverse'
       }}>
-        <Paper elevation={20} sx={{
-          margin: '20px',
-          flex: 10,
-          borderRadius: '30px',
-          position: 'relative',
-          background: 'inherit',
+        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', paddingLeft: '20px',paddingRight:'20px', maxWidth: '50vw' }}>
+          `{joke && joke.joke}`
+        </Typography>
+        <Paper elevation={0} sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
           minWidth: '300px',
-          maxWidth: '500px',
-          border: '1px solid green'
+          width: '500px',
+          borderRadius: '30px',
+          padding: '40px',
+          background: 'inherit',
         }}>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            borderRadius: '30px',
-            gap: '13px',
-            padding: '40px',
-            position: 'relative',
-            backdropFilter: 'blur(3px)',
-            zIndex: 9,
-            minWidth: '300px',
-            maxWidth: '500px'
-          }}>
-            <Typography variant="h5" sx={{
-              fontWeight: 'bold',
-              textDecoration: 'underline',
-              color:'black',
-            }}>
-              Login :
+          <TextField
+            label="Username"
+            id="username"
+            size="small"
+            type="text"
+            fullwidth="true"
+            required={true}
+            color={username.color}
+            helperText={username.helperText}
+            value={username.value}
+            error={username.error}
+            onChange={usernameHandler}
+          />
+          <TextField
+            label="Password"
+            id="userPassword"
+            size="small"
+            type="password"
+            fullwidth="true"
+            required={true}
+            value={password.value}
+            error={password.error}
+            color={password.color}
+            helperText={password.helperText}
+            onChange={passwordHandler}
+          />
+          <Button 
+            variant="contained" 
+            sx={{
+              fontWeight:'bold',
+              color: (theme)=>theme.palette.primary.contrastText
+            }}
+          >
+            LOGIN
+          </Button>
+          <Link href="/recoverPassword">
+            <Typography
+              sx={{
+                fontSize: '12px',
+                textAlign: 'center',
+                marginTop: '-5px',
+                color: (theme)=>theme.palette.text.primary,
+              }}
+            >
+              Forgot your password ?
             </Typography>
-            <TextField
-              label="email"
-              id="email"
-              size="small"
-            />
-            <TextField
-              label="password"
-              id="password"
-              size="small"
-            />
-            <Button variant="contained">LOGIN</Button>
-          </Box>
+          </Link>
         </Paper>
-      </Box>
+      </Paper>
     </Page>
   )
 }
