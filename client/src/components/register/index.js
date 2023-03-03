@@ -2,13 +2,11 @@ import Page from '@/common/layout/page'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
-import CheckIcon from '@mui/icons-material/Check';
-import theme from '@/lib/mui/theme'
+import CheckIcon from '@mui/icons-material/Check'
 
 const RegisterComponent = () => {
   const [joke, setJoke] = useState()
@@ -17,10 +15,10 @@ const RegisterComponent = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState({ error:true, helperText:' ',value:'', color:'text' })
 
   useEffect(()=>{
-    setTimeout(async()=>{
+    (async() => {
       const randomJoke = await getRandomJoke()
       setJoke(randomJoke)
-    })
+    })()
   },[])
 
   const usernameHandler = (e) => {
@@ -59,7 +57,7 @@ const RegisterComponent = () => {
     setPasswordConfirmation(newPasswordConfirmation)
   }
 
-  const registerHandler = (e) => {
+  const registerHandler = () => {
     // only proceed when no error
     const allFieldAreValid = !username.error && !password.error && !passwordConfirmation.error
     if (!allFieldAreValid) return
@@ -69,7 +67,6 @@ const RegisterComponent = () => {
       username:username.value,
       password:password.value
     }
-
 
   }
   return (
@@ -84,7 +81,13 @@ const RegisterComponent = () => {
         background: 'inherit',
         flexWrap: 'wrap-reverse'
       }}>
-        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', paddingLeft: '20px',paddingRight:'20px', maxWidth: '50vw' }}>
+        <Typography variant="h8" component="h3" gutterBottom sx={{
+          color:(theme)=>theme.palette.text.disabled, 
+          textAlign: 'center', 
+          paddingLeft: '20px',
+          paddingRight:'20px', 
+          width: '50vw' 
+        }}>
                     `{joke && joke.joke}`
         </Typography>
         <Paper elevation={0} sx={{
@@ -95,7 +98,7 @@ const RegisterComponent = () => {
             "password icon2"
             "passwordConfirmation icon3"
             "register ."`,
-          alignItems:"stretch",
+          alignItems:'stretch',
           gap: '10px',
           minWidth: '300px',
           width: '500px',
@@ -103,7 +106,6 @@ const RegisterComponent = () => {
           padding: '40px',
           background: 'inherit',
         }}>
-          {/* registration form goes here */}
           <TextField
             sx={{ gridArea:'username'}}
             label="Username (email)"
@@ -119,7 +121,7 @@ const RegisterComponent = () => {
             onInput={usernameHandler}
           />
           {!username.error &&
-            <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon1" }}/>
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
           }
           <TextField
             sx={{ gridArea:'password'}}
@@ -136,10 +138,10 @@ const RegisterComponent = () => {
             onInput={passwordHandler}
           />
           {!password.error &&
-            <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon2" }}/>
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
           <TextField
-          sx={{ gridArea:'passwordConfirmation'}}
+            sx={{ gridArea:'passwordConfirmation'}}
             label="Password confirmation"
             id="userPasswordConfirmation"
             size="small"
@@ -153,12 +155,12 @@ const RegisterComponent = () => {
             onInput={passwordConfirmationHandler}
           />
           {!passwordConfirmation.error &&
-            <CheckIcon fontSize="large" color="success" sx={{ gridArea:"icon3" }}/>
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon3' }}/>
           }
           <Button 
             variant="contained" 
             sx={{
-              gridArea:"register",
+              gridArea:'register',
               fontWeight:'bold',
               color: (theme)=>theme.palette.primary.contrastText
             }}

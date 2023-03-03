@@ -4,7 +4,7 @@ import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect } from 'react'
 import { useBgColor } from '@/lib/hooks/useBgColor'
 
 const Background = () => {
@@ -13,7 +13,7 @@ const Background = () => {
 
   useEffect(()=>{
     animateBgColor()
-  },[])
+  },[animateBgColor])
 
   return (
     <Box sx={{
@@ -76,11 +76,9 @@ const Background = () => {
 }
 
 function Page ({ children }) {
-  console.log('reloaded')
   return (
     <>
       <Background/>
-      
       <Box sx={{
         width: '100%', 
         minHeight: '100vh',

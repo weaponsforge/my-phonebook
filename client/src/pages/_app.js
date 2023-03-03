@@ -10,10 +10,9 @@ import { store } from '@/store/store'
 
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
-import { createTheme } from '@mui/material/styles'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 import { lightTheme, darkTheme } from '@/lib/mui/theme'
-console.log(darkTheme)
+
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
 // Client-side cache, shared for the whole session of the user in the browser.

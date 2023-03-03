@@ -1,18 +1,23 @@
 // import PropTypes from 'prop-types'
-import Typography from '@mui/material/Typography'
+import { useEffect, useState } from 'react'
+
+// common
 import Page from '@/common/layout/page'
-import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
+
+// lib
+import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import { useEffect, useState } from 'react'
+import CheckIcon from '@mui/icons-material/Check'
+import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
-  const [username, setUsername] = useState({ error:false, helperText:' ',value:'', color:'text' })
-  const [password, setPassword] = useState({ error:false, helperText:' ',value:'', color:'text' })
+  const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
+  const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
 
   const usernameHandler = (e) => {
     const {helperText, error, color} = Validate.email(e.target.value)
@@ -38,10 +43,10 @@ function LoginComponent () {
     setPassword(newPassword)
   }
   useEffect(()=>{
-    setTimeout(async()=>{
+    (async () =>{
       const randomJoke = await getRandomJoke()
       setJoke(randomJoke)
-    })
+    })()
   },[])
   return (
     <Page>
@@ -55,12 +60,23 @@ function LoginComponent () {
         background: 'inherit',
         flexWrap: 'wrap-reverse'
       }}>
-        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled, textAlign: 'center', paddingLeft: '20px',paddingRight:'20px', maxWidth: '50vw' }}>
+        <Typography variant="h8" component="h3" gutterBottom sx={{
+          color:(theme)=>theme.palette.text.disabled, 
+          textAlign: 'center', 
+          paddingLeft: '20px',
+          paddingRight:'20px', 
+          width: '50vw' }}>
           `{joke && joke.joke}`
         </Typography>
         <Paper elevation={0} sx={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: 'grid',
+          gridTemplateColumns: '1fr 20px',
+          gridTemplateAreas:
+            `"username icon1"
+            "password icon2"
+            "login ."
+            "forgot ."`,
+          alignItems:'stretch',
           gap: '10px',
           minWidth: '300px',
           width: '500px',
@@ -80,7 +96,11 @@ function LoginComponent () {
             value={username.value}
             error={username.error}
             onChange={usernameHandler}
+            sx={{ gridArea:'username'}}
           />
+          {!username.error &&
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
+          }
           <TextField
             label="Password"
             id="userPassword"
@@ -93,17 +113,22 @@ function LoginComponent () {
             color={password.color}
             helperText={password.helperText}
             onChange={passwordHandler}
+            sx={{ gridArea:'password'}}
           />
+          {!password.error &&
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
+          }
           <Button 
             variant="contained" 
             sx={{
               fontWeight:'bold',
-              color: (theme)=>theme.palette.primary.contrastText
+              color: (theme)=>theme.palette.primary.contrastText,
+              gridArea: 'login'
             }}
           >
             LOGIN
           </Button>
-          <Link href="/recoverPassword">
+          <Link href="/recoverPassword" sx={{gridArea: 'forgot'}}>
             <Typography
               sx={{
                 fontSize: '12px',
