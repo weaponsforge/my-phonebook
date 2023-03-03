@@ -9,8 +9,7 @@ const nextConfig = {
   },
   eslint: {
     dirs: ['src']
-  },
-  distDir: 'build',
+  }
 }
 
 module.exports = nextConfig
