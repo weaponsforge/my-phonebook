@@ -1,6 +1,9 @@
 import { Roboto } from 'next/font/google'
+import localFont from 'next/font/local'
 import { createTheme } from '@mui/material/styles'
 import { red } from '@mui/material/colors'
+
+export const Avalon = localFont({ src:'./fonts/FontsFree-Net-Avalon.ttf'})
 
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10

@@ -63,10 +63,10 @@ const RegisterComponent = () => {
     if (!allFieldAreValid) return
 
     // gather all data to dispatch
-    const request = {
-      username:username.value,
-      password:password.value
-    }
+    // const request = {
+    //   username:username.value,
+    //   password:password.value
+    // }
 
   }
   return (

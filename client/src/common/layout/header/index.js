@@ -12,12 +12,13 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import Link from 'next/link'
 
-// Icons
+// MUI
 import LoginIcon from '@mui/icons-material/Login'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
+import { Avalon } from '@/lib/mui/theme'
 
 const pages = ['about']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
@@ -52,9 +53,10 @@ function Header() {
       backdropFilter: 'blur(5px)',
     }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters >
           <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
             <Typography
+              className={Avalon.className}
               variant="h6"
               noWrap
               sx={{
@@ -62,7 +64,7 @@ function Header() {
                 display: { xs: 'none', md: 'flex' },
                 fontFamily: 'monospace',
                 fontWeight: 700,
-                letterSpacing: '.3rem',
+                letterSpacing: '.1rem',
                 textDecoration: 'none',
                 color: (theme)=>theme.palette.text.primary,
               }}
@@ -71,7 +73,7 @@ function Header() {
             </Typography>
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{  display: { xs: 'flex', md: 'none' }}}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -107,25 +109,24 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
+          <Link href='/' style={{ textDecoration: 'none', display: 'flex', flex:1, justifyContent:'center' }}>
             <Typography
+              className={Avalon.className}
               variant="h5"
               noWrap
               sx={{
-                mr: 2,
                 display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
                 fontWeight: 700,
-                letterSpacing: '.2rem',
+                letterSpacing: '.1rem',
                 textDecoration: 'none',
+                marginTop: '5px',
                 color: (theme)=>theme.palette.text.primary,
               }}
             >
-              myPhonebook
+              myPhonebooks
             </Typography>
           </Link>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Link key={page} href={`/${page}`} style={{ textDecoration:'none'}}>
                 <Button
@@ -140,7 +141,7 @@ function Header() {
 
           {isLoggedIn 
             ?
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ flex: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* will use google profile picture from firebase ? */}
