@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react'
 
 let subscribers = []
-let bgColor = Math.floor(Math.random()*255)
+let bgColor = new Date().getHours()*10
 let interval
 
 export function useBgColor() {
@@ -14,7 +14,6 @@ function animateBgColor() {
   interval = setInterval(()=>{
     bgColor = (bgColor + 1)% 255
     emitChange()
-    console.log(bgColor)
   },1000)
 }
 

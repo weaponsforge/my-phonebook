@@ -12,57 +12,8 @@ import { store } from '@/store/store'
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 import { createTheme } from '@mui/material/styles'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
-
-const themeOptionsLight = {
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#e6d5b3',
-    },
-    secondary: {
-      main: '#d6a3e0',
-    },
-    error: {
-      main: '#d32f2f',
-    },
-    warning: {
-      main: '#ed6c02',
-    },
-    info: {
-      main: '#0288d1',
-    },
-    success: {
-      main: '#2e7d32',
-    },
-  },
-}
-
-const themeOptionsDark = {
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#e0c2a3',
-    },
-    secondary: {
-      main: '#d6a3e0',
-    },
-    error: {
-      main: '#e0a3a3',
-    },
-    warning: {
-      main: '#e0bea3',
-    },
-    info: {
-      main: '#a3c9e0',
-    },
-    success: {
-      main: '#a3e0aa',
-    },
-  },
-}
-const lightTheme = createTheme(themeOptionsLight)
-const darkTheme = createTheme(themeOptionsDark)
-
+import { lightTheme, darkTheme } from '@/lib/mui/theme'
+console.log(darkTheme)
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
 // Client-side cache, shared for the whole session of the user in the browser.
