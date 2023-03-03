@@ -1,4 +1,10 @@
+// REACT
 import { useState } from 'react'
+
+// NEXT
+import Link from 'next/link'
+
+// MUI
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -10,36 +16,41 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-import Link from 'next/link'
-
-// MUI
 import LoginIcon from '@mui/icons-material/Login'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MenuIcon from '@mui/icons-material/Menu'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
-import { Avalon } from '@/lib/mui/theme'
 
+// LIB
+import { Avalon } from '@/lib/mui/theme'
+import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
+
+// CSS
+// import styles from './styles'
+
+// VARIABLES
 const pages = ['about']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
+
+
 function Header() {
+  // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isLoggedIn] = useState(false)
   const [activeTheme, setActiveTheme] = useActiveTheme()
 
+  // HANDLERS
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
   }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget)
   }
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
