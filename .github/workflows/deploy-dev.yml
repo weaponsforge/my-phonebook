@@ -21,6 +21,7 @@ jobs:
       NEXT_PUBLIC_FIREBASE_WEB_APP_ID: ${{ secrets.FIREBASE_WEB_APP_ID_DEV }}
       NEXT_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID: ${{ secrets.FIREBASE_WEB_MEASUREMENT_ID_DEV }}
       NEXT_PUBLIC_MEDIA_BG1: ${{ secrets.NEXT_PUBLIC_MEDIA_BG1 }}
+      NEXT_PUBLIC_RANDOM_JOKE_API: ${{ secrets.NEXT_PUBLIC_RANDOM_JOKE_API }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3

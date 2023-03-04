@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
-import theme, { roboto } from '@/lib/mui/theme'
+import { roboto, lightTheme } from '@/lib/mui/theme'
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
@@ -13,7 +13,7 @@ export default function MyDocument(props) {
     <Html lang="en" className={roboto.className}>
       <Head>
         {/* PWA primary color */}
-        <meta name="theme-color" content={theme.palette.primary.main} />
+        <meta name="theme-color" content={lightTheme.palette.primary.main} />
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
