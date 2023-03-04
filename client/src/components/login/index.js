@@ -116,7 +116,7 @@ function LoginComponent () {
             sx={{ gridArea:'password'}}
           />
           {!password.error &&
-            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
+            <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
           <Button 
             variant="contained" 
