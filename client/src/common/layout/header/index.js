@@ -255,7 +255,7 @@ function Header() {
           </Link>
           <Button sx={{
             color: 'black',
-            display: { xs: 'flex', md: 'none' },
+            display: 'flex',
             justifyContent:'center',
             alignItems:'center'
           }} onClick={()=>{
@@ -265,9 +265,7 @@ function Header() {
               ?
               <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :
-              <DarkModeIcon 
-              
-              />
+              <DarkModeIcon />
             }
           </Button>
         </Toolbar>
