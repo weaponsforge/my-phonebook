@@ -135,7 +135,7 @@ function Header() {
                 color: (theme)=>theme.palette.text.primary,
               }}
             >
-              myPhonebooks
+              myPhonebook
             </Typography>
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -215,53 +215,58 @@ function Header() {
               </Link>
             </Box>
           }
-          <Button
-            sx={{ 
-              my: 2,
-              color: 'black',
-              display: { xs: 'flex', md: 'none' },
-            }}
-          >
-            {activeTheme === 'dark'
-              ?
-              <HowToRegIcon style={{
-                filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
-              }}/>
-              :
-              <HowToRegIcon />
-            }
-          </Button>
-          <Button
-            sx={{ 
-              my: 2,
-              color: 'black',
-              display: { xs: 'flex', md: 'none' },
-            }}
-          >
-            {activeTheme === 'dark'
-              ?
-              <LoginIcon style={{
-                filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
-              }}/>
-              :
-              <LoginIcon />
-            }
-          </Button>
+          <Link href='/register' style={{ textDecoration: 'none' }}>
+            <Button
+              sx={{ 
+                color: 'black',
+                display: { xs: 'flex', md: 'none' },
+                justifyContent:'center',
+                alignItems:'center'
+              }}
+            >
+              {activeTheme === 'dark'
+                ?
+                <HowToRegIcon style={{
+                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                }}/>
+                :
+                <HowToRegIcon />
+              }
+            </Button>
+          </Link>
+          <Link href='/login' style={{ textDecoration: 'none' }}>
+            <Button
+              sx={{ 
+                color: 'black',
+                display: { xs: 'flex', md: 'none' },
+                justifyContent:'center',
+                alignItems:'center'
+              }}
+            >
+              {activeTheme === 'dark'
+                ?
+                <LoginIcon style={{
+                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
+                }}/>
+                :
+                <LoginIcon />
+              }
+            </Button>
+          </Link>
           <Button sx={{
             color: 'black',
             display: { xs: 'flex', md: 'none' },
-            border: '1px solid black',
-            padding:0,
-            margin:0,
+            justifyContent:'center',
+            alignItems:'center'
           }} onClick={()=>{
             setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
           }}>
             {activeTheme === 'dark' 
               ?
-              <LightModeIcon sx={{ marginLeft: '10px', verticalAlign: 'middle', width: '24px', padding:'0', margin:'0', border: '1px solid black' }} style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
+              <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :
               <DarkModeIcon 
-                sx={{ marginLeft:'10px', verticalAlign: 'middle'}} 
+              
               />
             }
           </Button>
