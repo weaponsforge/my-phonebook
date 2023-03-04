@@ -1,5 +1,7 @@
+// MUI
 import Paper from '@mui/material/Paper'
 
+// CSS
 import styles from './styles'
 
 function Footer () {
