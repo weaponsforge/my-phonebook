@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node src/index",
     "dev": "nodemon src/index.js",
+    "docs": "apidoc -i src/controllers/ -o public/docs/",
     "lint": "eslint src --ignore-path .gitignore",
     "lint:fix": "eslint --ignore-path .gitignore --fix src"
   },
@@ -22,6 +23,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "apidoc": "^0.54.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

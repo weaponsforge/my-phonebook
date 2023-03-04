@@ -80,4 +80,8 @@ Check lint errors.
 
 Fix lint errors.
 
+### `npm run docs`
+
+Generate the server API documentation. Output is available on "`/server/public/docs`".
+
 20230225

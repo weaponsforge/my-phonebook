@@ -1,0 +1,17 @@
+{
+  "name": "My Phonebook REST API",
+  "version": "1.0.0",
+  "description": "REST API Documentation",
+  "title": "My Phonebook REST API",
+  "url": "http://localhost:3001/api",
+  "sampleUrl": "http://localhost:3001/api",
+  "header": {
+    "title": "My Phonebook REST API",
+    "filename": "public/header.md"
+  },
+  "template": {
+    "withCompare": false,
+    "withFilter": false,
+    "showRequiredLabels": true
+  }
+}
