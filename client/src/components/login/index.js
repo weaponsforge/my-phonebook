@@ -128,7 +128,7 @@ function LoginComponent () {
           >
             LOGIN
           </Button>
-          <Link href="/recoverPassword" sx={{gridArea: 'forgot'}}>
+          <Link href="/forgotPassword" sx={{gridArea: 'forgot'}}>
             <Typography
               sx={{
                 fontSize: '12px',
