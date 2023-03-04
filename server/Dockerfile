@@ -18,6 +18,7 @@ CMD ["node", "src/index.js"]
 # DEVELOPMENT PROFILE TARGET
 FROM base as development
 ENV NODE_ENV development
+RUN npm install -g vercel@28.16.7
 RUN npm install && npm cache clean --force
 COPY . .
 USER server
