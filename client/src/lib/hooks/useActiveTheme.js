@@ -7,7 +7,7 @@ export function useActiveTheme() {
   return [activeTheme, setActiveTheme]
 }
 
-export function setActiveTheme(arg) {
+function setActiveTheme(arg) {
   localStorage.setItem('myPhonebookTheme', arg)
   emitChange()
 }

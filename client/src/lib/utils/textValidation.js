@@ -6,7 +6,7 @@ export class Validate {
     const hasDomain = this.#hasDomain(text)
 
     const error = (!hasEmailPrefix || !hasAtSymbol || !hasDomain)
-    const color = error ? 'text' : 'success'
+    const color = error ? 'error' : 'success'
     const helperText = this.#composeEmailHelperText(error, hasEmailPrefix, hasAtSymbol, hasDomain)
 
     return {
@@ -27,7 +27,24 @@ export class Validate {
 
     const error = (!hasTheRightLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSymbol || hasProhibitedCharacters)
     const helperText = this.#composePasswordHelperText(error, hasTheRightLength, hasUppercase, hasLowercase, hasNumber, hasSymbol, hasProhibitedCharacters)
-    const color = error ? 'text' : 'success'
+    const color = error ? 'error' : 'success'
+    return {
+      error,
+      helperText,
+      color
+    }
+  }
+
+  static passwordConfirmation = (password, retypedPassword) => {
+    // string => obj
+    if (password.error) return {
+      error:true,
+      helperText:'Check : invalid password',
+      color:'error'
+    }
+    const error = password.value !== retypedPassword
+    const helperText = error ? 'Check : password missmatch': 'Valid'
+    const color = error ? 'error' : 'success'
     return {
       error,
       helperText,
