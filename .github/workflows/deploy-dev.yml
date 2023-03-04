@@ -52,6 +52,22 @@ jobs:
             client/firebase.json
           retention-days: 3
 
+  lint-server:
+    name: Lint Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Use NodeJS v18.14.2
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.14.2
+      - name: Install Dependencies and lint
+        run: |
+          cd server
+          npm install
+          npm run lint
+
   deploy-client:
     name: Deploy Client to Firebase Hosting
     needs: lint-export-client
@@ -67,3 +83,37 @@ jobs:
           args: deploy --only hosting:dev
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+  deploy-server:
+    name: Deploy Server to Vercel
+    needs: lint-server
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID_DEV }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DEV }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Use NodeJS v18.14.2
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.14.2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@28.16.7
+      - name: Pull Vercel Environment Information
+        run: |
+          cd server
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: |
+          cd server
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: |
+          cd server
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Post Deployment Clean-up
+        run: |
+          cd server
+          rm -r -f .vercel
