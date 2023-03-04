@@ -20,6 +20,7 @@ import LoginIcon from '@mui/icons-material/Login'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MenuIcon from '@mui/icons-material/Menu'
+import HowToRegIcon from '@mui/icons-material/HowToReg'
 
 // LIB
 import { Avalon } from '@/lib/mui/theme'
@@ -223,6 +224,22 @@ function Header() {
           >
             {activeTheme === 'dark'
               ?
+              <HowToRegIcon style={{
+                filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+              }}/>
+              :
+              <HowToRegIcon />
+            }
+          </Button>
+          <Button
+            sx={{ 
+              my: 2,
+              color: 'black',
+              display: { xs: 'flex', md: 'none' },
+            }}
+          >
+            {activeTheme === 'dark'
+              ?
               <LoginIcon style={{
                 filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
               }}/>
@@ -230,16 +247,24 @@ function Header() {
               <LoginIcon />
             }
           </Button>
-          <Box onClick={()=>{
+          <Button sx={{
+            color: 'black',
+            display: { xs: 'flex', md: 'none' },
+            border: '1px solid black',
+            padding:0,
+            margin:0,
+          }} onClick={()=>{
             setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
           }}>
             {activeTheme === 'dark' 
               ?
-              <LightModeIcon sx={{ marginLeft: '10px', verticalAlign: 'middle' }}/>
+              <LightModeIcon sx={{ marginLeft: '10px', verticalAlign: 'middle', width: '24px', padding:'0', margin:'0', border: '1px solid black' }} style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :
-              <DarkModeIcon sx={{ marginLeft:'10px', verticalAlign: 'middle'}}/>
+              <DarkModeIcon 
+                sx={{ marginLeft:'10px', verticalAlign: 'middle'}} 
+              />
             }
-          </Box>
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>
