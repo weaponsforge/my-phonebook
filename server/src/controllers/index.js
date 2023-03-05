@@ -1,6 +1,10 @@
 const { Router } = require('express')
 const router = new Router()
 
+// Middleware
+const { validToken } = require('../middleware/validtoken')
+
+// Controllers
 const Email = require('./email')
 
 /**
@@ -32,6 +36,6 @@ const Email = require('./email')
  *   }
  * }
  */
-router.post('/email', Email.sendEmail)
+router.post('/email', validToken, Email.sendEmail)
 
 module.exports = router
