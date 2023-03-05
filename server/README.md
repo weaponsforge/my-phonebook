@@ -87,4 +87,8 @@ Fix lint errors.
 
 Generate the server API documentation. Output is available on "`/server/public/docs`".
 
+### `npm run docs:vercel`
+
+Generate the server API documentation for vercel build. Output is available on "`/server/docs`".
+
 20230225
