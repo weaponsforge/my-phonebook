@@ -117,6 +117,7 @@ jobs:
       - name: Build Project Artifacts
         run: |
           cd server
+          npm run docs
           vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: |
