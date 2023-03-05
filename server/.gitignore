@@ -1,5 +1,6 @@
 node_modules/
 public/docs/
+docs/
 .env
 *.zip
 .vercel

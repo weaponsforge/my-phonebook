@@ -41,6 +41,8 @@ The following dependecies are used for this project. Feel free to experiment usi
    | REDIRECT_URI         | Redirect URI for the Google OAuth2 exchange.<br>Default value is https://developers.google.com/oauthplayground                                                                                                                                                                                     |
    | FIREBASE_SERVICE_ACC | The project's private key file contents, condensed into one line and minus all whitespace characters.<br><br>The service account JSON file is generated from the Firebase project's **Project Settings** page, on **Project Settings** -> **Service accounts** -> **Generate new private key**     |
    | FIREBASE_PRIVATE_KEY | The `private_key` entry from the service account JSON file.<br> <blockquote> **NOTE:** Experiment wrapping this value in double-quotes on WINDOWS OS localhost. Some systems may or may not require the double-quotes (i.e., Ubuntu).</blockquote>                                                 |
+   | FIREBASE_WEB_API_KEY |                                                                                                                                                                                                                                                                                                    |
+   | CLIENT_WEBSITE_URL   |                                                                                                                                                                                                                                                                                                    |
 
 4. Run the localhost express web server for development:<br>
 `npm run dev`

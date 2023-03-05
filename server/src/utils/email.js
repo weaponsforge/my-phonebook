@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
 const OAuth2 = google.auth.OAuth2
+const ServerError = require('./error')
 
 const oauth2Client = new OAuth2(
   process.env.CLIENT_ID,
@@ -35,15 +36,17 @@ const _sendemail = async (data) => {
       }
     })
 
-    transporter.sendMail(newData, (err, data) => {
-      if (err) {
-        throw new Error(err.message)
-      } else {
-        return 'Email sent!'
-      }
+    return new Promise((resolve, reject) => {
+      transporter.sendMail(newData, (err, data) => {
+        if (err) {
+          reject(new ServerError(err.message, ServerError.httpErrorCodes._502))
+        } else {
+          resolve('Email sent!')
+        }
+      })
     })
   } catch (err) {
-    throw new Error(err.message)
+    throw new ServerError(err.message)
   }
 }
 
