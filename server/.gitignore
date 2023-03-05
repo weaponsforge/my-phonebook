@@ -1,5 +1,7 @@
 node_modules/
 public/docs/
+public/assets/
+public/index.html
 docs/
 .env
 *.zip

@@ -11,7 +11,7 @@
     "start": "node src/index",
     "dev": "nodemon src/index.js",
     "docs": "apidoc -i src/controllers/ -o public/docs/",
-    "docs:vercel": "apidoc -i src/controllers/ -o docs/",
+    "docs:vercel": "apidoc -i src/controllers/ -o public/",
     "lint": "eslint src --ignore-path .gitignore",
     "lint:fix": "eslint --ignore-path .gitignore --fix src"
   },
