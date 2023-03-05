@@ -7,7 +7,8 @@ module.exports.sendEmail = async (req, res, next) => {
 
   // TO-DO: Use a detailed server-side validation using joi
   if (to === undefined || from === undefined || subject === undefined || text === undefined) {
-    return res.status(400).send('Missing parameter/s')
+    return res.status(ServerError.httpErrorCodes._400).send(
+      'Missing parameter/s', ServerError.httpErrorCodes._400)
   }
 
   try {

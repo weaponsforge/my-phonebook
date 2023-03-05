@@ -26,9 +26,7 @@ const verifyEmail = async (actionCode) => {
   } catch (err) {
     const { error } = err?.response?.data ?? null
     const errorMsg = error ? error.message : err.message
-    throw new ServerError(errorMsg, {
-      cause: { code: ServerError.httpErrorCodes._502 }
-    })
+    throw new ServerError(errorMsg, ServerError.httpErrorCodes._502)
   }
 
   if (oobResult) {
