@@ -55,16 +55,27 @@ router.post('/email', validToken, Email.sendEmail)
  *
  * @apiSuccess {Object} User Firebase Auth record of a user, with custom claims included..
  *
- * @apiExample {js} Example usage:
+ * @apiExample {js} Example usage: send email verification
  * // Send an email verification to a user
- * http://localhost:3001/api/account/action?email=someone@gmail.com&mode=send_verification
+ * const obj = {
+ *   data: {
+ *     mode: 'send_verification'
+ *     email: 'someone@gmail.com'
+ *   }
+ * }
  *
- * // Click the confirm registration link sent thru email
- * http://localhost:3001/api/account/action?verifyEmail&actionCode=GJLPOCYRFJb3eV88
+ * await axios.post(ACTION_HANDLER_URL, data)
  *
- * // TO-DO: Reset password
+ * @apiExample {js} Example usage: verify email
+ * // Verify a user's email (URL registration link with actionCode is sent sent thru email)
+ * const obj = {
+ *   data: {
+ *     mode: 'verifyEmail'
+ *     actionCode: 'GJLPOCYRFJb3eV88...'
+ *   }
+ * }
  *
- * // TO-DO: Recover email
+ * await axios.post(ACTION_HANDLER_URL, data)
  *
  * @apiSuccess {String} uid Unique Firebase user ID
  * @apiSuccess {String} email Firebase user email
@@ -77,9 +88,9 @@ router.post('/email', validToken, Email.sendEmail)
  * @apiSuccess {Object} customClaims Custom items for identifying a User, set using firebase-admin
  * @apiSuccess {Date} tokensValidAfterTime Max date when a signed-in user's tokens are valid.
  * @apiSuccess {Object} providerData Short user information summary
- * @apiSuccess {Object} providerData.uid uid Unique Firebase user ID
- * @apiSuccess {Object} providerData.email email Firebase user email
- * @apiSuccess {Object} providerData.providerId `password` Sign-in option
+ * @apiSuccess {String} providerData.uid uid Unique Firebase user ID
+ * @apiSuccess {String} providerData.email email Firebase user email
+ * @apiSuccess {String} providerData.providerId `password` Sign-in option
  */
 router.post('/account/action', Account.manageAccount)
 
