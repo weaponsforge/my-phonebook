@@ -14,7 +14,6 @@ const sendEmailVerificationLink = async (email) => {
   try {
     const user = await getAuth().getUserByEmail(email)
 
-
     if (user.emailVerified) {
       throw new ServerError('User is already registered.',
         ServerError.httpErrorCodes._405)
