@@ -13,7 +13,7 @@ const sendEmailVerificationLink = async (email) => {
   // Check if the email is registered
   try {
     const user = await getAuth().getUserByEmail(email)
-    console.log(user)
+
 
     if (user.emailVerified) {
       throw new ServerError('User is already registered.',
@@ -33,7 +33,7 @@ const sendEmailVerificationLink = async (email) => {
     // Send the custom email action "verifyEmail" handler URL
     const urlParams = new URLSearchParams(link)
     const oobCode = urlParams.get('oobCode')
-    const verifyLink = `${process.env.CLIENT_WEBSITE_URL}/account/action?mode=${ACCOUNT_ACTION.VERIFY_EMAIL}&actionCode=${oobCode}`
+    const verifyLink = `${process.env.CLIENT_WEBSITE_URL}/account?mode=${ACCOUNT_ACTION.VERIFY_EMAIL}&actionCode=${oobCode}`
 
     return await _sendemail({
       to: email,

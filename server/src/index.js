@@ -32,7 +32,7 @@ app.get('*', (req, res) => {
 })
 
 app.use((err, req, res, next) => {
-  return res.status(500).send(err.message)
+  return res.status(err?.errorCode ?? 500).send(err.message)
 })
 
 if (process.env.DEPLOYMENT_PLATFORM !== 'vercel') {
