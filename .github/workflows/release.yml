@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BASE_PATH: ${{ secrets.NEXT_PUBLIC_BASE_PATH }}
+      NEXT_PUBLIC_BASE_API_URL: ${{ secrets.NEXT_PUBLIC_BASE_API_URL_PROD }}
       BASE_API_URL: ${{ secrets.BASE_API_URL }}
       NEXT_PUBLIC_FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY_PROD }}
       NEXT_PUBLIC_FIREBASE_WEB_AUTHDOMAIN: ${{ secrets.FIREBASE_WEB_AUTHDOMAIN_PROD }}
