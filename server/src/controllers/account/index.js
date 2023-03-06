@@ -5,7 +5,7 @@ const ServerError = require('../../utils/error')
 // Server-side custom Firebase Account management handlers for Email/Password sign-in
 // Inserts and detects an "account_level" custom claims on the Firebase Auth user.
 const manageAccount = async (req, res, next) => {
-  const { email, mode, actionCode } = req.query
+  const { email, mode, actionCode } = req.body
 
   // TO-DO: Use a detailed server-side validation using joi
   if (!mode) {

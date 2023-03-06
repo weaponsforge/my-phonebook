@@ -1,0 +1,17 @@
+[
+  {
+    "mode": "verifyEmail",
+    "message": "Please wait while we verify your email.",
+    "success": "Success! Email verified."
+  },
+  {
+    "mode": "resetPassword",
+    "message": "Please wait while we reset your password.",
+    "success": "Success! Password changed."
+  },
+  {
+    "mode": "recoverEmail",
+    "message": "",
+    "success": ""
+  }
+]

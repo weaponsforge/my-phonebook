@@ -43,15 +43,15 @@ const Account = require('./account')
 router.post('/email', validToken, Email.sendEmail)
 
 /**
- * @api {get} /account/action Firebase Account Management
+ * @api {post} /account/action Firebase Account Management
  * @apiName manageAccount
  * @apiGroup Account
  * @apiDescription These endpoints are a set of server-side custom email action handlers using Firebase Admin for managing Firebase Accounts. A separate `Users` section will be dedicated for managing User profile information.
  *
  * @apiSampleRequest off
- * @apiQuery {String} email Firebase Auth user's email address. Not required if `mode=verifyEmail`.
- * @apiQuery {String=send_verification,verifyEmail,resetPassword,recoverEmail} mode Account management option.
- * @apiQuery {String} actionCode `oobCode` - the action code sent to user's email for email verification. Not required if `mode=send_verification`.
+ * @apiBody {String} email Firebase Auth user's email address. Not required if `mode=verifyEmail`.
+ * @apiBody {String=send_verification,verifyEmail,resetPassword,recoverEmail} mode Account management option.
+ * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for email verification. Not required if `mode=send_verification`.
  *
  * @apiSuccess {Object} User Firebase Auth record of a user, with custom claims included..
  *
@@ -81,6 +81,6 @@ router.post('/email', validToken, Email.sendEmail)
  * @apiSuccess {Object} providerData.email email Firebase user email
  * @apiSuccess {Object} providerData.providerId `password` Sign-in option
  */
-router.get('/account/action', Account.manageAccount)
+router.post('/account/action', Account.manageAccount)
 
 module.exports = router
