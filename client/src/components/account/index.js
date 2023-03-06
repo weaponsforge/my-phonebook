@@ -30,9 +30,9 @@ function AccountComponent ({ state }) {
 
           <div>
             {state.loading
-              ? <CircularProgress size={24} />
+              ? <CircularProgress size={24} color='secondary' />
               : (state.error !== '')
-                ? <Typography variant='caption' sx={{ color: 'red' }}>
+                ? <Typography variant='caption' color='secondary'>
                     Error: {state.error}
                 </Typography>
                 : <Typography variant='body1'>
