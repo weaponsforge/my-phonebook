@@ -1,7 +1,8 @@
 const { getAuth } = require('../../utils/db')
-const _sendemail = require('../../utils/email')
+const _sendemail = require('../../utils/email/sendemail')
 const { ACCOUNT_ACTION } = require('../../utils/constants')
 const ServerError = require('../../utils/error')
+const composeEmail = require('../../utils/email/compose')
 
 /**
  * Generate an email verification link for the for the user's email and send it via email.
@@ -34,10 +35,23 @@ const sendEmailVerificationLink = async (email) => {
     const oobCode = urlParams.get('oobCode')
     const verifyLink = `${process.env.CLIENT_WEBSITE_URL}/account?mode=${ACCOUNT_ACTION.VERIFY_EMAIL}&actionCode=${oobCode}`
 
+    const content = `<p>Hello ${email},</p>
+      <p>Follow this link to verify your email address.<p>
+      <p>${verifyLink}</p>
+      <p>If you didn’t ask to verify this address, you can ignore this email.</p>
+      <p>Thanks,<br>
+      Your My Phonebook Team</p>`
+
     return await _sendemail({
       to: email,
-      subject: 'Register your Account',
-      text: verifyLink
+      subject: 'Register your email for My Phonebook',
+      text: content,
+      html: composeEmail({
+        title: 'Verify your email for My Phonebook',
+        buttonLabel: 'Verify',
+        linkURL: verifyLink,
+        content
+      })
     })
   } catch (err) {
     throw new ServerError(err.message)
