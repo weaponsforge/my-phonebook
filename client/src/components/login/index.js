@@ -14,12 +14,13 @@ import TextField from '@mui/material/TextField'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
-
+  const [errorMessage, setErrorMessage] = useState()
   const usernameHandler = (e) => {
     const {helperText, error, color} = Validate.email(e.target.value)
     const newUsername = {
@@ -47,7 +48,11 @@ function LoginComponent () {
   const loginHandler = (e) => {
     const allFieldAreValid = !username.error && !password.error
     if (!allFieldAreValid) return
-    AuthUtil.signIn(username.value, password.value)
+    (async()=>{
+      const response = await AuthUtil.signIn(username.value, password.value)
+      const errorMessage = response.errorMessage
+      setErrorMessage(errorMessage)
+    })()
   }
 
   useEffect(()=>{
@@ -150,6 +155,9 @@ function LoginComponent () {
               Forgot your password ?
             </Typography>
           </Link>
+          {errorMessage &&
+            <SimpleSnackbar message={errorMessage}/>
+          }
         </Paper>
       </Paper>
     </Page>
