@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
+import AuthUtil from '@/lib/utils/firebase/authUtil'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
@@ -42,12 +43,20 @@ function LoginComponent () {
     }
     setPassword(newPassword)
   }
+
+  const loginHandler = (e) => {
+    const allFieldAreValid = !username.error && !password.error
+    if (!allFieldAreValid) return
+    AuthUtil.signIn(username.value, password.value)
+  }
+
   useEffect(()=>{
     (async () =>{
       const randomJoke = await getRandomJoke()
       setJoke(randomJoke)
     })()
   },[])
+  
   return (
     <Page>
       <Paper sx={{
@@ -125,6 +134,7 @@ function LoginComponent () {
               color: (theme)=>theme.palette.primary.contrastText,
               gridArea: 'login'
             }}
+            onClick={loginHandler}
           >
             LOGIN
           </Button>

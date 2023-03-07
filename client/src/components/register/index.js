@@ -7,6 +7,7 @@ import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 import CheckIcon from '@mui/icons-material/Check'
+import AuthUtil from '@/lib/utils/firebase/authUtil'
 
 const RegisterComponent = () => {
   const [joke, setJoke] = useState()
@@ -61,14 +62,9 @@ const RegisterComponent = () => {
     // only proceed when no error
     const allFieldAreValid = !username.error && !password.error && !passwordConfirmation.error
     if (!allFieldAreValid) return
-
-    // gather all data to dispatch
-    // const request = {
-    //   username:username.value,
-    //   password:password.value
-    // }
-
+    AuthUtil.signUp(username.value, password.value)
   }
+
   return (
     <Page>
       <Paper sx={{
