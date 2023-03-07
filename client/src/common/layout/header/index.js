@@ -135,7 +135,7 @@ function Header() {
                 color: (theme)=>theme.palette.text.primary,
               }}
             >
-              myPhonebooks
+              myPhonebook
             </Typography>
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
