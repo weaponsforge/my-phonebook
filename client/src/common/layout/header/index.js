@@ -216,12 +216,13 @@ function Header() {
             </Box>
           }
           <Link href='/register' style={{ textDecoration: 'none' }}>
-            <Button
+            <Box
               sx={{ 
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
-                alignItems:'center'
+                alignItems:'center',
+                width:'30px',
               }}
             >
               {activeTheme === 'dark'
@@ -232,15 +233,16 @@ function Header() {
                 :
                 <HowToRegIcon />
               }
-            </Button>
+            </Box>
           </Link>
           <Link href='/login' style={{ textDecoration: 'none' }}>
-            <Button
+            <Box
               sx={{ 
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
-                alignItems:'center'
+                alignItems:'center',
+                width:'30px',
               }}
             >
               {activeTheme === 'dark'
@@ -249,15 +251,16 @@ function Header() {
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
                 }}/>
                 :
-                <LoginIcon />
+                <LoginIcon/>
               }
-            </Button>
+            </Box>
           </Link>
-          <Button sx={{
+          <Box sx={{
             color: 'black',
             display: 'flex',
             justifyContent:'center',
-            alignItems:'center'
+            alignItems:'center',
+            width:'30px',
           }} onClick={()=>{
             setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
           }}>
@@ -267,7 +270,7 @@ function Header() {
               :
               <DarkModeIcon />
             }
-          </Button>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

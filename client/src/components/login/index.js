@@ -13,12 +13,14 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
+import AuthUtil from '@/lib/utils/firebase/authUtil'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 
 function LoginComponent () {
   const [joke, setJoke] = useState()
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
-
+  const [errorMessage, setErrorMessage] = useState()
   const usernameHandler = (e) => {
     const {helperText, error, color} = Validate.email(e.target.value)
     const newUsername = {
@@ -42,12 +44,24 @@ function LoginComponent () {
     }
     setPassword(newPassword)
   }
+
+  const loginHandler = () => {
+    const allFieldAreValid = !username.error && !password.error
+    if (!allFieldAreValid) return
+    (async()=>{
+      const response = await AuthUtil.signIn(username.value, password.value)
+      const errorMessage = response.errorMessage
+      setErrorMessage(errorMessage)
+    })()
+  }
+
   useEffect(()=>{
     (async () =>{
       const randomJoke = await getRandomJoke()
       setJoke(randomJoke)
     })()
   },[])
+  
   return (
     <Page>
       <Paper sx={{
@@ -125,6 +139,7 @@ function LoginComponent () {
               color: (theme)=>theme.palette.primary.contrastText,
               gridArea: 'login'
             }}
+            onClick={loginHandler}
           >
             LOGIN
           </Button>
@@ -140,6 +155,9 @@ function LoginComponent () {
               Forgot your password ?
             </Typography>
           </Link>
+          {errorMessage &&
+            <SimpleSnackbar message={errorMessage}/>
+          }
         </Paper>
       </Paper>
     </Page>
