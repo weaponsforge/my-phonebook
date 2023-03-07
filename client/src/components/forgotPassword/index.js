@@ -4,8 +4,10 @@ import { Validate } from '@/lib/utils/textValidation'
 import { Button, Paper, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import CheckIcon from '@mui/icons-material/Check'
+import { useTheme } from '@emotion/react'
 
 const ForgotPasswordComponent = () => {
+  const theme = useTheme()
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [joke, setJoke] = useState()
   useEffect(()=>{
@@ -41,7 +43,7 @@ const ForgotPasswordComponent = () => {
         flexWrap: 'wrap-reverse'
       }}>
         <Typography variant="h8" component="h3" gutterBottom sx={{
-          color:(theme)=>theme.palette.text.disabled, 
+          color:theme.palette.text.disabled, 
           textAlign: 'center', 
           paddingLeft: '20px',
           paddingRight:'20px', 
@@ -83,7 +85,7 @@ const ForgotPasswordComponent = () => {
             variant="contained" 
             sx={{
               fontWeight:'bold',
-              color: (theme)=>theme.palette.primary.contrastText,
+              color:theme.palette.primary.contrastText,
               gridArea: 'resetPassword',
             }}
             onClick={resetPasswordHandler}
