@@ -1,19 +1,19 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import Snackbar from '@mui/material/Snackbar'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
 
 export default function SimpleSnackbar({ message }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true)
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
-      return;
+      return
     }
 
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const action = (
     <React.Fragment>
@@ -29,7 +29,7 @@ export default function SimpleSnackbar({ message }) {
         <CloseIcon fontSize="small" />
       </IconButton>
     </React.Fragment>
-  );
+  )
 
   return (
     <div>
@@ -41,5 +41,5 @@ export default function SimpleSnackbar({ message }) {
         action={action}
       />
     </div>
-  );
+  )
 }

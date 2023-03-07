@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 import CheckIcon from '@mui/icons-material/Check'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
-import { handleAccountActionCode } from '@/lib/services/account'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 
 const RegisterComponent = () => {

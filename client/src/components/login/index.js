@@ -45,7 +45,7 @@ function LoginComponent () {
     setPassword(newPassword)
   }
 
-  const loginHandler = (e) => {
+  const loginHandler = () => {
     const allFieldAreValid = !username.error && !password.error
     if (!allFieldAreValid) return
     (async()=>{
