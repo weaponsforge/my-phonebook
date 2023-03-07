@@ -10,30 +10,29 @@ export default class AuthUtil {
 
     // methods
     static signUp = async (email, password) => {
-        this.config.createUserWithEmailAndPassword(this.config.auth, email, password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // ..
-            });
+        try {
+            const response = await this.config.createUserWithEmailAndPassword(this.config.auth, email, password)
+            const user = response.user
+            return user
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            return {errorCode, errorMessage}
+        }
     }
 
     static signIn = async (email,password) => {
-        this.config.signInWithEmailAndPassword(this.config.auth, email, password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-            });
+        try {
+            const response = await this.config.signInWithEmailAndPassword(this.config.auth, email, password)
+            const user = response.user
+            return user
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            return {errorCode, errorMessage}
+        }
     }
+
+    
 }
 

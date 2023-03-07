@@ -8,12 +8,15 @@ import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 import CheckIcon from '@mui/icons-material/Check'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
+import { handleAccountActionCode } from '@/lib/services/account'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 
 const RegisterComponent = () => {
   const [joke, setJoke] = useState()
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [passwordConfirmation, setPasswordConfirmation] = useState({ error:true, helperText:' ',value:'', color:'text' })
+  const [errorMessage, setErrorMessage] = useState()
 
   useEffect(()=>{
     (async() => {
@@ -62,7 +65,12 @@ const RegisterComponent = () => {
     // only proceed when no error
     const allFieldAreValid = !username.error && !password.error && !passwordConfirmation.error
     if (!allFieldAreValid) return
-    AuthUtil.signUp(username.value, password.value)
+    // register on firebase
+    (async()=>{
+      const response = await AuthUtil.signUp(username.value, password.value)
+      const errorMessage = response.errorMessage
+      setErrorMessage(errorMessage)
+    })()
   }
 
   return (
@@ -164,6 +172,9 @@ const RegisterComponent = () => {
           >
             REGISTER
           </Button>
+          {errorMessage &&
+            <SimpleSnackbar message={errorMessage}/>
+          }
         </Paper>
       </Paper>
     </Page>
