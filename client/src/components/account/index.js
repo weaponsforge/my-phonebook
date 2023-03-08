@@ -5,8 +5,10 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 
 import Page from '@/common/layout/page'
+import ResetPasswordComponent from '@/domain/account/resetpassword'
+import { ACCOUNT_ACTION } from '@/utils/constants'
 
-function AccountComponent ({ state }) {
+function AccountComponent ({ state, handleFormSubmit }) {
   return (
     <Page>
       <Box sx={{ padding: '16px' }}>
@@ -28,14 +30,22 @@ function AccountComponent ({ state }) {
             }
           </div>
 
+          {(state.mode === ACCOUNT_ACTION.RESET_PASSWORD) &&
+            <ResetPasswordComponent
+              loading={state.loading}
+              locked={state.locked}
+              handleFormSubmit={handleFormSubmit}
+            />
+          }
+
           <div>
             {state.loading
               ? <CircularProgress size={24} color='secondary' />
               : (state.error !== '')
-                ? <Typography variant='caption' color='secondary'>
+                ? <Typography variant='caption' color='error' >
                     Error: {state.error}
                 </Typography>
-                : <Typography variant='body1'>
+                : <Typography variant='body1' color='success.main'>
                   {state.success}
                 </Typography>
             }
@@ -47,7 +57,8 @@ function AccountComponent ({ state }) {
 }
 
 AccountComponent.propTypes = {
-  state: PropTypes.object
+  state: PropTypes.object,
+  handleFormSubmit: PropTypes.func
 }
 
 export default AccountComponent

@@ -6,7 +6,7 @@
   },
   {
     "mode": "resetPassword",
-    "message": "Please wait while we reset your password.",
+    "message": "Reset your password.",
     "success": "Success! Password changed."
   },
   {
