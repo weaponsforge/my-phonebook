@@ -1,4 +1,5 @@
-import { Box, Button, Paper, TextField, Typography } from '@mui/material'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import { Avatar, Box, Button, Paper, TextField, Typography, IconButton } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 
 const { default: Page } = require('@/common/layout/page')
@@ -7,7 +8,7 @@ const userData = {
   fullName: 'First Second Third',
   emailAddress: 'test@test.com',
   contactNo: '62812340018900',
-  profilePicture: 'somePictureURL'
+  profilePicture: '/vercel.svg'
 }
 
 export const UserProfileComponent = () => {
@@ -25,6 +26,11 @@ export const UserProfileComponent = () => {
       }
     })
   }
+  
+  const profilePictureHandler = () => {
+    // console.log('change')
+  }
+
   const updateUserHandler = () => {
     // const newUserData = user
   }
@@ -53,6 +59,27 @@ export const UserProfileComponent = () => {
           backdropFilter:'contrast(120%)'
         }}>
           <Typography variant="h5" sx={{ gridColumn:'1/-1' }}>my Profile</Typography>
+          <Box 
+            sx={{
+              aspectRatio:'1',
+              gridColumn:'1/-1',
+              position:'relative',
+            }}
+          >
+            <Avatar
+              src={user.profilePicture}
+              alt="profilePicture"
+              sx={{
+                width:'100%',
+                height:'100%'
+              }}
+              onClick={profilePictureHandler}
+            />        
+            <IconButton color="primary" aria-label="upload picture" component="label" sx={{position:'absolute', bottom:'0', right:'0'}}>
+              <input hidden accept="image/*" type="file" />
+              <PhotoCameraIcon sx={{ color: 'black'}}/>
+            </IconButton>
+          </Box>
           <Typography variant="h7">Full Name</Typography>
           <TextField
             id="fullName"
