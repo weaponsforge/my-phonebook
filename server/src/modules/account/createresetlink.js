@@ -1,8 +1,7 @@
 const { getAuth } = require('../../utils/db')
-const _sendemail = require('../../utils/email/sendemail')
+const EmailUtils = require('../../utils/email/index')
 const { ACCOUNT_ACTION } = require('../../utils/constants')
 const ServerError = require('../../utils/error')
-const composeEmail = require('../../utils/email/compose')
 
 /**
  * Generate a reset password link for a Firebase user's and send it via email.
@@ -45,11 +44,11 @@ const sendResetPasswordLink = async (email) => {
       <p>Thanks,<br>
       Your My Phonebook Team</p>`
 
-    return await _sendemail({
+    return await EmailUtils.sendEmail({
       to: email,
       subject: 'Reset your password for My Phonebook',
       text: content,
-      html: composeEmail({
+      html: EmailUtils.composeEmail({
         title: 'Reset your password for My Phonebook',
         buttonLabel: 'Reset',
         linkURL: resetLink,

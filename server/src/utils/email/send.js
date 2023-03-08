@@ -21,7 +21,7 @@ oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
  * @param {String} data.text - Email's text content
  * @param {String} data.html - Email content written with HTML markup
  */
-const _sendemail = async ({ to, from, subject, text = '', html = '' }) => {
+const sendEmail = async ({ to, from, subject, text = '', html = '' }) => {
   try {
     const { token } = await oauth2Client.getAccessToken()
 
@@ -64,4 +64,4 @@ const _sendemail = async ({ to, from, subject, text = '', html = '' }) => {
   }
 }
 
-module.exports = _sendemail
+module.exports = sendEmail

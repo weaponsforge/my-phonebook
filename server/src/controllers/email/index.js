@@ -1,4 +1,4 @@
-const _sendemail = require('../../utils/email/sendemail')
+const sendEmail = require('../../utils/email/send')
 const ServerError = require('../../utils/error')
 
 // Send email using gmail OAuth2
@@ -11,7 +11,7 @@ module.exports.sendEmail = async (req, res, next) => {
   }
 
   try {
-    const response = await _sendemail({ to, from, subject, text })
+    const response = await sendEmail({ to, from, subject, text })
     return res.status(200).send(response)
   } catch (err) {
     return next((err.constructor.name === ServerError.name)
