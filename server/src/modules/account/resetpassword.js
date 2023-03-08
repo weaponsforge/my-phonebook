@@ -1,6 +1,4 @@
-const { getAuth } = require('../../utils/db')
 const axios = require('axios')
-const { ACCOUNT_TYPE } = require('../../utils/constants')
 const ServerError = require('../../utils/error')
 
 /**
