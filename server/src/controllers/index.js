@@ -49,7 +49,7 @@ router.post('/email', validToken, Email.sendEmail)
  * @apiDescription Send an email verification to a non-email verified Firebase Auth user.
  *
  * @apiSampleRequest off
- * @apiBody {String} email Firebase Auth user's email address. Not required if `mode=verifyEmail`.
+ * @apiBody {String} email Firebase Auth user's email address.
  * @apiBody {String=send_verification} mode Account management option.
  *
  * @apiSuccess {String} message Success message log
@@ -73,7 +73,7 @@ router.post('/email', validToken, Email.sendEmail)
  * @apiDescription Send a password reset email to My Phonebook's Firebase Auth user. The request will fail if the user is not yet email-verified, or is missing the `account_level=user` custom claims.
  *
  * @apiSampleRequest off
- * @apiBody {String} email Firebase Auth user's email address. Not required if `mode=resetPassword`.
+ * @apiBody {String} email Firebase Auth user's email address.
  * @apiBody {String=send_reset} mode Account management option.
  *
  * @apiSuccess {String} message Success message log
@@ -98,7 +98,7 @@ router.post('/email', validToken, Email.sendEmail)
  *
  * @apiSampleRequest off
  * @apiBody {String=verifyEmail} mode Account management option.
- * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for email verification. Not required if `mode=send_verification`.
+ * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for email verification.
  *
  * @apiSuccess {Object} User Firebase Auth record of a user, with custom claims included.
  * @apiSuccess {String} User.uid Unique Firebase user ID
@@ -137,7 +137,7 @@ router.post('/email', validToken, Email.sendEmail)
  * @apiSampleRequest off
  * @apiBody {String=resetPassword} mode Account management option.
  * @apiBody {String} password New password
- * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for resetting password. Not required if `mode=send_reset`.
+ * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for resetting password.
  *
  * @apiSuccess {Object} message Password reset information log.
  * @apiSuccess {String} message.kind Firebase account management response type.
