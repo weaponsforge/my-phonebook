@@ -12,7 +12,15 @@ const composeEmail = require('../../utils/email/compose')
 const sendResetPasswordLink = async (email) => {
   try {
     // Check if the email is registered
-    await getAuth().getUserByEmail(email)
+    const user = await getAuth().getUserByEmail(email)
+
+    if (!user.emailVerified) {
+      throw new ServerError('User is not yet email-verified', ServerError.httpErrorCodes._403)
+    }
+
+    if (!user?.customClaims?.account_level) {
+      throw new ServerError('User is missing custom claims.', ServerError.httpErrorCodes._403)
+    }
   } catch (err) {
     throw new ServerError(err.message)
   }
