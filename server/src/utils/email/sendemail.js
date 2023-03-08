@@ -15,11 +15,15 @@ oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
 /**
  * Send email using gmail OAuth
  * @param {Object} data - Email contents { to, from, subject, text, html }
+ * @param {String} data.to - Email recipient's email address
+ * @param {String} data.from - Email sender's email address
+ * @param {String} data.subject - Email subject/title
+ * @param {String} data.text - Email's text content
+ * @param {String} data.html - Email content written with HTML markup
  */
-const _sendemail = async (data) => {
+const _sendemail = async ({ to, from, subject, text = '', html = '' }) => {
   try {
     const { token } = await oauth2Client.getAccessToken()
-    const { to, from, subject, text = '', html = '' } = data
 
     const newData = {
       to,

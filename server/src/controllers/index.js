@@ -64,7 +64,7 @@ router.post('/email', validToken, Email.sendEmail)
  *   }
  * }
  *
- * await axios.post(ACTION_HANDLER_URL, data)
+ * await axios.post('http://localhost:3001/api/account', data)
  *
  * @apiExample {js} Example usage: verify email
  * // Verify a user's email (URL registration link with actionCode is sent sent thru email)
@@ -75,7 +75,18 @@ router.post('/email', validToken, Email.sendEmail)
  *   }
  * }
  *
- * await axios.post(ACTION_HANDLER_URL, data)
+ * await axios.post('http://localhost:3001/api/account', data)
+ *
+  * @apiExample {js} Example usage: send a reset password link
+ * // Send an email containing a reset password link
+ * const obj = {
+ *   data: {
+ *     mode: 'send_reset'
+ *     email: 'someone@gmail.com'
+ *   }
+ * }
+ *
+ * await axios.post('http://localhost:3001/api/account', data)
  *
  * @apiSuccess {String} uid Unique Firebase user ID
  * @apiSuccess {String} email Firebase user email

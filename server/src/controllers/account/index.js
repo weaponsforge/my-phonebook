@@ -1,4 +1,8 @@
-const { sendEmailVerificationLink, verifyEmail } = require('../../modules/account')
+const {
+  sendEmailVerificationLink,
+  sendResetPasswordLink,
+  verifyEmail
+} = require('../../modules/account')
 const { ACCOUNT_ACTION } = require('../../utils/constants')
 const ServerError = require('../../utils/error')
 
@@ -13,15 +17,19 @@ const manageAccount = async (req, res, next) => {
       new ServerError('Missing parameter/s', ServerError.httpErrorCodes._400))
   }
 
+  // Require email when sending email confirm prompts
+  if ([ACCOUNT_ACTION.SEND_VERIFICATTION, ACCOUNT_ACTION.SEND_RESET].includes(mode)) {
+    if (!email) {
+      return res.status(ServerError.httpErrorCodes._400).send(
+        new ServerError('Missing parameter/s', ServerError.httpErrorCodes._400))
+    }
+  }
+
   switch (mode) {
     case ACCOUNT_ACTION.SEND_VERIFICATTION:
-      if (!email) {
-        return res.status(ServerError.httpErrorCodes._400).send(
-          new ServerError('Missing parameter/s', ServerError.httpErrorCodes._400))
-      }
-
       try {
-        const response = await sendEmailVerificationLink(email, mode)
+        // Send an email verification for the email account
+        const response = await sendEmailVerificationLink(email)
         return res.status(200).send(response)
       } catch (err) {
         return next((err.constructor.name === ServerError.name)
@@ -35,7 +43,18 @@ const manageAccount = async (req, res, next) => {
       }
 
       try {
+        // Verify an email
         const response = await verifyEmail(actionCode)
+        return res.status(200).send(response)
+      } catch (err) {
+        return next((err.constructor.name === ServerError.name)
+          ? err
+          : new ServerError(err.message))
+      }
+    case ACCOUNT_ACTION.SEND_RESET:
+      try {
+        // Send a password reset link to email
+        const response = await sendResetPasswordLink(email)
         return res.status(200).send(response)
       } catch (err) {
         return next((err.constructor.name === ServerError.name)
