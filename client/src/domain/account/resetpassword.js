@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
+import TransparentTextfield from '@/common/ui/transparentfield'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 
 import { Validate } from '@/lib/utils/textValidation'
@@ -52,7 +52,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
       }
     }}>
       <form id="resetpassword" onSubmit={handleFormSubmit}>
-        <TextField
+        <TransparentTextfield
           id={INPUT_ID.PASSWORD}
           size='small'
           label='Enter your new password'
@@ -67,7 +67,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
           onChange={handleInputChange}
         />
 
-        <TextField
+        <TransparentTextfield
           id={INPUT_ID.CONFIRM_PASSWORD}
           size='small'
           label='Confirm your new password'
