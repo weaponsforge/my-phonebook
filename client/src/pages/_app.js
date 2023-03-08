@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider } from '@emotion/react'
-
+import '@/styles/globals.css'
 // Redux
 import { Provider } from 'react-redux'
 import { store } from '@/store/store'
