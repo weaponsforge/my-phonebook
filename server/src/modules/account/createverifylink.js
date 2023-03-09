@@ -1,8 +1,7 @@
 const { getAuth } = require('../../utils/db')
-const _sendemail = require('../../utils/email/sendemail')
+const EmailUtils = require('../../utils/email')
 const { ACCOUNT_ACTION } = require('../../utils/constants')
 const ServerError = require('../../utils/error')
-const composeEmail = require('../../utils/email/compose')
 
 /**
  * Generate an email verification link for the for the user's email and send it via email.
@@ -42,11 +41,11 @@ const sendEmailVerificationLink = async (email) => {
       <p>Thanks,<br>
       Your My Phonebook Team</p>`
 
-    return await _sendemail({
+    return await EmailUtils.sendEmail({
       to: email,
       subject: 'Register your email for My Phonebook',
       text: content,
-      html: composeEmail({
+      html: EmailUtils.composeEmail({
         title: 'Verify your email for My Phonebook',
         buttonLabel: 'Verify',
         linkURL: verifyLink,

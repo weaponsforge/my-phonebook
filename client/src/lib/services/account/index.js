@@ -1,11 +1,19 @@
 import axios from 'axios'
 
-// These methods implement custom email action handlers using custom-generated email action links from the server
-
 const ACTION_HANDLER_URL = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/account/action`
 
-const handleAccountActionCode = async ({ mode, email, actionCode }) => {
-  const data = { mode, actionCode, email }
+/**
+ * This method implements custom email action handlers using custom-generated email action links from the server.
+ * Read the server API documentation for more usage options.
+ * @param {String} mode - Firebase account management options. One of ACCOUNT_ACTION
+ * @param {String} actionCode - Firebase-generated oobCode sent to user's email. Not required if mode is
+ *    ACCOUNT_ACTION.SEND_VERIFICATTION or ACCOUNT_ACTION.SEND_RESET
+ * @param {String} email - User email. Required of mode is ACCOUNT_ACTION.VERIFY_EMAIL
+ * @param {String} password - User's new password. Required if mode is ACCOUNT_ACTION.RESET_PASSWORD
+ * @returns {Promise}
+ */
+const handleAccountActionCode = async ({ mode, actionCode, email, password }) => {
+  const data = { mode, actionCode, email, password }
   return await axios.post(ACTION_HANDLER_URL, data)
 }
 

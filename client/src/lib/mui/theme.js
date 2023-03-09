@@ -45,6 +45,11 @@ const themeOptionsLight = {
     secondary: {
       main: '#d6a3e0',
     },
+    dark: {
+      main: '#a1957d',
+      light: '#deb5e6',
+      dark: '#a1957d'
+    },
     error: {
       main: '#d32f2f',
     },

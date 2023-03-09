@@ -1,7 +1,11 @@
-const sendEmailVerificationLink = require('./createlink')
+const sendEmailVerificationLink = require('./createverifylink')
+const sendResetPasswordLink = require('./createresetlink')
 const verifyEmail = require('./verifyemail')
+const resetPassword = require('./resetpassword')
 
 module.exports = {
   sendEmailVerificationLink,
-  verifyEmail
+  sendResetPasswordLink,
+  verifyEmail,
+  resetPassword
 }

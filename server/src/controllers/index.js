@@ -43,19 +43,18 @@ const Account = require('./account')
 router.post('/email', validToken, Email.sendEmail)
 
 /**
- * @api {post} /account/action Firebase Account Management
- * @apiName manageAccount
+ * @api {post} /account/action Send Email Verification
+ * @apiName sendEmailVerification
  * @apiGroup Account
- * @apiDescription These endpoints are a set of server-side custom email action handlers using Firebase Admin for managing Firebase Accounts. A separate `Users` section will be dedicated for managing User profile information.
+ * @apiDescription Send an email verification to a non-email verified Firebase Auth user.
  *
  * @apiSampleRequest off
- * @apiBody {String} email Firebase Auth user's email address. Not required if `mode=verifyEmail`.
- * @apiBody {String=send_verification,verifyEmail,resetPassword,recoverEmail} mode Account management option.
- * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for email verification. Not required if `mode=send_verification`.
+ * @apiBody {String} email Firebase Auth user's email address.
+ * @apiBody {String=send_verification} mode Account management option.
  *
- * @apiSuccess {Object} User Firebase Auth record of a user, with custom claims included..
+ * @apiSuccess {String} message Success message log
  *
- * @apiExample {js} Example usage: send email verification
+ * @apiExample {js} Example usage:
  * // Send an email verification to a user
  * const obj = {
  *   data: {
@@ -64,10 +63,61 @@ router.post('/email', validToken, Email.sendEmail)
  *   }
  * }
  *
- * await axios.post(ACTION_HANDLER_URL, data)
+ * await axios.post('http://localhost:3001/api/account', data)
+ */
+
+/**
+ * @api {post} /account/action Send Password Reset Email
+ * @apiName sendPasswordReset
+ * @apiGroup Account
+ * @apiDescription Send a password reset email to My Phonebook's Firebase Auth user. The request will fail if the user is not yet email-verified, or is missing the `account_level=user` custom claims.
  *
- * @apiExample {js} Example usage: verify email
- * // Verify a user's email (URL registration link with actionCode is sent sent thru email)
+ * @apiSampleRequest off
+ * @apiBody {String} email Firebase Auth user's email address.
+ * @apiBody {String=send_reset} mode Account management option.
+ *
+ * @apiSuccess {String} message Success message log
+ *
+ * @apiExample {js} Example usage:
+ * // Send an a password reset email to a user
+ * const obj = {
+ *   data: {
+ *     mode: 'send_reset'
+ *     email: 'someone@gmail.com'
+ *   }
+ * }
+ *
+ * await axios.post('http://localhost:3001/api/account', data)
+ */
+
+/**
+ * @api {post} /account/action Verify Email
+ * @apiName verifyEmail
+ * @apiGroup Account
+ * @apiDescription Verifies a Firebase Auth user's email and inserts an `account_level=user` custom claims to his Auth record. The `actionCode` (oobCode) is sent to a user's email using the API endpoint in Send Email Verification.
+ *
+ * @apiSampleRequest off
+ * @apiBody {String=verifyEmail} mode Account management option.
+ * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for email verification.
+ *
+ * @apiSuccess {Object} User Firebase Auth record of a user, with custom claims included.
+ * @apiSuccess {String} User.uid Unique Firebase user ID
+ * @apiSuccess {String} User.email Firebase user email
+ * @apiSuccess {Bool} User.emailVerified Flag is email is verified.
+ * @apiSuccess {String} User.disabled Flag if the Firebase account is disabled.
+ * @apiSuccess {Object} User.metadata
+ * @apiSuccess {Date} User.metadata.lastSignInTime User's last log-in time
+ * @apiSuccess {Date} User.metadata.creationTime Time the user's account was created
+ * @apiSuccess {String} User.metadata.lastRefreshTime Time when the user's tokens were last refreshed.
+ * @apiSuccess {Object} User.customClaims Custom items for identifying a User, set using firebase-admin
+ * @apiSuccess {Date} User.tokensValidAfterTime Max date when a signed-in user's tokens are valid.
+ * @apiSuccess {Object} User.providerData Short user information summary
+ * @apiSuccess {String} User.providerData.uid uid Unique Firebase user ID
+ * @apiSuccess {String} User.providerData.email email Firebase user email
+ * @apiSuccess {String} User.providerData.providerId `password` Sign-in option
+ *
+ * @apiExample {js} Example usage:
+ * // Verify an email
  * const obj = {
  *   data: {
  *     mode: 'verifyEmail'
@@ -75,23 +125,38 @@ router.post('/email', validToken, Email.sendEmail)
  *   }
  * }
  *
- * await axios.post(ACTION_HANDLER_URL, data)
- *
- * @apiSuccess {String} uid Unique Firebase user ID
- * @apiSuccess {String} email Firebase user email
- * @apiSuccess {Bool} emailVerified Flag is email is verified.
- * @apiSuccess {String} disabled Flag if the Firebase account is disabled.
- * @apiSuccess {Object} metadata
- * @apiSuccess {Date} metadata.lastSignInTime User's last log-in time
- * @apiSuccess {Date} metadata.creationTime Time the user's account was created
- * @apiSuccess {String} metadata.lastRefreshTime Time when the user's tokens were last refreshed.
- * @apiSuccess {Object} customClaims Custom items for identifying a User, set using firebase-admin
- * @apiSuccess {Date} tokensValidAfterTime Max date when a signed-in user's tokens are valid.
- * @apiSuccess {Object} providerData Short user information summary
- * @apiSuccess {String} providerData.uid uid Unique Firebase user ID
- * @apiSuccess {String} providerData.email email Firebase user email
- * @apiSuccess {String} providerData.providerId `password` Sign-in option
+ * await axios.post('http://localhost:3001/api/account', data)
  */
+
+/**
+ * @api {post} /account/action Reset Password
+ * @apiName resetPassword
+ * @apiGroup Account
+ * @apiDescription Updates a Firebase Auth user's password using the URL link sent to a user's email using the API endpoint in Send Password Reset Email.
+ *
+ * @apiSampleRequest off
+ * @apiBody {String=resetPassword} mode Account management option.
+ * @apiBody {String} password New password
+ * @apiBody {String} actionCode `oobCode` - the action code sent to user's email for resetting password.
+ *
+ * @apiSuccess {Object} message Password reset information log.
+ * @apiSuccess {String} message.kind Firebase account management response type.
+ * @apiSuccess {String} message.email Firebase user email
+ * @apiSuccess {Bool} message.requestType Firebase account management request type. Value is `PASSWORD_RESET`.
+ *
+ * @apiExample {js} Example usage:
+ * // Verify an email
+ * const obj = {
+ *   data: {
+ *     mode: 'resetPassword'
+ *     password: 'myNewPassword123',
+ *     actionCode: 'GJLPOCYRFJb3eV88...'
+ *   }
+ * }
+ *
+ * await axios.post('http://localhost:3001/api/account', data)
+ */
+
 router.post('/account/action', Account.manageAccount)
 
 module.exports = router

@@ -20,6 +20,7 @@
           <div><%- content %></div>
         </td>
       </tr>
+      <% if (buttonLabel !== '') { %>
       <tr>
         <td style="font-family: Arial, Helvetica, sans-serif; color: #3c4858; padding: 24px; width: 100%; text-align: center; padding: 16px; display: flex; margin-bottom: 24px;">
           <a href="<%= linkURL %>" style="margin: auto; background-color: #95729c; text-decoration: none; color: #fff; padding: 26px; min-width: 220px; border-radius: 40px; font-size: 18px; font-weight: bold; text-transform: uppercase;">
@@ -27,6 +28,7 @@
           </a>
         </td>
       </tr>
+      <% } %>
     </table>
 
     <table style="margin: auto; margin-top: 48px;">

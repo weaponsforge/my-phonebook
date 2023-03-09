@@ -2,6 +2,7 @@ const { getAuth } = require('../../utils/db')
 const axios = require('axios')
 const { ACCOUNT_TYPE } = require('../../utils/constants')
 const ServerError = require('../../utils/error')
+const EmailUtils = require('../../utils/email')
 
 // Verifies the Firebase account of a user and inserts an "account_level" custom claims to the user auth record.
 const verifyEmail = async (actionCode) => {
@@ -43,9 +44,29 @@ const verifyEmail = async (actionCode) => {
 
     try {
       // Fetch the updated user auth record
-      return await getAuth().getUserByEmail(data.email)
+      await getAuth().getUserByEmail(data.email)
     } catch (err) {
       throw new ServerError(err.msg, ServerError.httpErrorCodes._502)
+    }
+
+    const content = `<p>Hello ${data.email}</p>,
+      <p>Thank you for joining My Phonebook!</p>
+      <p>Thanks,<br>
+      Your My Phonebook Team</p>`
+
+    try {
+      return await EmailUtils.sendEmail({
+        to: data.email,
+        text: content,
+        subject: 'Welcome to My Phonebook',
+        html: EmailUtils.composeEmail({
+          title: 'Welcome to My Phonebook',
+          content
+        })
+      })
+    } catch (err) {
+      throw new ServerError('Failed sending the welcome email',
+        ServerError.httpErrorCodes._502)
     }
   } else {
     throw new ServerError(
