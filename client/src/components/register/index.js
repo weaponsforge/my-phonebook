@@ -98,17 +98,35 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           {!passwordConfirmation.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon3' }}/>
           }
-          <Button 
-            variant="contained" 
-            sx={{
-              gridArea:'register',
-              fontWeight:'bold',
-              color: (theme)=>theme.palette.primary.contrastText
-            }}
-            onClick={registerHandler}
-          >
+          {
+            state.username.error || state.password.error || state.passwordConfirmation.error
+              ?
+              <Button 
+                disabled
+                variant="contained" 
+                sx={{
+                  gridArea:'register',
+                  fontWeight:'bold',
+                  color: (theme)=>theme.palette.primary.contrastText
+                }}
+                onClick={registerHandler}
+              >
             REGISTER
-          </Button>
+              </Button>
+              :
+              <Button 
+                variant="contained" 
+                sx={{
+                  gridArea:'register',
+                  fontWeight:'bold',
+                  color: (theme)=>theme.palette.primary.contrastText
+                }}
+                onClick={registerHandler}
+              >
+            REGISTER
+              </Button>
+          }
+
           {errorMessage &&
             <SimpleSnackbar message={errorMessage}/>
           }
