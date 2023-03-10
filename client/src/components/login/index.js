@@ -15,7 +15,7 @@ import { useTheme } from '@emotion/react'
 
 function LoginComponent ({state, eventsHandler}) {
   const theme = useTheme()
-  const { username, password, errorMessage, joke } = state
+  const { username, password, errorMessage, joke, allFieldsAreValid } = state
   const { usernameHandler, passwordHandler, loginHandler } = eventsHandler
   return (
     <Page>
@@ -87,18 +87,36 @@ function LoginComponent ({state, eventsHandler}) {
           {!password.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
-          <Button 
-            variant="contained" 
-            id="login"
-            sx={{
-              fontWeight:'bold',
-              color: theme.palette.primary.contrastText,
-              gridArea: 'login'
-            }}
-            onClick={loginHandler}
-          >
+          {
+            allFieldsAreValid
+              ?
+              <Button 
+                variant="contained" 
+                id="login"
+                sx={{
+                  fontWeight:'bold',
+                  color: theme.palette.primary.contrastText,
+                  gridArea: 'login'
+                }}
+                onClick={loginHandler}
+              >
+              LOGIN
+              </Button>
+              :
+              <Button 
+                variant="contained" 
+                id="login"
+                sx={{
+                  fontWeight:'bold',
+                  color: theme.palette.primary.contrastText,
+                  gridArea: 'login'
+                }}
+                onClick={loginHandler}
+                disabled
+              >
             LOGIN
-          </Button>
+              </Button>
+          }
           <Link href="/recoverPassword" sx={{gridArea: 'forgot'}}>
             <Typography
               sx={{

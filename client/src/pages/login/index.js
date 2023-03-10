@@ -17,6 +17,7 @@ const defaultState = {
     value:'',
     color:'text'
   },
+  allFieldsAreValid:false,
   errorMessage:undefined,
   joke:undefined,
 }
@@ -55,8 +56,6 @@ function Login () {
     }
 
     static loginHandler = () => {
-      const allFieldsAreValid = !username.error && !password.error
-      if (!allFieldsAreValid) return
       (async()=>{
         const response = await AuthUtil.signIn(username.value, password.value)
         const errorMessage = response.errorMessage
@@ -68,6 +67,13 @@ function Login () {
     }
   }
 
+  useEffect(()=>{
+    const allFieldsAreValid = !state.username.error && !state.password.error
+    setState(prev=>({
+      ...prev,
+      allFieldsAreValid:allFieldsAreValid
+    }))
+  },[state.username.error, state.password.error])
   useEffect(()=>{
     (async () =>{
       const randomJoke = await getRandomJoke()
