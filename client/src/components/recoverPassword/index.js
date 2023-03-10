@@ -60,17 +60,35 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
           {!username.error &&
               <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
           }
-          <Button 
-            variant="contained" 
-            sx={{
-              fontWeight:'bold',
-              color:theme.palette.primary.contrastText,
-              gridArea: 'recoverPassword',
-            }}
-            onClick={recoverPasswordHandler}
-          >
+          {
+            state.username.error
+              ?
+              <Button 
+                variant="contained" 
+                sx={{
+                  fontWeight:'bold',
+                  color:theme.palette.primary.contrastText,
+                  gridArea: 'recoverPassword',
+                }}
+                onClick={recoverPasswordHandler}
+                disabled
+              >
               RECOVER PASSWORD
-          </Button>
+              </Button>
+              :
+              <Button 
+                variant="contained" 
+                sx={{
+                  fontWeight:'bold',
+                  color:theme.palette.primary.contrastText,
+                  gridArea: 'recoverPassword',
+                }}
+                onClick={recoverPasswordHandler}
+              >
+              RECOVER PASSWORD
+              </Button>
+          }
+
         </Paper>
       </Paper>
     </Page>

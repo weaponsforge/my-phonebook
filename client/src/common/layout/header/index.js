@@ -25,7 +25,6 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 // LIB
 import { Avalon } from '@/lib/mui/theme'
 import { useGlobalState } from '@/lib/hooks/useGlobalState'
-import { useRouter } from 'next/router'
 
 // VARIABLES
 const pages = ['about']
@@ -37,7 +36,6 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isLoggedIn] = useState(false)
   const [globalState, setGlobalState] = useGlobalState()
-  const router = useRouter()
 
 
   class eventsHandler {
@@ -48,15 +46,15 @@ function Header() {
       })
     }
     static handleOpenNavMenu = (e) => {
-      setAnchorElNav(event.currentTarget)
+      setAnchorElNav(e.currentTarget)
     }
     static handleOpenUserMenu = (e) => {
-      setAnchorElUser(event.currentTarget)
+      setAnchorElUser(e.currentTarget)
     }
-    static handleCloseNavMenu = (e) => {
+    static handleCloseNavMenu = () => {
       setAnchorElNav(null)
     }
-    static handleCloseUserMenu = (e) => {
+    static handleCloseUserMenu = () => {
       setAnchorElUser(null)
     }
   }
