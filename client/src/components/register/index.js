@@ -3,75 +3,13 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { getRandomJoke } from '@/lib/services/random'
-import { useEffect, useState } from 'react'
-import { Validate } from '@/lib/utils/textValidation'
 import CheckIcon from '@mui/icons-material/Check'
-import AuthUtil from '@/lib/utils/firebase/authUtil'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import PropTypes from 'prop-types'
 
-const RegisterComponent = () => {
-  const [joke, setJoke] = useState()
-  const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  const [passwordConfirmation, setPasswordConfirmation] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  const [errorMessage, setErrorMessage] = useState()
-
-  useEffect(()=>{
-    (async() => {
-      const randomJoke = await getRandomJoke()
-      setJoke(randomJoke)
-    })()
-  },[])
-
-  const usernameHandler = (e) => {
-    const {helperText, error, color} = Validate.email(e.target.value)
-    const newUsername = {
-      ...username,
-      value: e.target.value,
-      error,
-      helperText,
-      color
-    }
-    setUsername(newUsername)
-  }
-
-  const passwordHandler = (e) => {
-    const {helperText, error, color } = Validate.password(e.target.value)
-    const newPassword = {
-      ...password,
-      value: e.target.value,
-      error,
-      helperText,
-      color
-    }
-    setPassword(newPassword)
-  }
-
-  const passwordConfirmationHandler = (e) => {
-    const { helperText, error, color } = Validate.passwordConfirmation(password, e.target.value)
-    const newPasswordConfirmation = {
-      ...passwordConfirmation,
-      value: e.target.value,
-      error,
-      helperText,
-      color
-    }
-    setPasswordConfirmation(newPasswordConfirmation)
-  }
-
-  const registerHandler = () => {
-    // only proceed when no error
-    const allFieldAreValid = !username.error && !password.error && !passwordConfirmation.error
-    if (!allFieldAreValid) return
-    // register on firebase
-    (async()=>{
-      const response = await AuthUtil.signUp(username.value, password.value)
-      const errorMessage = response.errorMessage
-      setErrorMessage(errorMessage)
-    })()
-  }
-
+const RegisterComponent = ({ state, eventsHandler }) => {
+  const {joke, username, password, passwordConfirmation, errorMessage } = state
+  const {usernameHandler, passwordHandler, passwordConfirmationHandler, registerHandler} = eventsHandler
   return (
     <Page>
       <Paper sx={{
@@ -178,6 +116,11 @@ const RegisterComponent = () => {
       </Paper>
     </Page>
   )
+}
+
+RegisterComponent.PropTypes = {
+  state: PropTypes.object,
+  eventsHandler: PropTypes.func
 }
 
 export { RegisterComponent }
