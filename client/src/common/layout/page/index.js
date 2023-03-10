@@ -3,16 +3,14 @@ import Box from '@mui/material/Box'
 import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 import { useEffect } from 'react'
 import { useBgColor } from '@/lib/hooks/useBgColor'
 import { useGlobalState } from '@/lib/hooks/useGlobalState'
 
 const Background = () => {
-  const [globalState, setGlobalState] = useGlobalState()
-  const {activeTheme} = globalState
-  console.log(activeTheme)
+  const [globalState] = useGlobalState()
   const [bgColor, animateBgColor] = useBgColor()
+  const {activeTheme} = globalState
 
   useEffect(()=>{
     animateBgColor()

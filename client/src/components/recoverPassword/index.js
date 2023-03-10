@@ -1,35 +1,14 @@
+import PropTypes from 'prop-types'
 import Page from '@/common/layout/page'
-import { getRandomJoke } from '@/lib/services/random'
-import { Validate } from '@/lib/utils/textValidation'
 import { Button, Paper, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import { useTheme } from '@emotion/react'
 
-const RecoverPasswordComponent = () => {
+const RecoverPasswordComponent = ({state, eventsHandler}) => {
   const theme = useTheme()
-  const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  const [joke, setJoke] = useState()
-  useEffect(()=>{
-    (async()=>{
-      const randomJoke = await getRandomJoke()
-      setJoke(randomJoke)
-    })()
-  },[])
-  const usernameHandler = (e) => {
-    const {helperText, error, color} = Validate.email(e.target.value)
-    const newUsername = {
-      ...username,
-      value: e.target.value,
-      error,
-      helperText,
-      color
-    }
-    setUsername(newUsername)
-  }
-  const recoverPasswordHandler = () => {
-    // to integrate with API route
-  }
+  const {username, joke} = state
+  const {usernameHandler, recoverPasswordHandler} = eventsHandler
+
   return (
     <Page>
       <Paper sx={{
@@ -96,6 +75,11 @@ const RecoverPasswordComponent = () => {
       </Paper>
     </Page>
   )
+}
+
+RecoverPasswordComponent.propTypes = {
+  state: PropTypes.object,
+  eventsHandler: PropTypes.func
 }
 
 export default RecoverPasswordComponent

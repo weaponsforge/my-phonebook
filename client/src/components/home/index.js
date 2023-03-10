@@ -1,32 +1,14 @@
 import Image from 'next/image'
-
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-
 import Page from '@/common/layout/page'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
-import { useEffect, useState } from 'react'
-import { getRandomJoke } from '@/lib/services/random'
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useTheme } from '@emotion/react'
+import PropTypes from 'prop-types'
 
-const defaultState = {
-  joke:undefined,
-}
 
-function HomeComponent() {
-  const [state, setState] = useState(defaultState)
-  const [globalState, setGlobalState] = useGlobalState()
-  const {joke} = state
-  const {activeTheme} = globalState
-  useEffect(()=>{
-    (async()=>{
-      const randomJoke = await getRandomJoke()
-      setState(prev=>({
-        ...prev,
-        joke:randomJoke
-      }))
-    })()
-  },[])
+function HomeComponent({ state }) {
+  const theme = useTheme()
+  const {joke, activeTheme} = state
   return (
     <Page>
       <Box sx={{
@@ -45,12 +27,18 @@ function HomeComponent() {
           style={activeTheme === 'dark' && { filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)' }}
           priority
         />
-        <Typography variant="h8" component="h3" gutterBottom sx={{ color:(theme)=>theme.palette.text.disabled,textAlign: 'center', paddingLeft: '20px',paddingRight:'20px',maxWidth: '70vw' }}>
+        <Typography variant="h8" component="h3" gutterBottom sx={{ color:theme.palette.text.disabled,textAlign: 'center', paddingLeft: '20px',paddingRight:'20px',maxWidth: '70vw' }}>
           `{joke && joke.joke}`
         </Typography>
       </Box>
     </Page>
   )
 }
+
+HomeComponent.propTypes = {
+  state: PropTypes.object,
+  eventsHandler: PropTypes.func
+}
+
 
 export default HomeComponent
