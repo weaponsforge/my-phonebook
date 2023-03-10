@@ -17,7 +17,6 @@ const defaultState = {
     value:'',
     color:'text'
   },
-  allFieldsAreValid:false,
   errorMessage:undefined,
   joke:undefined,
 }
@@ -67,13 +66,6 @@ function Login () {
     }
   }
 
-  useEffect(()=>{
-    const allFieldsAreValid = !state.username.error && !state.password.error
-    setState(prev=>({
-      ...prev,
-      allFieldsAreValid:allFieldsAreValid
-    }))
-  },[state.username.error, state.password.error])
   useEffect(()=>{
     (async () =>{
       const randomJoke = await getRandomJoke()

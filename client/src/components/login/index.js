@@ -15,7 +15,7 @@ import { useTheme } from '@emotion/react'
 
 function LoginComponent ({state, eventsHandler}) {
   const theme = useTheme()
-  const { username, password, errorMessage, joke, allFieldsAreValid } = state
+  const { username, password, errorMessage, joke } = state
   const { usernameHandler, passwordHandler, loginHandler } = eventsHandler
   return (
     <Page>
@@ -88,9 +88,10 @@ function LoginComponent ({state, eventsHandler}) {
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
           {
-            allFieldsAreValid
+            state.username.error || state.password.error
               ?
               <Button 
+                disabled
                 variant="contained" 
                 id="login"
                 sx={{
@@ -112,7 +113,6 @@ function LoginComponent ({state, eventsHandler}) {
                   gridArea: 'login'
                 }}
                 onClick={loginHandler}
-                disabled
               >
             LOGIN
               </Button>
