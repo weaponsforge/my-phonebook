@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import { useTheme } from '@emotion/react'
 
-const ForgotPasswordComponent = () => {
+const RecoverPasswordComponent = () => {
   const theme = useTheme()
   const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
   const [joke, setJoke] = useState()
   useEffect(()=>{
-    setTimeout(async()=>{
+    (async()=>{
       const randomJoke = await getRandomJoke()
       setJoke(randomJoke)
-    })
+    })()
   },[])
   const usernameHandler = (e) => {
     const {helperText, error, color} = Validate.email(e.target.value)
@@ -27,7 +27,7 @@ const ForgotPasswordComponent = () => {
     }
     setUsername(newUsername)
   }
-  const resetPasswordHandler = () => {
+  const recoverPasswordHandler = () => {
     // to integrate with API route
   }
   return (
@@ -55,7 +55,7 @@ const ForgotPasswordComponent = () => {
           gridTemplateColumns: '1fr 20px',
           gridTemplateAreas:
               `"username icon1"
-              "resetPassword ."`,
+              "recoverPassword ."`,
           alignItems:'stretch',
           gap: '10px',
           minWidth: '300px',
@@ -86,11 +86,11 @@ const ForgotPasswordComponent = () => {
             sx={{
               fontWeight:'bold',
               color:theme.palette.primary.contrastText,
-              gridArea: 'resetPassword',
+              gridArea: 'recoverPassword',
             }}
-            onClick={resetPasswordHandler}
+            onClick={recoverPasswordHandler}
           >
-              RESET PASSWORD
+              RECOVER PASSWORD
           </Button>
         </Paper>
       </Paper>
@@ -98,4 +98,4 @@ const ForgotPasswordComponent = () => {
   )
 }
 
-export default ForgotPasswordComponent
+export default RecoverPasswordComponent
