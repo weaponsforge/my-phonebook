@@ -24,25 +24,26 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 
 // LIB
 import { Avalon } from '@/lib/mui/theme'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
-
-// CSS
-// import styles from './styles'
+import { useGlobalState } from '@/lib/hooks/useGlobalState'
 
 // VARIABLES
 const pages = ['about']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
-
-
 
 function Header() {
   // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isLoggedIn] = useState(false)
-  const [activeTheme, setActiveTheme] = useActiveTheme()
+  const [globalState, setGlobalState] = useGlobalState()
 
   // HANDLERS
+  const themeHandler = () => {
+    setGlobalState({
+      ...globalState,
+      activeTheme:globalState.activeTheme === 'dark' ? 'light' : 'dark'
+    })
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
   }
@@ -225,7 +226,7 @@ function Header() {
                 width:'30px',
               }}
             >
-              {activeTheme === 'dark'
+              {globalState.activeTheme === 'dark'
                 ?
                 <HowToRegIcon style={{
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
@@ -245,7 +246,7 @@ function Header() {
                 width:'30px',
               }}
             >
-              {activeTheme === 'dark'
+              {globalState.activeTheme === 'dark'
                 ?
                 <LoginIcon style={{
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
@@ -261,10 +262,9 @@ function Header() {
             justifyContent:'center',
             alignItems:'center',
             width:'30px',
-          }} onClick={()=>{
-            setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
-          }}>
-            {activeTheme === 'dark' 
+          }} onClick={themeHandler}
+          >
+            {globalState.activeTheme === 'dark' 
               ?
               <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :

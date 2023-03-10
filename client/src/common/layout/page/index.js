@@ -6,9 +6,12 @@ import Section from '@/common/layout/section'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 import { useEffect } from 'react'
 import { useBgColor } from '@/lib/hooks/useBgColor'
+import { useGlobalState } from '@/lib/hooks/useGlobalState'
 
 const Background = () => {
-  const [activeTheme] = useActiveTheme()
+  const [globalState, setGlobalState] = useGlobalState()
+  const {activeTheme} = globalState
+  console.log(activeTheme)
   const [bgColor, animateBgColor] = useBgColor()
 
   useEffect(()=>{

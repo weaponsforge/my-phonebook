@@ -7,15 +7,25 @@ import Page from '@/common/layout/page'
 import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 import { useEffect, useState } from 'react'
 import { getRandomJoke } from '@/lib/services/random'
+import { useGlobalState } from '@/lib/hooks/useGlobalState'
+
+const defaultState = {
+  joke:undefined,
+}
 
 function HomeComponent() {
-  const [activeTheme] = useActiveTheme()
-  const [joke, setJoke] = useState()
+  const [state, setState] = useState(defaultState)
+  const [globalState, setGlobalState] = useGlobalState()
+  const {joke} = state
+  const {activeTheme} = globalState
   useEffect(()=>{
-    setTimeout(async()=>{
+    (async()=>{
       const randomJoke = await getRandomJoke()
-      setJoke(randomJoke)
-    })
+      setState(prev=>({
+        ...prev,
+        joke:randomJoke
+      }))
+    })()
   },[])
   return (
     <Page>
