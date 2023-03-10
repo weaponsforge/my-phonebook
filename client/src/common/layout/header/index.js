@@ -25,6 +25,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 // LIB
 import { Avalon } from '@/lib/mui/theme'
 import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useRouter } from 'next/router'
 
 // VARIABLES
 const pages = ['about']
@@ -36,26 +37,30 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isLoggedIn] = useState(false)
   const [globalState, setGlobalState] = useGlobalState()
+  const router = useRouter()
 
-  // HANDLERS
-  const themeHandler = () => {
-    setGlobalState({
-      ...globalState,
-      activeTheme:globalState.activeTheme === 'dark' ? 'light' : 'dark'
-    })
+
+  class eventsHandler {
+    static themeHandler = () => {
+      setGlobalState({
+        ...globalState,
+        activeTheme:globalState.activeTheme === 'dark' ? 'light' : 'dark'
+      })
+    }
+    static handleOpenNavMenu = (e) => {
+      setAnchorElNav(event.currentTarget)
+    }
+    static handleOpenUserMenu = (e) => {
+      setAnchorElUser(event.currentTarget)
+    }
+    static handleCloseNavMenu = (e) => {
+      setAnchorElNav(null)
+    }
+    static handleCloseUserMenu = (e) => {
+      setAnchorElUser(null)
+    }
   }
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget)
-  }
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget)
-  }
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu} = eventsHandler
 
   return (
     <AppBar elevation={10} sx={{
@@ -216,34 +221,13 @@ function Header() {
               </Link>
             </Box>
           }
-          <Link href='/register' style={{ textDecoration: 'none' }}>
-            <Box
-              sx={{ 
-                color: 'black',
-                display: { xs: 'flex', md: 'none' },
-                justifyContent:'center',
-                alignItems:'center',
-                width:'30px',
-              }}
-            >
-              {globalState.activeTheme === 'dark'
-                ?
-                <HowToRegIcon style={{
-                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
-                }}/>
-                :
-                <HowToRegIcon />
-              }
-            </Box>
-          </Link>
           <Link href='/login' style={{ textDecoration: 'none' }}>
-            <Box
+            <IconButton
               sx={{ 
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
                 alignItems:'center',
-                width:'30px',
               }}
             >
               {globalState.activeTheme === 'dark'
@@ -254,14 +238,32 @@ function Header() {
                 :
                 <LoginIcon/>
               }
-            </Box>
+            </IconButton>
           </Link>
-          <Box sx={{
+          <Link href='/register' style={{ textDecoration: 'none' }}>
+            <IconButton
+              sx={{ 
+                color: 'black',
+                display: { xs: 'flex', md: 'none' },
+                justifyContent:'center',
+                alignItems:'center',
+              }}
+            >
+              {globalState.activeTheme === 'dark'
+                ?
+                <HowToRegIcon style={{
+                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                }}/>
+                :
+                <HowToRegIcon />
+              }
+            </IconButton>
+          </Link>
+          <IconButton sx={{
             color: 'black',
             display: 'flex',
             justifyContent:'center',
             alignItems:'center',
-            width:'30px',
           }} onClick={themeHandler}
           >
             {globalState.activeTheme === 'dark' 
@@ -270,7 +272,7 @@ function Header() {
               :
               <DarkModeIcon />
             }
-          </Box>
+          </IconButton>
         </Toolbar>
       </Container>
     </AppBar>
