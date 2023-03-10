@@ -11,7 +11,20 @@ const userData = {
   profilePicture: '/vercel.svg'
 }
 
+const defaultState = {
+  user:{
+    fullName: 'First Second Third',
+    emailAddress: 'test@test.com',
+    contactNo: '62812340018900',
+    profilePicture: '/vercel.svg'
+  },
+  profileChanged:false
+}
+
+const defaultRef = JSON.parse(JSON.stringify(defaultState))
+
 export const UserProfileComponent = () => {
+  const [state, setState] = useState(defaultState)
   const originalProfile = useRef(userData)
   const [user, setUser] = useState(userData)
   const [save, setSave] = useState(false)
@@ -139,4 +152,9 @@ export const UserProfileComponent = () => {
       </Box>
     </Page>
   )
+}
+
+UserProfileComponent.propTypes = {
+  state: PropTypes.object,
+  eventsHandler: PropTypes.func
 }
