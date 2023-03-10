@@ -136,7 +136,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
   )
 }
 
-RegisterComponent.PropTypes = {
+RegisterComponent.propTypes = {
   state: PropTypes.object,
   eventsHandler: PropTypes.func
 }
