@@ -1,44 +1,10 @@
+import Page from '@/common/layout/page'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Avatar, Box, Button, Paper, TextField, Typography, IconButton } from '@mui/material'
-import { useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 
-const { default: Page } = require('@/common/layout/page')
-
-const userData = {
-  fullName: 'First Second Third',
-  emailAddress: 'test@test.com',
-  contactNo: '62812340018900',
-  profilePicture: '/vercel.svg'
-}
-
-export const UserProfileComponent = () => {
-  const originalProfile = useRef(userData)
-  const [user, setUser] = useState(userData)
-  const [save, setSave] = useState(false)
-
-  const inputHandler = (e) => {
-    const key = e.target.id
-    const value = e.target.value
-    setUser((prev)=>{
-      return {
-        ...prev,
-        [key]:value
-      }
-    })
-  }
-  
-  const profilePictureHandler = () => {
-    // console.log('change')
-  }
-
-  const updateUserHandler = () => {
-    // const newUserData = user
-  }
-
-  useEffect(()=>{
-    setSave(JSON.stringify(originalProfile.current) !== JSON.stringify(user))
-  },[user])
-
+export const UserProfileComponent = ({state, eventsHandler}) => {
+  const {inputHandler, profilePictureHandler, updateUserHandler} = eventsHandler
   return (
     <Page>
       <Box sx={{
@@ -67,7 +33,7 @@ export const UserProfileComponent = () => {
             }}
           >
             <Avatar
-              src={user.profilePicture}
+              src={state.user.profilePicture}
               alt="profilePicture"
               sx={{
                 width:'100%',
@@ -89,7 +55,7 @@ export const UserProfileComponent = () => {
                 height: '20px',
               },
             }}
-            value={user.fullName}
+            value={state.user.fullName}
             onChange={inputHandler}
           />
 
@@ -102,7 +68,7 @@ export const UserProfileComponent = () => {
                 height: '20px',
               },
             }}
-            value={user.emailAddress}
+            value={state.user.emailAddress}
             onChange={inputHandler}
           />
 
@@ -115,10 +81,10 @@ export const UserProfileComponent = () => {
                 height: '20px',
               },
             }}
-            value={user.contactNo}
+            value={state.user.contactNo}
             onChange={inputHandler}
           />
-          {save
+          {state.profileChanged
             ?
             <Button 
               variant="contained" 
@@ -139,4 +105,9 @@ export const UserProfileComponent = () => {
       </Box>
     </Page>
   )
+}
+
+UserProfileComponent.propTypes = {
+  state: PropTypes.object,
+  eventsHandler: PropTypes.func
 }

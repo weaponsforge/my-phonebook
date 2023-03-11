@@ -5,13 +5,12 @@ export default class AuthUtil {
   static config = {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    auth: auth,
   }
 
   // methods
   static signUp = async (email, password) => {
     try {
-      const response = await this.config.createUserWithEmailAndPassword(this.config.auth, email, password)
+      const response = await this.config.createUserWithEmailAndPassword(auth, email, password)
       const user = response.user
       return user
     } catch (error) {
@@ -23,7 +22,7 @@ export default class AuthUtil {
 
   static signIn = async (email,password) => {
     try {
-      const response = await this.config.signInWithEmailAndPassword(this.config.auth, email, password)
+      const response = await this.config.signInWithEmailAndPassword(auth, email, password)
       const user = response.user
       return user
     } catch (error) {
