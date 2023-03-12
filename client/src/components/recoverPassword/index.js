@@ -96,10 +96,10 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
         </Paper>
       </Paper>
 
-      {state.errorMsg !== '' &&
+      {(state.message) &&
         <SimpleSnackbar
-          message={state.errorMsg}
-          closeHandler={eventsHandler.resetError}
+          message={state.message}
+          closeHandler={eventsHandler.resetMessage}
         />
       }
     </Page>
