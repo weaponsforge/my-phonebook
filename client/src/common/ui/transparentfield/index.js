@@ -8,12 +8,12 @@ const TransparentTextfield = styled((props) => (
 ))(({ theme }) => ({
   '& .MuiInputBase-root': {
     '& input': {
-      backgroundClip:  'text !important'
+      backgroundClip: 'text !important'
     }
   },
   '& .MuiOutlinedInput-input': {
-    '&:-webkit-autofill': {
-      '-webkit-box-shadow': '0 0 0 100px transparent inset'
+    '&:webkitAutofill': {
+      'WebkitBoxShadow': '0 0 0 100px transparent inset'
     }
   }
 }))

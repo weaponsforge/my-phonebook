@@ -53,6 +53,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
       <form id="resetpassword" onSubmit={handleFormSubmit}>
         <TransparentTextfield
           id={INPUT_ID.PASSWORD}
+          type='password'
           size='small'
           label='Enter your new password'
           placeholder='Enter your new password'
@@ -68,6 +69,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
 
         <TransparentTextfield
           id={INPUT_ID.CONFIRM_PASSWORD}
+          type='password'
           size='small'
           label='Confirm your new password'
           placeholder='Confirm your new password'
