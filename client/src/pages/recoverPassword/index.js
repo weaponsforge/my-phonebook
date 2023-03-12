@@ -3,11 +3,16 @@ import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 
+import { handleAccountActionCode, ACCOUNT_ACTION } from '@/lib/services/account'
+import PromiseWrapper from '@/lib/utils/promiseWrapper'
+
 const defaultState = {
   username:{
-    error:true, helperText:' ',value:'', color:'text' 
+    error:true, helperText:' ',value:'', color:'text'
   },
-  joke:undefined
+  joke:undefined,
+  loading: false,
+  errorMsg: ''
 }
 
 const RecoverPassword = () => {
@@ -28,8 +33,20 @@ const RecoverPassword = () => {
       }))
     }
 
-    static recoverPasswordHandler = () => {
+    static recoverPasswordHandler = async () => {
+      setState({ ...state, loading: true  })
 
+      const { error } = await PromiseWrapper.wrap(handleAccountActionCode({
+        mode: ACCOUNT_ACTION.SEND_RESET,
+        email: state.username.value
+      }))
+
+
+      setState(prev => ({ ...prev, loading: false, errorMsg: error }))
+    }
+
+    static resetError = () => {
+      setState({ ...state, errorMsg: '' })
     }
   }
 

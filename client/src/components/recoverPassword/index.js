@@ -4,6 +4,8 @@ import { Button, Paper, TextField, Typography } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import { useTheme } from '@emotion/react'
 
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+
 const RecoverPasswordComponent = ({state, eventsHandler}) => {
   const theme = useTheme()
   const {username, joke} = state
@@ -22,10 +24,10 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
         flexWrap: 'wrap-reverse'
       }}>
         <Typography variant="h8" component="h3" gutterBottom sx={{
-          color:theme.palette.text.disabled, 
-          textAlign: 'center', 
+          color:theme.palette.text.disabled,
+          textAlign: 'center',
           paddingLeft: '20px',
-          paddingRight:'20px', 
+          paddingRight:'20px',
           width: '50vw' }}>
             `{joke && joke.joke}`
         </Typography>
@@ -49,6 +51,7 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
             size="small"
             type="text"
             fullwidth="true"
+            disabled={state.loading}
             required={true}
             color={username.color}
             helperText={username.helperText}
@@ -63,8 +66,8 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
           {
             state.username.error
               ?
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
                 sx={{
                   fontWeight:'bold',
                   color:theme.palette.primary.contrastText,
@@ -76,8 +79,9 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
               RECOVER PASSWORD
               </Button>
               :
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
+                disabled={state.loading}
                 sx={{
                   fontWeight:'bold',
                   color:theme.palette.primary.contrastText,
@@ -91,6 +95,13 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
 
         </Paper>
       </Paper>
+
+      {state.errorMsg !== '' &&
+        <SimpleSnackbar
+          message={state.errorMsg}
+          closeHandler={eventsHandler.resetError}
+        />
+      }
     </Page>
   )
 }
