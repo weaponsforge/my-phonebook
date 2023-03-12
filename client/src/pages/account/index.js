@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { verifyPasswordResetCode } from 'firebase/auth'
 import { auth } from '@/lib/utils/firebase/config'
 
-import { handleAccountActionCode, ACCOUNT_ACTION } from '@/services/account'
+import { verifyAccountEmail, resetAccountPassword, ACCOUNT_ACTION } from '@/services/account'
 import PromiseWrapper from '@/lib/utils/promiseWrapper'
 
 import AccountComponent from '@/components/account'
@@ -23,20 +23,6 @@ const defaultState = {
 function Account () {
   const [state, setState] = useState(defaultState)
   const router = useRouter()
-
-  const localPromiseHandler = async ({ promise, lockIfError = false, successMsg = '' }) => {
-    setState(prev => ({ ...prev, loading: true, error: '', success: '' }))
-
-    const { error, status } = await PromiseWrapper.wrap(promise)
-
-    setState(prev => ({
-      ...prev,
-      loading: false,
-      locked: (lockIfError && status === PromiseWrapper.STATUS.ERROR),
-      success: (status === PromiseWrapper.STATUS.SUCCESS) ? successMsg : '',
-      error
-    }))
-  }
 
   useEffect(() => {
     if (router.isReady) {
@@ -59,10 +45,7 @@ function Account () {
         case ACCOUNT_ACTION.VERIFY_EMAIL:
           localPromiseHandler({
             successMsg: messages.find(item => item.mode === mode)?.success ?? '',
-            promise: handleAccountActionCode({
-              mode,
-              actionCode
-            })
+            promise: verifyAccountEmail(actionCode)
           })
           break
         case ACCOUNT_ACTION.RESET_PASSWORD:
@@ -84,16 +67,26 @@ function Account () {
     }
   }, [router.isReady, router.query])
 
+  const localPromiseHandler = async ({ promise, lockIfError = false, successMsg = '' }) => {
+    setState(prev => ({ ...prev, loading: true, error: '', success: '' }))
+
+    const { error, status } = await PromiseWrapper.wrap(promise)
+
+    setState(prev => ({
+      ...prev,
+      loading: false,
+      locked: (lockIfError && status === PromiseWrapper.STATUS.ERROR),
+      success: (status === PromiseWrapper.STATUS.SUCCESS) ? successMsg : '',
+      error
+    }))
+  }
+
   const handleFormSubmit = (e) => {
     e.preventDefault()
 
     localPromiseHandler({
       successMsg: messages.find(item => item.mode === state.mode)?.success ?? '',
-      promise: handleAccountActionCode({
-        mode: state.mode,
-        actionCode: state.actionCode,
-        password: e?.target?.password?.value ?? ''
-      })
+      promise: resetAccountPassword(state.actionCode, e?.target?.password?.value ?? '')
     })
   }
 
