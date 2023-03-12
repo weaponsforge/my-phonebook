@@ -5,6 +5,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CheckIcon from '@mui/icons-material/Check'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import LoadingButton from '@/common/ui/loadingbutton'
 import PropTypes from 'prop-types'
 
 const RegisterComponent = ({ state, eventsHandler }) => {
@@ -114,21 +115,20 @@ const RegisterComponent = ({ state, eventsHandler }) => {
                 }}
                 onClick={registerHandler}
               >
-            REGISTER
+                REGISTER
               </Button>
               :
-              <Button
+              <LoadingButton
                 variant="contained"
                 sx={{
                   gridArea:'register',
                   fontWeight:'bold',
                   color: (theme)=>theme.palette.primary.contrastText
                 }}
-                disabled={loading}
-                onClick={registerHandler}
-              >
-            REGISTER
-              </Button>
+                isloading={loading}
+                handleClick={registerHandler}
+                label='REGISTER'
+              />
           }
 
           {(errorMessage || successMessage) &&

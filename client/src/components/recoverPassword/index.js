@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import Page from '@/common/layout/page'
-import { Button, Paper, TextField, Typography } from '@mui/material'
+import { Paper, TextField, Typography } from '@mui/material'
+import LoadingButton from '@/common/ui/loadingbutton'
 import CheckIcon from '@mui/icons-material/Check'
 import { useTheme } from '@emotion/react'
 
@@ -66,20 +67,19 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
           {
             state.username.error
               ?
-              <Button
+              <LoadingButton
                 variant="contained"
                 sx={{
                   fontWeight:'bold',
                   color:theme.palette.primary.contrastText,
-                  gridArea: 'recoverPassword',
+                  gridArea: 'recoverPassword'
                 }}
                 onClick={recoverPasswordHandler}
                 disabled
-              >
-              RECOVER PASSWORD
-              </Button>
+                label='RECOVER PASSWORD'
+              />
               :
-              <Button
+              <LoadingButton
                 variant="contained"
                 disabled={state.loading}
                 sx={{
@@ -87,10 +87,10 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
                   color:theme.palette.primary.contrastText,
                   gridArea: 'recoverPassword',
                 }}
-                onClick={recoverPasswordHandler}
-              >
-              RECOVER PASSWORD
-              </Button>
+                isloading={state.loading}
+                handleClick={recoverPasswordHandler}
+                label='RECOVER PASSWORD'
+              />
           }
 
         </Paper>
