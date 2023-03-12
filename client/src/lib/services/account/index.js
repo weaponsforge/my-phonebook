@@ -22,11 +22,50 @@ const ACCOUNT_ACTION = {
  */
 const handleAccountActionCode = async ({ mode, actionCode, email, password }) => {
   const data = { mode, actionCode, email, password }
-  return axios.post(ACTION_HANDLER_URL, data)
+  return await axios.post(ACTION_HANDLER_URL, data)
 }
+
+/**
+ * Send an account email verification to user's email address.
+ * The email contains a custom URL link with actionCode (oobCode) for verifiying/confirming the email account.
+ * @param {String} email - User email
+ * @returns {Promise}
+ */
+const sendEmailVerification = async (email) =>
+  handleAccountActionCode({ mode: ACCOUNT_ACTION.SEND_VERIFICATTION, email })
+
+/**
+ * Send a password reset email to user's email address.
+ * The email contains a custom URL link with actionCode (oobCode) for resetting the password.
+ * @param {String} email - User email
+ * @returns {Promise}
+ */
+const sendPasswordResetEmail = async (email) =>
+  handleAccountActionCode({ mode: ACCOUNT_ACTION.SEND_RESET, email })
+
+/**
+ * Verifies a user's Firebase email account.
+ * @param {String} actionCode - Firebase-generated oobCode sent to user's email for verifying/confirming the email account.
+ * @returns {Promise}
+ */
+const verifyAccountEmail = async (actionCode) =>
+  handleAccountActionCode({ mode: ACCOUNT_ACTION.VERIFY_EMAIL, actionCode })
+
+/**
+ * Resets a user's password
+ * @param {String} actionCode - Firebase-generated oobCode sent to user's email for resetting the password.
+ * @param {String} password - New password
+ * @returns {Promise}
+ */
+const resetAccountPassword = async (actionCode, password) =>
+  handleAccountActionCode({ mode: ACCOUNT_ACTION.RESET_PASSWORD, actionCode, password })
 
 export {
   ACTION_HANDLER_URL,
   ACCOUNT_ACTION,
-  handleAccountActionCode
+  handleAccountActionCode,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  verifyAccountEmail,
+  resetAccountPassword
 }
