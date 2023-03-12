@@ -8,10 +8,10 @@ export default class PromiseWrapper {
   }
 
   /**
- * Formats the success or error results of a Promise into a { response, status, error } format.
+ * Formats the success or error results of a Promise into a { response, status, error } object format.
  * Resolves a rejected Promise without throwing errors.
- * @param {Promise} promise
- * @returns {Object} { response: Object, status: String, error: String }
+ * @param {Promise} promise - An async javascript method (Promise)
+ * @returns {Promise} A promise that resolves to { response: Object, status: String, error: String }
  */
   static wrap (promise) {
     return new Promise((resolve) => {

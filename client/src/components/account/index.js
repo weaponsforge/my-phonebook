@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 
 import Page from '@/common/layout/page'
 import ResetPasswordComponent from '@/domain/account/resetpassword'
-import { ACCOUNT_ACTION } from '@/utils/constants'
+import { ACCOUNT_ACTION } from '@/services/account'
 
 function AccountComponent ({ state, handleFormSubmit }) {
   return (
