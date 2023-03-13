@@ -11,12 +11,12 @@ My Phonebook will consist of a front-end website (client) and a secure REST API 
 ### Production
 
 Website: https://weaponsforge.github.io/my-phonebook/<br>
-Server: https://myphonebook-app-dev.vercel.app/
+Server: https://myphonebook-app.vercel.app/
 
 ### Development
 
 Website: https://myphonebook-app-dev.web.app/<br>
-Server: https://myphonebook-app.vercel.app/
+Server: https://myphonebook-app-dev.vercel.app/
 
 ## Software Documentation
 
