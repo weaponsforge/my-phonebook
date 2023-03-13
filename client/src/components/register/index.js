@@ -1,11 +1,11 @@
 import Page from '@/common/layout/page'
 import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CheckIcon from '@mui/icons-material/Check'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import LoadingButton from '@/common/ui/loadingbutton'
+import TransparentTextfield from '@/common/ui/transparentfield'
 import PropTypes from 'prop-types'
 
 const RegisterComponent = ({ state, eventsHandler }) => {
@@ -48,7 +48,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           padding: '40px',
           background: 'inherit',
         }}>
-          <TextField
+          <TransparentTextfield
             sx={{ gridArea:'username'}}
             label="Username (email)"
             id="username"
@@ -66,7 +66,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           {!username.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
           }
-          <TextField
+          <TransparentTextfield
             sx={{ gridArea:'password'}}
             label="Password"
             id="userPassword"
@@ -84,7 +84,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           {!password.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
-          <TextField
+          <TransparentTextfield
             sx={{ gridArea:'passwordConfirmation'}}
             label="Password confirmation"
             id="userPasswordConfirmation"

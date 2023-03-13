@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import Page from '@/common/layout/page'
-import { Paper, TextField, Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import LoadingButton from '@/common/ui/loadingbutton'
+import TransparentTextfield from '@/common/ui/transparentfield'
 import CheckIcon from '@mui/icons-material/Check'
 import { useTheme } from '@emotion/react'
 
@@ -46,7 +47,7 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
           padding: '40px',
           background: 'inherit',
         }}>
-          <TextField
+          <TransparentTextfield
             label="Username (email)"
             id="username"
             size="small"

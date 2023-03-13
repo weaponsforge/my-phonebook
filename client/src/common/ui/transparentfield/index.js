@@ -12,7 +12,7 @@ const TransparentTextfield = styled((props) => (
     }
   },
   '& .MuiOutlinedInput-input': {
-    '&:webkitAutofill': {
+    '&:-webkit-autofill': {
       'WebkitBoxShadow': '0 0 0 100px transparent inset'
     }
   }
