@@ -4,19 +4,19 @@ import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 
 import { sendPasswordResetEmail } from '@/lib/services/account'
-import PromiseWrapper from '@/lib/utils/promiseWrapper'
+import { usePromise, Status } from '@/lib/hooks/usePromise'
 
 const defaultState = {
   username:{
     error:true, helperText:' ',value:'', color:'text'
   },
   joke:undefined,
-  loading: false,
-  message: ''
+  method: null
 }
 
 const RecoverPassword = () => {
   const [state, setState] = useState(defaultState)
+  const { loading, error, status } = usePromise(state.method)
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -33,15 +33,11 @@ const RecoverPassword = () => {
       }))
     }
 
-    static recoverPasswordHandler = async () => {
-      setState({ ...state, loading: true  })
-
-      const { error } = await PromiseWrapper.wrap(sendPasswordResetEmail(state.username.value))
-
-      setState(prev => ({
-        ...prev, loading: false,
-        message: error || 'Email sent'
-      }))
+    static recoverPasswordHandler = () => {
+      setState({
+        ...state,
+        method: sendPasswordResetEmail(state.username.value)
+      })
     }
 
     static resetMessage = () => {
@@ -61,7 +57,13 @@ const RecoverPassword = () => {
 
   return (
     <RecoverPasswordComponent
-      state={state}
+      state={{
+        ...state,
+        loading,
+        message: (status === Status.SUCCESS)
+          ? 'Email sent. Please check your inbox.'
+          : error
+      }}
       eventsHandler={eventsHandler}
     />
   )
