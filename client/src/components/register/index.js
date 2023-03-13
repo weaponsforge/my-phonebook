@@ -7,8 +7,11 @@ import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import LoadingButton from '@/common/ui/loadingbutton'
 import TransparentTextfield from '@/common/ui/transparentfield'
 import PropTypes from 'prop-types'
+import Link from 'next/link'
+import { useTheme } from '@emotion/react'
 
 const RegisterComponent = ({ state, eventsHandler }) => {
+  const theme = useTheme()
   const {joke, username, password, passwordConfirmation, errorMessage, successMessage, loading } = state
   const {usernameHandler, passwordHandler, passwordConfirmationHandler, registerHandler, resetError } = eventsHandler
   return (
@@ -39,7 +42,8 @@ const RegisterComponent = ({ state, eventsHandler }) => {
             `"username icon1"
             "password icon2"
             "passwordConfirmation icon3"
-            "register ."`,
+            "register ."
+            "login ."`,
           alignItems:'stretch',
           gap: '10px',
           minWidth: '300px',
@@ -130,7 +134,18 @@ const RegisterComponent = ({ state, eventsHandler }) => {
                 label='REGISTER'
               />
           }
-
+          <Link href="/login" style={{gridArea: 'login'}}>
+            <Typography
+              sx={{
+                fontSize: '12px',
+                textAlign: 'center',
+                marginTop: '-5px',
+                color:theme.palette.text.primary,
+              }}
+            >
+              Already have an account? Login instead.
+            </Typography>
+          </Link>
           {(errorMessage || successMessage) &&
             <SimpleSnackbar
               message={errorMessage || successMessage}
