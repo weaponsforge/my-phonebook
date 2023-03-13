@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "my-phonebook-dev"
+    "default": "myphonebook-app-dev"
   },
   "targets": {
-    "my-phonebook-dev": {
+    "myphonebook-app-dev": {
       "hosting": {
         "dev": [
-          "my-phonebook-dev"
+          "myphonebook-app-dev"
         ]
       }
     }
