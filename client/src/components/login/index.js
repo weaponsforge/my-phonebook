@@ -9,8 +9,8 @@ import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import CheckIcon from '@mui/icons-material/Check'
 import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import TransparentTextfield from '@/common/ui/transparentfield'
 import { useTheme } from '@emotion/react'
 
 function LoginComponent ({state, eventsHandler}) {
@@ -30,10 +30,10 @@ function LoginComponent ({state, eventsHandler}) {
         flexWrap: 'wrap-reverse'
       }}>
         <Typography variant="h8" component="h3" gutterBottom sx={{
-          color:theme.palette.text.disabled, 
-          textAlign: 'center', 
+          color:theme.palette.text.disabled,
+          textAlign: 'center',
           paddingLeft: '20px',
-          paddingRight:'20px', 
+          paddingRight:'20px',
           width: '50vw' }}>
           `{joke && joke.joke}`
         </Typography>
@@ -53,7 +53,7 @@ function LoginComponent ({state, eventsHandler}) {
           padding: '40px',
           background: 'inherit',
         }}>
-          <TextField
+          <TransparentTextfield
             label="Username (email)"
             id="username"
             size="small"
@@ -70,7 +70,7 @@ function LoginComponent ({state, eventsHandler}) {
           {!username.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
           }
-          <TextField
+          <TransparentTextfield
             label="Password"
             id="userPassword"
             size="small"
@@ -90,9 +90,9 @@ function LoginComponent ({state, eventsHandler}) {
           {
             state.username.error || state.password.error
               ?
-              <Button 
+              <Button
                 disabled
-                variant="contained" 
+                variant="contained"
                 id="login"
                 sx={{
                   fontWeight:'bold',
@@ -104,8 +104,8 @@ function LoginComponent ({state, eventsHandler}) {
               LOGIN
               </Button>
               :
-              <Button 
-                variant="contained" 
+              <Button
+                variant="contained"
                 id="login"
                 sx={{
                   fontWeight:'bold',

@@ -1,15 +1,16 @@
 import Page from '@/common/layout/page'
 import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CheckIcon from '@mui/icons-material/Check'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import LoadingButton from '@/common/ui/loadingbutton'
+import TransparentTextfield from '@/common/ui/transparentfield'
 import PropTypes from 'prop-types'
 
 const RegisterComponent = ({ state, eventsHandler }) => {
-  const {joke, username, password, passwordConfirmation, errorMessage } = state
-  const {usernameHandler, passwordHandler, passwordConfirmationHandler, registerHandler} = eventsHandler
+  const {joke, username, password, passwordConfirmation, errorMessage, successMessage, loading } = state
+  const {usernameHandler, passwordHandler, passwordConfirmationHandler, registerHandler, resetError } = eventsHandler
   return (
     <Page>
       <Paper sx={{
@@ -23,11 +24,11 @@ const RegisterComponent = ({ state, eventsHandler }) => {
         flexWrap: 'wrap-reverse'
       }}>
         <Typography variant="h8" component="h3" gutterBottom sx={{
-          color:(theme)=>theme.palette.text.disabled, 
-          textAlign: 'center', 
+          color:(theme)=>theme.palette.text.disabled,
+          textAlign: 'center',
           paddingLeft: '20px',
-          paddingRight:'20px', 
-          width: '50vw' 
+          paddingRight:'20px',
+          width: '50vw'
         }}>
                     `{joke && joke.joke}`
         </Typography>
@@ -47,7 +48,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           padding: '40px',
           background: 'inherit',
         }}>
-          <TextField
+          <TransparentTextfield
             sx={{ gridArea:'username'}}
             label="Username (email)"
             id="username"
@@ -55,6 +56,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
             type="text"
             fullwidth="true"
             required={true}
+            disabled={loading}
             color={username.color}
             helperText={username.helperText}
             value={username.value}
@@ -64,7 +66,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           {!username.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
           }
-          <TextField
+          <TransparentTextfield
             sx={{ gridArea:'password'}}
             label="Password"
             id="userPassword"
@@ -72,6 +74,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
             type="password"
             fullwidth="true"
             required={true}
+            disabled={loading}
             value={password.value}
             error={password.error}
             color={password.color}
@@ -81,7 +84,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           {!password.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
-          <TextField
+          <TransparentTextfield
             sx={{ gridArea:'passwordConfirmation'}}
             label="Password confirmation"
             id="userPasswordConfirmation"
@@ -89,6 +92,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
             type="password"
             fullwidth="true"
             required={true}
+            disabled={loading}
             value={passwordConfirmation.value}
             error={passwordConfirmation.error}
             color={passwordConfirmation.color}
@@ -101,9 +105,9 @@ const RegisterComponent = ({ state, eventsHandler }) => {
           {
             state.username.error || state.password.error || state.passwordConfirmation.error
               ?
-              <Button 
+              <Button
                 disabled
-                variant="contained" 
+                variant="contained"
                 sx={{
                   gridArea:'register',
                   fontWeight:'bold',
@@ -111,24 +115,27 @@ const RegisterComponent = ({ state, eventsHandler }) => {
                 }}
                 onClick={registerHandler}
               >
-            REGISTER
+                REGISTER
               </Button>
               :
-              <Button 
-                variant="contained" 
+              <LoadingButton
+                variant="contained"
                 sx={{
                   gridArea:'register',
                   fontWeight:'bold',
                   color: (theme)=>theme.palette.primary.contrastText
                 }}
-                onClick={registerHandler}
-              >
-            REGISTER
-              </Button>
+                isloading={loading}
+                handleClick={registerHandler}
+                label='REGISTER'
+              />
           }
 
-          {errorMessage &&
-            <SimpleSnackbar message={errorMessage}/>
+          {(errorMessage || successMessage) &&
+            <SimpleSnackbar
+              message={errorMessage || successMessage}
+              closeHandler={resetError}
+            />
           }
         </Paper>
       </Paper>

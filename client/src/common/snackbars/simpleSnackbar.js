@@ -1,11 +1,11 @@
-import * as React from 'react'
+import { useState } from 'react'
 import Button from '@mui/material/Button'
 import Snackbar from '@mui/material/Snackbar'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-export default function SimpleSnackbar({ message }) {
-  const [open, setOpen] = React.useState(true)
+export default function SimpleSnackbar({ message, closeHandler }) {
+  const [open, setOpen] = useState(true)
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -13,10 +13,14 @@ export default function SimpleSnackbar({ message }) {
     }
 
     setOpen(false)
+
+    if (closeHandler) {
+      closeHandler()
+    }
   }
 
   const action = (
-    <React.Fragment>
+    <>
       <Button color="secondary" size="small" onClick={handleClose}>
         UNDO
       </Button>
@@ -28,7 +32,7 @@ export default function SimpleSnackbar({ message }) {
       >
         <CloseIcon fontSize="small" />
       </IconButton>
-    </React.Fragment>
+    </>
   )
 
   return (

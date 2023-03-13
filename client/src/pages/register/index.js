@@ -3,28 +3,32 @@ import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
+import { sendEmailVerification } from '@/lib/services/account'
+import PromiseWrapper from '@/lib/utils/promiseWrapper'
 
 const defaultState = {
   joke:undefined,
   username:{
-    error:true, 
+    error:true,
     helperText:' ',
-    value:'', 
-    color:'text' 
+    value:'',
+    color:'text'
   },
   password:{
-    error:true, 
+    error:true,
     helperText:' ',
-    value:'', 
-    color:'text' 
+    value:'',
+    color:'text'
   },
   passwordConfirmation:{
-    error:true, 
+    error:true,
     helperText:' ',
-    value:'', 
-    color:'text' 
+    value:'',
+    color:'text'
   },
-  errorMessage:undefined
+  errorMessage: undefined,
+  successMessage: '',
+  loading: false
 }
 
 const Register = () => {
@@ -89,13 +93,31 @@ const Register = () => {
       if (!allFieldAreValid) return
       // register on firebase
       (async()=>{
+        setState(prev => ({ ...prev, loading: true, errorMessage: undefined, successMessage: '' }))
+
         const response = await AuthUtil.signUp(username.value, password.value)
-        const errorMessage = response.errorMessage
+        let errorMessage = response.errorMessage
+        let sendVerificationStatus = PromiseWrapper.STATUS.SUCCESS
+
+        if (errorMessage === undefined) {
+          const { error, status: sendStatus } = await PromiseWrapper.wrap(sendEmailVerification(username.value))
+          errorMessage = (error === '') ? undefined : error
+          sendVerificationStatus = sendStatus
+        }
+
         setState(prev=>({
           ...prev,
-          errorMessage
+          loading: false,
+          errorMessage,
+          successMessage: (sendVerificationStatus === PromiseWrapper.STATUS.SUCCESS)
+            ? 'Email sent. Please check your email.'
+            : ''
         }))
       })()
+    }
+
+    static resetError = () => {
+      setState({ ...state, errorMessage: '', successMessage: '' })
     }
   }
   return (

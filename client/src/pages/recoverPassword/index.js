@@ -3,15 +3,20 @@ import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 
+import { sendPasswordResetEmail } from '@/lib/services/account'
+import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
+
 const defaultState = {
   username:{
-    error:true, helperText:' ',value:'', color:'text' 
+    error:true, helperText:' ',value:'', color:'text'
   },
-  joke:undefined
+  joke:undefined,
+  method: null
 }
 
 const RecoverPassword = () => {
   const [state, setState] = useState(defaultState)
+  const { loading, error, status } = usePromise(state.method)
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -29,7 +34,14 @@ const RecoverPassword = () => {
     }
 
     static recoverPasswordHandler = () => {
+      setState({
+        ...state,
+        method: sendPasswordResetEmail(state.username.value)
+      })
+    }
 
+    static resetMessage = () => {
+      setState({ ...state, message: '' })
     }
   }
 
@@ -45,7 +57,13 @@ const RecoverPassword = () => {
 
   return (
     <RecoverPasswordComponent
-      state={state}
+      state={{
+        ...state,
+        loading,
+        message: (status === RequestStatus.SUCCESS)
+          ? 'Email sent. Please check your inbox.'
+          : error
+      }}
       eventsHandler={eventsHandler}
     />
   )

@@ -16,7 +16,7 @@ Server: https://my-phonebook.vercel.app/
 ### Development
 
 Website: https://my-phonebook-dev.web.app/<br>
-Server: https://my-phonebook-dev.vercel.app/
+Server: https://my-phonebook-test.vercel.app/
 
 ## Software Documentation
 
