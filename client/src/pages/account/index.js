@@ -4,7 +4,7 @@ import { verifyPasswordResetCode } from 'firebase/auth'
 import { auth } from '@/lib/utils/firebase/config'
 
 import { verifyAccountEmail, resetAccountPassword, ACCOUNT_ACTION } from '@/services/account'
-import PromiseWrapper from '@/lib/utils/promiseWrapper'
+import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
 
 import AccountComponent from '@/components/account'
 import messages from './messages'
@@ -12,6 +12,7 @@ import messages from './messages'
 const defaultState = {
   loading: true,
   locked: false,
+  checkCode: false,
   message: '',
   error: '',
   success: '',
@@ -22,6 +23,8 @@ const defaultState = {
 
 function Account () {
   const [state, setState] = useState(defaultState)
+  const [method, setMethod] = useState(null)
+  const { status, error: asyncError, loading } = usePromise(method)
   const router = useRouter()
 
   useEffect(() => {
@@ -43,56 +46,44 @@ function Account () {
 
         switch (mode) {
         case ACCOUNT_ACTION.VERIFY_EMAIL:
-          localPromiseHandler({
-            successMsg: messages.find(item => item.mode === mode)?.success ?? '',
-            promise: verifyAccountEmail(actionCode)
-          })
+          setMethod(verifyAccountEmail(actionCode))
           break
         case ACCOUNT_ACTION.RESET_PASSWORD:
-          localPromiseHandler({
-            promise: verifyPasswordResetCode(auth, actionCode),
-            lockIfError: true
-          })
+          setState(prev => ({ ...prev, checkCode: true }))
+          setMethod(verifyPasswordResetCode(auth, actionCode))
           break
         default:
+          setState(prev => ({ ...prev,
+            loading: false, error: 'Invalid request' }))
           break
         }
       } else {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          error: 'Invalid request'
-        }))
+        setState(prev => ({ ...prev,
+          loading: false, error: 'Invalid request' }))
       }
     }
   }, [router.isReady, router.query])
 
-  const localPromiseHandler = async ({ promise, lockIfError = false, successMsg = '' }) => {
-    setState(prev => ({ ...prev, loading: true, error: '', success: '' }))
-
-    const { error, status } = await PromiseWrapper.wrap(promise)
-
-    setState(prev => ({
-      ...prev,
-      loading: false,
-      locked: (lockIfError && status === PromiseWrapper.STATUS.ERROR),
-      success: (status === PromiseWrapper.STATUS.SUCCESS) ? successMsg : '',
-      error
-    }))
-  }
-
   const handleFormSubmit = (e) => {
     e.preventDefault()
 
-    localPromiseHandler({
-      successMsg: messages.find(item => item.mode === state.mode)?.success ?? '',
-      promise: resetAccountPassword(state.actionCode, e?.target?.password?.value ?? '')
-    })
+    setState(prev => ({ ...prev, checkCode: false }))
+    setMethod(resetAccountPassword(
+      state.actionCode,
+      e?.target?.password?.value ?? '')
+    )
   }
 
   return (
     <AccountComponent
-      state={state}
+      state={{
+        ...state,
+        loading,
+        error: state.error || asyncError,
+        locked: (status === RequestStatus.ERROR && state.mode === ACCOUNT_ACTION.RESET_PASSWORD),
+        success: (status === RequestStatus.SUCCESS && !state.checkCode) ?
+          messages.find(item => item.mode === state.mode)?.success : '',
+      }}
       handleFormSubmit={handleFormSubmit}
     />
   )

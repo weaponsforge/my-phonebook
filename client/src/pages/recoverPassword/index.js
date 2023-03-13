@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
 
 import { sendPasswordResetEmail } from '@/lib/services/account'
-import { usePromise, Status } from '@/lib/hooks/usePromise'
+import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
 
 const defaultState = {
   username:{
@@ -60,7 +60,7 @@ const RecoverPassword = () => {
       state={{
         ...state,
         loading,
-        message: (status === Status.SUCCESS)
+        message: (status === RequestStatus.SUCCESS)
           ? 'Email sent. Please check your inbox.'
           : error
       }}

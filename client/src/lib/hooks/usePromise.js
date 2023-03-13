@@ -8,12 +8,12 @@ const defaultState = {
   status: PromiseWrapper.STATUS.IDLE
 }
 
-const Status = PromiseWrapper.STATUS
+const RequestStatus = PromiseWrapper.STATUS
 
 /**
  * A helper/wrapper hook for handling async service methods (Promises).
  * Returns the success, error or loading status and response of a Promise as React states.
- * @param {Promise} promise - An async javascript method (Promise)
+ * @param {Promise} promise - An async javascript method (Promise) that resolves and rejects.
  * @returns {Object} React state object { response, loading, error, status }
  */
 function usePromise (promise) {
@@ -60,5 +60,5 @@ function usePromise (promise) {
 
 export {
   usePromise,
-  Status
+  RequestStatus
 }
