@@ -1,5 +1,5 @@
 import HomeComponent from '@/components/home'
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 
@@ -10,7 +10,7 @@ const defaultState = {
 
 export default function Index() {
   const [state, setState] = useState(defaultState)
-  const [globalState] = useGlobalState()
+  const [activeTheme] = useSyncLocalStorage('activeTheme')
 
   useEffect(()=>{
     (async()=>{
@@ -25,9 +25,9 @@ export default function Index() {
   useEffect(()=>{
     setState(prev=>({
       ...prev,
-      activeTheme:globalState.activeTheme
+      activeTheme:activeTheme
     }))
-  },[globalState.activeTheme])
+  },[activeTheme])
 
   return (
     <HomeComponent 

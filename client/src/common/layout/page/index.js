@@ -5,12 +5,11 @@ import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
 import { useEffect } from 'react'
 import { useBgColor } from '@/lib/hooks/useBgColor'
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const Background = () => {
-  const [globalState] = useGlobalState()
+  const [activeTheme] = useSyncLocalStorage('activeTheme')
   const [bgColor, animateBgColor] = useBgColor()
-  const {activeTheme} = globalState
 
   useEffect(()=>{
     animateBgColor()

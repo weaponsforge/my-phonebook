@@ -11,7 +11,7 @@ import { store } from '@/store/store'
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 import { lightTheme, darkTheme } from '@/lib/mui/theme'
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
@@ -19,7 +19,7 @@ import { useGlobalState } from '@/lib/hooks/useGlobalState'
 const clientSideEmotionCache = createEmotionCache()
 
 export default function MyApp(props) {
-  const [globalState] = useGlobalState()
+  const[activeTheme] = useSyncLocalStorage('activeTheme')
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (
@@ -27,7 +27,7 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={globalState.activeTheme === 'light' ? lightTheme : darkTheme}>
+      <ThemeProvider theme={activeTheme === 'light' ? lightTheme : darkTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Provider store={store}>
