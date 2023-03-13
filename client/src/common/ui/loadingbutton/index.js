@@ -19,7 +19,7 @@ function LoadingButton ({
         {(isloading)
           ? <CircularProgress
             size={24}
-            color={globalState.activeTheme === 'light' ? 'dark' : 'main'}
+            color={globalState.activeTheme === 'light' ? 'dark' : 'primary'}
           />
           : <span>
             {label}
