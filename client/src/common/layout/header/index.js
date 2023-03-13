@@ -24,7 +24,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 
 // LIB
 import { Avalon } from '@/lib/mui/theme'
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 // VARIABLES
 const pages = ['about']
@@ -35,15 +35,12 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isLoggedIn] = useState(false)
-  const [globalState, setGlobalState] = useGlobalState()
+  const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
 
 
   class eventsHandler {
     static themeHandler = () => {
-      setGlobalState({
-        ...globalState,
-        activeTheme:globalState.activeTheme === 'dark' ? 'light' : 'dark'
-      })
+      setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
     }
     static handleOpenNavMenu = (e) => {
       setAnchorElNav(e.currentTarget)
@@ -228,7 +225,7 @@ function Header() {
                 alignItems:'center',
               }}
             >
-              {globalState.activeTheme === 'dark'
+              {activeTheme === 'dark'
                 ?
                 <LoginIcon style={{
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
@@ -247,7 +244,7 @@ function Header() {
                 alignItems:'center',
               }}
             >
-              {globalState.activeTheme === 'dark'
+              {activeTheme === 'dark'
                 ?
                 <HowToRegIcon style={{
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
@@ -264,7 +261,7 @@ function Header() {
             alignItems:'center',
           }} onClick={themeHandler}
           >
-            {globalState.activeTheme === 'dark' 
+            {activeTheme === 'dark' 
               ?
               <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :

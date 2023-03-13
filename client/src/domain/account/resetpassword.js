@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
 import { Validate } from '@/lib/utils/textValidation'
 
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import TransparentTextfield from '@/common/ui/transparentfield'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const defaultState = { helperText: '', error: false, color: '', value: '' }
 
@@ -18,7 +18,7 @@ const INPUT_ID = {
 function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
   const [password, setPassword] = useState(defaultState)
   const [confirmpassword, setConfirmPassword] = useState(defaultState)
-  const [globalState] = useGlobalState()
+  const [activeTheme] = useSyncLocalStorage('activeTheme')
 
   const handleInputChange = (e) => {
     const { id } = e.target
@@ -62,7 +62,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
           disabled={loading || locked}
           color={(password.color === 'success')
             ? password.color
-            : (globalState.activeTheme === 'light') ? 'dark' : 'primary'
+            : (activeTheme === 'light') ? 'dark' : 'primary'
           }
           onChange={handleInputChange}
         />
@@ -78,7 +78,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
           disabled={loading || locked}
           color={(confirmpassword.color === 'success')
             ? confirmpassword.color
-            : (globalState.activeTheme === 'light') ? 'dark' : 'primary'
+            : (activeTheme === 'light') ? 'dark' : 'primary'
           }
           onChange={handleInputChange}
         />

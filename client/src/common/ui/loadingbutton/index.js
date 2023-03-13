@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 function LoadingButton ({
   label = '',
@@ -11,7 +11,7 @@ function LoadingButton ({
   sx={},
   handleClick
 }) {
-  const [globalState] = useGlobalState()
+  const [activeTheme] = useSyncLocalStorage('activeTheme')
 
   return (
     <Button sx={sx} variant={variant} disabled={isloading || disabled} onClick={handleClick}>
@@ -19,7 +19,7 @@ function LoadingButton ({
         {(isloading)
           ? <CircularProgress
             size={24}
-            color={globalState.activeTheme === 'light' ? 'dark' : 'primary'}
+            color={activeTheme === 'light' ? 'dark' : 'primary'}
           />
           : <span>
             {label}
