@@ -4,7 +4,7 @@ This directory contains the web user interfaces (UI) for interacting with My Pho
 
 ### Live Apps
 
-Development: https://my-phonebook-dev.web.app/<br>
+Development: https://myphonebook-app-dev.web.app/<br>
 Production: https://weaponsforge.github.io/my-phonebook/
 
 ## Requirements
