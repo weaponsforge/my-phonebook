@@ -6,7 +6,7 @@ import Page from '@/common/layout/page'
 // lib
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
+import Link from 'next/link'
 import CheckIcon from '@mui/icons-material/Check'
 import Paper from '@mui/material/Paper'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
@@ -117,7 +117,7 @@ function LoginComponent ({state, eventsHandler}) {
             LOGIN
               </Button>
           }
-          <Link href="/recoverPassword" sx={{gridArea: 'forgot'}}>
+          <Link href="/recoverPassword" style={{gridArea: 'forgot'}}>
             <Typography
               sx={{
                 fontSize: '12px',
