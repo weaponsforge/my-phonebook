@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { useGlobalState } from '@/lib/hooks/useGlobalState'
 import { Validate } from '@/lib/utils/textValidation'
 
 import Button from '@mui/material/Button'
