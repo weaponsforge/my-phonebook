@@ -1,12 +1,13 @@
+import Button from '@mui/material/Button'
 import Page from '@/common/layout/page'
 
 function DashboardComponent ({ logout }) {
   return (
     <Page>
       <h1>Dashboard</h1>
-      <button onClick={(logout)}>
+      <Button variant='contained' onClick={(logout)}>
         Sign Out
-      </button>
+      </Button>
     </Page>
   )
 }
