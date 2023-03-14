@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+
 import LoginComponent from '@/components/login'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
+import WithAuth from '@/common/auth/withauth'
 
 const defaultState = {
   username:{
@@ -19,11 +22,13 @@ const defaultState = {
   },
   errorMessage:undefined,
   joke:undefined,
+  loading:false
 }
 
-function Login () {
+function Login (props) {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
+  const router = useRouter()
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -56,11 +61,15 @@ function Login () {
 
     static loginHandler = () => {
       (async()=>{
+        setState({ ...state, loading: true, errorMessage: undefined })
+
         const response = await AuthUtil.signIn(username.value, password.value)
         const errorMessage = response.errorMessage
+
         setState(prev=>({
           ...prev,
-          errorMessage
+          errorMessage,
+          loading: (errorMessage === undefined)
         }))
       })()
     }
@@ -76,12 +85,33 @@ function Login () {
     })()
   },[])
 
+  useEffect(() => {
+    if (!props.authLoading) {
+      setState(prev => ({
+        ...prev,
+        loading: false,
+        errorMessage: (props.authError !== '')
+          ? props.authError
+          : prev.errorMessage
+      }))
+
+      if (props.authUser) {
+        router.push('/dashboard')
+      }
+    }
+  }, [props.authError, props.authLoading, props.authUser, router])
+
+  const resetError = () => {
+    setState({ ...state, errorMessage: undefined })
+  }
+
   return (
     <LoginComponent
       state={state}
       eventsHandler={eventsHandler}
+      resetError={resetError}
     />
   )
 }
 
-export default Login
+export default WithAuth(Login)
