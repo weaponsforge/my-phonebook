@@ -3,12 +3,12 @@ import Box from '@mui/material/Box'
 import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 import { useEffect } from 'react'
 import { useBgColor } from '@/lib/hooks/useBgColor'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const Background = () => {
-  const [activeTheme] = useActiveTheme()
+  const [activeTheme] = useSyncLocalStorage('activeTheme')
   const [bgColor, animateBgColor] = useBgColor()
 
   useEffect(()=>{

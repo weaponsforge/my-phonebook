@@ -24,37 +24,38 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 
 // LIB
 import { Avalon } from '@/lib/mui/theme'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
-
-// CSS
-// import styles from './styles'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 // VARIABLES
 const pages = ['about']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
-
-
 
 function Header() {
   // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isLoggedIn] = useState(false)
-  const [activeTheme, setActiveTheme] = useActiveTheme()
+  const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
 
-  // HANDLERS
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget)
+
+  class eventsHandler {
+    static themeHandler = () => {
+      setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
+    }
+    static handleOpenNavMenu = (e) => {
+      setAnchorElNav(e.currentTarget)
+    }
+    static handleOpenUserMenu = (e) => {
+      setAnchorElUser(e.currentTarget)
+    }
+    static handleCloseNavMenu = () => {
+      setAnchorElNav(null)
+    }
+    static handleCloseUserMenu = () => {
+      setAnchorElUser(null)
+    }
   }
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget)
-  }
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu} = eventsHandler
 
   return (
     <AppBar elevation={10} sx={{
@@ -215,13 +216,32 @@ function Header() {
               </Link>
             </Box>
           }
-          <Link href='/register' style={{ textDecoration: 'none' }}>
-            <Button
+          <Link href='/login' style={{ textDecoration: 'none' }}>
+            <IconButton
               sx={{ 
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
-                alignItems:'center'
+                alignItems:'center',
+              }}
+            >
+              {activeTheme === 'dark'
+                ?
+                <LoginIcon style={{
+                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
+                }}/>
+                :
+                <LoginIcon/>
+              }
+            </IconButton>
+          </Link>
+          <Link href='/register' style={{ textDecoration: 'none' }}>
+            <IconButton
+              sx={{ 
+                color: 'black',
+                display: { xs: 'flex', md: 'none' },
+                justifyContent:'center',
+                alignItems:'center',
               }}
             >
               {activeTheme === 'dark'
@@ -232,42 +252,22 @@ function Header() {
                 :
                 <HowToRegIcon />
               }
-            </Button>
+            </IconButton>
           </Link>
-          <Link href='/login' style={{ textDecoration: 'none' }}>
-            <Button
-              sx={{ 
-                color: 'black',
-                display: { xs: 'flex', md: 'none' },
-                justifyContent:'center',
-                alignItems:'center'
-              }}
-            >
-              {activeTheme === 'dark'
-                ?
-                <LoginIcon style={{
-                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
-                }}/>
-                :
-                <LoginIcon />
-              }
-            </Button>
-          </Link>
-          <Button sx={{
+          <IconButton sx={{
             color: 'black',
             display: 'flex',
             justifyContent:'center',
-            alignItems:'center'
-          }} onClick={()=>{
-            setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
-          }}>
+            alignItems:'center',
+          }} onClick={themeHandler}
+          >
             {activeTheme === 'dark' 
               ?
               <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :
               <DarkModeIcon />
             }
-          </Button>
+          </IconButton>
         </Toolbar>
       </Container>
     </AppBar>

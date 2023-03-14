@@ -3,15 +3,15 @@ import Head from 'next/head'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider } from '@emotion/react'
-
+import '@/styles/globals.css'
 // Redux
 import { Provider } from 'react-redux'
 import { store } from '@/store/store'
 
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
-import { useActiveTheme } from '@/lib/hooks/useActiveTheme'
 import { lightTheme, darkTheme } from '@/lib/mui/theme'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
@@ -19,7 +19,7 @@ import { lightTheme, darkTheme } from '@/lib/mui/theme'
 const clientSideEmotionCache = createEmotionCache()
 
 export default function MyApp(props) {
-  const [activeTheme] = useActiveTheme()
+  const[activeTheme] = useSyncLocalStorage('activeTheme')
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (

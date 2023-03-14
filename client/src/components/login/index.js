@@ -1,5 +1,4 @@
-// import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
 // common
 import Page from '@/common/layout/page'
@@ -7,47 +6,17 @@ import Page from '@/common/layout/page'
 // lib
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
+import Link from 'next/link'
 import CheckIcon from '@mui/icons-material/Check'
 import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
-import { getRandomJoke } from '@/lib/services/random'
-import { Validate } from '@/lib/utils/textValidation'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import TransparentTextfield from '@/common/ui/transparentfield'
+import { useTheme } from '@emotion/react'
 
-function LoginComponent () {
-  const [joke, setJoke] = useState()
-  const [username, setUsername] = useState({ error:true, helperText:' ',value:'', color:'text' })
-  const [password, setPassword] = useState({ error:true, helperText:' ',value:'', color:'text' })
-
-  const usernameHandler = (e) => {
-    const {helperText, error, color} = Validate.email(e.target.value)
-    const newUsername = {
-      ...username,
-      value: e.target.value,
-      error,
-      helperText,
-      color
-    }
-    setUsername(newUsername)
-  }
-
-  const passwordHandler = (e) => {
-    const {helperText, error, color } = Validate.password(e.target.value)
-    const newPassword = {
-      ...password,
-      value: e.target.value,
-      error,
-      helperText,
-      color
-    }
-    setPassword(newPassword)
-  }
-  useEffect(()=>{
-    (async () =>{
-      const randomJoke = await getRandomJoke()
-      setJoke(randomJoke)
-    })()
-  },[])
+function LoginComponent ({state, eventsHandler}) {
+  const theme = useTheme()
+  const { username, password, errorMessage, joke } = state
+  const { usernameHandler, passwordHandler, loginHandler } = eventsHandler
   return (
     <Page>
       <Paper sx={{
@@ -61,10 +30,10 @@ function LoginComponent () {
         flexWrap: 'wrap-reverse'
       }}>
         <Typography variant="h8" component="h3" gutterBottom sx={{
-          color:(theme)=>theme.palette.text.disabled, 
-          textAlign: 'center', 
+          color:theme.palette.text.disabled,
+          textAlign: 'center',
           paddingLeft: '20px',
-          paddingRight:'20px', 
+          paddingRight:'20px',
           width: '50vw' }}>
           `{joke && joke.joke}`
         </Typography>
@@ -84,7 +53,7 @@ function LoginComponent () {
           padding: '40px',
           background: 'inherit',
         }}>
-          <TextField
+          <TransparentTextfield
             label="Username (email)"
             id="username"
             size="small"
@@ -101,7 +70,7 @@ function LoginComponent () {
           {!username.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon1' }}/>
           }
-          <TextField
+          <TransparentTextfield
             label="Password"
             id="userPassword"
             size="small"
@@ -118,37 +87,60 @@ function LoginComponent () {
           {!password.error &&
             <CheckIcon fontSize="large" color="success" sx={{ gridArea:'icon2' }}/>
           }
-          <Button 
-            variant="contained" 
-            sx={{
-              fontWeight:'bold',
-              color: (theme)=>theme.palette.primary.contrastText,
-              gridArea: 'login'
-            }}
-          >
+          {
+            state.username.error || state.password.error
+              ?
+              <Button
+                disabled
+                variant="contained"
+                id="login"
+                sx={{
+                  fontWeight:'bold',
+                  color: theme.palette.primary.contrastText,
+                  gridArea: 'login'
+                }}
+                onClick={loginHandler}
+              >
+              LOGIN
+              </Button>
+              :
+              <Button
+                variant="contained"
+                id="login"
+                sx={{
+                  fontWeight:'bold',
+                  color: theme.palette.primary.contrastText,
+                  gridArea: 'login'
+                }}
+                onClick={loginHandler}
+              >
             LOGIN
-          </Button>
-          <Link href="/forgotPassword" sx={{gridArea: 'forgot'}}>
+              </Button>
+          }
+          <Link href="/recoverPassword" style={{gridArea: 'forgot'}}>
             <Typography
               sx={{
                 fontSize: '12px',
                 textAlign: 'center',
                 marginTop: '-5px',
-                color: (theme)=>theme.palette.text.primary,
+                color:theme.palette.text.primary,
               }}
             >
               Forgot your password ?
             </Typography>
           </Link>
+          {errorMessage &&
+            <SimpleSnackbar message={errorMessage}/>
+          }
         </Paper>
       </Paper>
     </Page>
   )
 }
 
-// LoginComponent.propTypes = {
-//   simcards: PropTypes.array,
-//   stringNames: PropTypes.string
-// }
+LoginComponent.propTypes = {
+  state: PropTypes.object,
+  eventsHandler: PropTypes.func
+}
 
 export default LoginComponent

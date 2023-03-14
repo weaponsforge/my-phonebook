@@ -6,9 +6,17 @@ My Phonebook will consist of a front-end website (client) and a secure REST API 
 
 > This project will also serve as a practice for catching up and implementing best practices for using React, Firebase, Express and general software development.
 
-### Live Preview
+## Live Preview
 
-https://weaponsforge.github.io/my-phonebook/
+### Production
+
+Website: https://weaponsforge.github.io/my-phonebook/<br>
+Server: https://myphonebook-app.vercel.app/
+
+### Development
+
+Website: https://myphonebook-app-dev.web.app/<br>
+Server: https://myphonebook-app-dev.vercel.app/
 
 ## Software Documentation
 

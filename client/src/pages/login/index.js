@@ -1,32 +1,85 @@
 import { useEffect, useState } from 'react'
 import LoginComponent from '@/components/login'
-import { getSimCards } from '@/services/simcards'
-import { _SimCard } from '@/services/simcards/simcards'
-import { useCollection } from '@/lib/hooks/useFirestore'
+import { getRandomJoke } from '@/lib/services/random'
+import { Validate } from '@/lib/utils/textValidation'
+import AuthUtil from '@/lib/utils/firebase/authUtil'
+
+const defaultState = {
+  username:{
+    error:true,
+    helperText:' ',
+    value:'',
+    color:'text'
+  },
+  password:{
+    error:true,
+    helperText:' ',
+    value:'',
+    color:'text'
+  },
+  errorMessage:undefined,
+  joke:undefined,
+}
 
 function Login () {
-  const [stringNames, setStringNames] = useState('')
-  const { documents: simcards } = useCollection(_SimCard.SIMCARDS, 'id')
+  const [state, setState] = useState(defaultState)
+  const { username, password } = state
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const response = await getSimCards()
-
-        /* eslint-disable no-unused-vars */
-        setStringNames(prev => response.map(item => item.name).toString())
-      } catch (err) {
-        // console.log(err.message)
-      }
+  class eventsHandler {
+    static usernameHandler = (e) => {
+      const {helperText, error, color} = Validate.email(e.target.value)
+      setState(prev=>({
+        ...prev,
+        username:{
+          ...prev.username,
+          value:e.target.value,
+          error,
+          helperText,
+          color
+        }
+      }))
     }
 
-    load()
-  }, [])
+    static passwordHandler = (e) => {
+      const {helperText, error, color} = Validate.password(e.target.value)
+      setState(prev=>({
+        ...prev,
+        password:{
+          ...prev.password,
+          value:e.target.value,
+          error,
+          helperText,
+          color
+        }
+      }))
+    }
+
+    static loginHandler = () => {
+      (async()=>{
+        const response = await AuthUtil.signIn(username.value, password.value)
+        const errorMessage = response.errorMessage
+        setState(prev=>({
+          ...prev,
+          errorMessage
+        }))
+      })()
+    }
+  }
+
+  useEffect(()=>{
+    (async () =>{
+      const randomJoke = await getRandomJoke()
+      setState(prev=>({
+        ...prev,
+        joke:randomJoke
+      }))
+    })()
+  },[])
 
   return (
     <LoginComponent
-      simcards={simcards}
-      stringNames={stringNames}
+      state={state}
+      eventsHandler={eventsHandler}
     />
   )
 }

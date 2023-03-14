@@ -4,7 +4,7 @@ This directory contains the web user interfaces (UI) for interacting with My Pho
 
 ### Live Apps
 
-Development: https://my-phonebook-dev.web.app/<br>
+Development: https://myphonebook-app-dev.web.app/<br>
 Production: https://weaponsforge.github.io/my-phonebook/
 
 ## Requirements
@@ -42,6 +42,7 @@ The following dependecies are used for this project. Feel free to experiment usi
    | Variable Name                                | Description                                                                                                                                                                                                                                                                                                                                              |
    | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
    | NEXT_PUBLIC_BASE_PATH                        | This variable is the directory name where NextJS loads the app.<br><br>Set its value to blank `''` when working on development mode in localhost.<br>Set its value to the sub-directory name where the exported NextJS app is to be deployed, i.e. `/<YOUR_REPOSITORY_NAME>` when deploying on a repository (sub-directory) of a root GitHub Pages site. |
+   | NEXT_PUBLIC_BASE_API_URL                     | My Phonebook's server base API url minuse the forward slash.                                                                                                                                                                                                                                                                                             |
    | NEXT_PUBLIC_FIREBASE_WEB_API_KEY             | Firebase web API key from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                              |
    | NEXT_PUBLIC_FIREBASE_WEB_AUTHDOMAIN          | Firebase web auth domain key from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                      |
    | NEXT_PUBLIC_FIREBASE_WEB_PROJECT_ID          | Firebase web project ID from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                           |
