@@ -1,5 +1,7 @@
 // REACT
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { authSignOut } from '@/lib/store/users/userThunk'
 
 // NEXT
 import Link from 'next/link'
@@ -34,9 +36,9 @@ function Header() {
   // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const [isLoggedIn] = useState(false)
   const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
-
+  const authUser = useSelector(state => state.user.authUser)
+  const dispatch = useDispatch()
 
   class eventsHandler {
     static themeHandler = () => {
@@ -152,7 +154,7 @@ function Header() {
             ))}
           </Box>
 
-          {isLoggedIn
+          {(authUser !== null)
             ?
             <Box sx={{ flex: 0 }}>
               <Tooltip title="Open settings">
@@ -177,11 +179,15 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                {settings.map((setting) => {
+                  return (setting === 'Logout')
+                    ? <MenuItem key={setting} onClick={() => dispatch(authSignOut())}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    : <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                })}
               </Menu>
             </Box>
             :
