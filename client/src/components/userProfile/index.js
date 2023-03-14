@@ -25,7 +25,7 @@ export const UserProfileComponent = ({state, eventsHandler}) => {
           backdropFilter:'contrast(120%)'
         }}>
           <Typography variant="h5" sx={{ gridColumn:'1/-1' }}>my Profile</Typography>
-          <Box 
+          <Box
             sx={{
               aspectRatio:'1',
               gridColumn:'1/-1',
@@ -40,7 +40,7 @@ export const UserProfileComponent = ({state, eventsHandler}) => {
                 height:'100%'
               }}
               onClick={profilePictureHandler}
-            />        
+            />
             <IconButton color="primary" aria-label="upload picture" component="label" sx={{position:'absolute', bottom:'0', right:'0'}}>
               <input hidden accept="image/*" type="file" />
               <PhotoCameraIcon sx={{ color: 'black'}}/>
@@ -60,7 +60,7 @@ export const UserProfileComponent = ({state, eventsHandler}) => {
           />
 
           <Typography variant="h7">Email Address</Typography>
-          <TextField 
+          <TextField
             id="emailAddress"
             size="small"
             inputProps={{
@@ -73,7 +73,7 @@ export const UserProfileComponent = ({state, eventsHandler}) => {
           />
 
           <Typography variant="h7">Contact No</Typography>
-          <TextField 
+          <TextField
             id="contactNo"
             size="small"
             inputProps={{
@@ -86,10 +86,10 @@ export const UserProfileComponent = ({state, eventsHandler}) => {
           />
           {state.profileChanged
             ?
-            <Button 
-              variant="contained" 
+            <Button
+              variant="contained"
               sx={{
-                gridColumn:'1/-1', 
+                gridColumn:'1/-1',
                 fontWeight:'bold'
               }}
               onClick={updateUserHandler}

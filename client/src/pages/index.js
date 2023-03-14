@@ -30,7 +30,7 @@ export default function Index() {
   },[activeTheme])
 
   return (
-    <HomeComponent 
+    <HomeComponent
       state={state}
     />
   )

@@ -24,7 +24,7 @@ const Background = () => {
         position: 'fixed',
         zIndex: '-1',
         top: 0,
-        width: '100vw',  
+        width: '100vw',
         height: '100vh',
         width: '100vmax',
         height: '100vmax',
@@ -54,7 +54,7 @@ const Background = () => {
         },
         '66%': {
           background: '#FA5374',
-        },    
+        },
         '83%': {
           background: '#E46653',
         },
@@ -80,7 +80,7 @@ function Page ({ children }) {
     <>
       <Background/>
       <Box sx={{
-        width: '100%', 
+        width: '100%',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',

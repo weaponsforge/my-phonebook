@@ -21,19 +21,19 @@ function LoadingCover () {
           height: '100vh'
         }}
       >
-      <TransparentBox>
-        <span>
-          <Typography variant='h6' color='#000'>
+        <TransparentBox>
+          <span>
+            <Typography variant='h6' color='#000'>
             Loading...
-          </Typography>
-        </span>
+            </Typography>
+          </span>
 
-        <span>
-          <CircularProgress
-            color={(activeTheme === 'light') ? 'dark' : 'primary'}
-          />
-        </span>
-      </TransparentBox>
+          <span>
+            <CircularProgress
+              color={(activeTheme === 'light') ? 'dark' : 'primary'}
+            />
+          </span>
+        </TransparentBox>
       </Box>
     </Page>
   )

@@ -152,7 +152,7 @@ function Header() {
             ))}
           </Box>
 
-          {isLoggedIn 
+          {isLoggedIn
             ?
             <Box sx={{ flex: 0 }}>
               <Tooltip title="Open settings">
@@ -190,7 +190,7 @@ function Header() {
             }}>
               <Link href='/login' style={{ textDecoration: 'none' }}>
                 <Button
-                  sx={{ 
+                  sx={{
                     my: 2,
                     color: 'black',
                     display: { xs: 'none', md: 'flex' },
@@ -203,7 +203,7 @@ function Header() {
               </Link>
               <Link href='/register' style={{ textDecoration: 'none' }}>
                 <Button
-                  sx={{ 
+                  sx={{
                     my: 2,
                     color: 'black',
                     display: { xs: 'none', md: 'flex' },
@@ -218,7 +218,7 @@ function Header() {
           }
           <Link href='/login' style={{ textDecoration: 'none' }}>
             <IconButton
-              sx={{ 
+              sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
@@ -237,7 +237,7 @@ function Header() {
           </Link>
           <Link href='/register' style={{ textDecoration: 'none' }}>
             <IconButton
-              sx={{ 
+              sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
@@ -261,7 +261,7 @@ function Header() {
             alignItems:'center',
           }} onClick={themeHandler}
           >
-            {activeTheme === 'dark' 
+            {activeTheme === 'dark'
               ?
               <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :
