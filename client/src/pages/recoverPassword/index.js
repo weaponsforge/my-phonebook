@@ -5,6 +5,7 @@ import { Validate } from '@/lib/utils/textValidation'
 
 import { sendPasswordResetEmail } from '@/lib/services/account'
 import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
+import WithAuth from '@/common/auth/withauth'
 
 const defaultState = {
   username:{
@@ -69,4 +70,4 @@ const RecoverPassword = () => {
   )
 }
 
-export default RecoverPassword
+export default WithAuth(RecoverPassword)

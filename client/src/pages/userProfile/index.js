@@ -1,4 +1,5 @@
 import { UserProfileComponent } from '@/components/userProfile'
+import WithAuth from '@/common/auth/withauth'
 import { useEffect, useRef, useState } from 'react'
 
 const defaultState = {
@@ -54,4 +55,4 @@ const UserProfile = () => {
   )
 }
 
-export default UserProfile
+export default WithAuth(UserProfile)

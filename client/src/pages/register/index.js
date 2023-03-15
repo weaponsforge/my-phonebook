@@ -5,6 +5,7 @@ import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
 import { sendEmailVerification } from '@/lib/services/account'
 import PromiseWrapper from '@/lib/utils/promiseWrapper'
+import WithAuth from '@/common/auth/withauth'
 
 const defaultState = {
   joke:undefined,
@@ -128,4 +129,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default WithAuth(Register)

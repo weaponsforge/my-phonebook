@@ -5,6 +5,7 @@ import { authSignOut } from '@/lib/store/users/userThunk'
 
 // NEXT
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // MUI
 import AppBar from '@mui/material/AppBar'
@@ -30,7 +31,25 @@ import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 // VARIABLES
 const pages = ['about']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const settings = [
+  {
+    name: 'Profile',
+    route: 'userProfile'
+  },
+  {
+    name: 'Account',
+    route: '/'
+  },
+  {
+    name: 'Dashboard',
+    route: 'dashboard'
+  },
+  {
+    name: 'Logout',
+    route: '#'
+  }
+]
 
 function Header() {
   // HOOKS
@@ -39,6 +58,7 @@ function Header() {
   const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
   const authUser = useSelector(state => state.user.authUser)
   const dispatch = useDispatch()
+  const router = useRouter()
 
   class eventsHandler {
     static themeHandler = () => {
@@ -56,8 +76,11 @@ function Header() {
     static handleCloseUserMenu = () => {
       setAnchorElUser(null)
     }
+    static handleClickNavMenu = (route) => {
+      router.push(route)
+    }
   }
-  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu} = eventsHandler
+  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu, handleClickNavMenu} = eventsHandler
 
   return (
     <AppBar elevation={10} sx={{
@@ -179,14 +202,14 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => {
+                {settings.map((setting, id) => {
                   return (setting === 'Logout')
-                    ? <MenuItem key={setting} onClick={() => dispatch(authSignOut())}>
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
-                    : <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
+                    ? <MenuItem key={id} onClick={() => dispatch(authSignOut())}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                    : <MenuItem key={id} onClick={() => handleClickNavMenu(setting.route)}>
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
                 })}
               </Menu>
             </Box>

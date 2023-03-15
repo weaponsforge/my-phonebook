@@ -1,4 +1,5 @@
 import HomeComponent from '@/components/home'
+import WithAuth from '@/common/auth/withauth'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
@@ -8,7 +9,7 @@ const defaultState = {
   activeTheme:''
 }
 
-export default function Index() {
+function Index() {
   const [state, setState] = useState(defaultState)
   const [activeTheme] = useSyncLocalStorage('activeTheme')
 
@@ -35,3 +36,5 @@ export default function Index() {
     />
   )
 }
+
+export default WithAuth(Index)

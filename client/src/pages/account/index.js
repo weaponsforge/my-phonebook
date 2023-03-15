@@ -8,6 +8,7 @@ import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
 
 import AccountComponent from '@/components/account'
 import messages from './messages'
+import WithAuth from '@/common/auth/withauth'
 
 const defaultState = {
   loading: true,
@@ -89,4 +90,4 @@ function Account () {
   )
 }
 
-export default Account
+export default WithAuth(Account)
