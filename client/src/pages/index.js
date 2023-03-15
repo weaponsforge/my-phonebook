@@ -1,5 +1,4 @@
 import HomeComponent from '@/components/home'
-import WithAuth from '@/common/auth/withauth'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
@@ -37,4 +36,4 @@ function Index() {
   )
 }
 
-export default WithAuth(Index)
+export default Index

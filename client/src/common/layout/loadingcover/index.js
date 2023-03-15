@@ -6,7 +6,7 @@ import Page from '@/common/layout/page'
 import TransparentBox from '@/common/ui/transparentbox'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
-function LoadingCover () {
+function LoadingCover ({ authError }) {
   const [activeTheme] = useSyncLocalStorage('activeTheme')
 
   return (
@@ -33,6 +33,12 @@ function LoadingCover () {
               color={(activeTheme === 'light') ? 'dark' : 'primary'}
             />
           </span>
+
+          {authError &&
+          <Typography variant='label' color='error'>
+            {authError}
+          </Typography>
+          }
         </TransparentBox>
       </Box>
     </Page>

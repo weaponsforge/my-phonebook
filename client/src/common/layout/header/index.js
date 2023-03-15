@@ -1,7 +1,6 @@
 // REACT
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { authSignOut } from '@/lib/store/users/userThunk'
+import { useDispatch } from 'react-redux'
 
 // NEXT
 import Link from 'next/link'
@@ -28,10 +27,10 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 // LIB
 import { Avalon } from '@/lib/mui/theme'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { useAuth } from '@/lib/hooks/useAuth'
 
 // VARIABLES
 const pages = ['about']
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 const settings = [
   {
     name: 'Profile',
@@ -56,7 +55,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
-  const authUser = useSelector(state => state.user.authUser)
+  const { authUser, authSignOut } = useAuth()
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -203,9 +202,9 @@ function Header() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting, id) => {
-                  return (setting === 'Logout')
+                  return (setting.name === 'Logout')
                     ? <MenuItem key={id} onClick={() => dispatch(authSignOut())}>
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Typography textAlign="center">{setting.name}</Typography>
                     </MenuItem>
                     : <MenuItem key={id} onClick={() => handleClickNavMenu(setting.route)}>
                       <Typography textAlign="center">{setting.name}</Typography>

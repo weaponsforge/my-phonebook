@@ -5,7 +5,7 @@ import LoginComponent from '@/components/login'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
-import WithAuth from '@/common/auth/withauth'
+import { useAuth } from '@/lib/hooks/useAuth'
 
 const defaultState = {
   username:{
@@ -25,10 +25,11 @@ const defaultState = {
   loading:false
 }
 
-function Login (props) {
+function Login () {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
   const router = useRouter()
+  const { authLoading, authUser, authError } = useAuth()
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -62,7 +63,6 @@ function Login (props) {
     static loginHandler = () => {
       (async()=>{
         setState({ ...state, loading: true, errorMessage: undefined })
-
         const response = await AuthUtil.signIn(username.value, password.value)
         const errorMessage = response.errorMessage
 
@@ -86,20 +86,20 @@ function Login (props) {
   },[])
 
   useEffect(() => {
-    if (!props.authLoading) {
+    if (!authLoading) {
       setState(prev => ({
         ...prev,
         loading: false,
-        errorMessage: (props.authError !== '')
-          ? props.authError
+        errorMessage: (authError !== '')
+          ? authError
           : prev.errorMessage
       }))
 
-      if (props.authUser) {
+      if (authUser) {
         router.push('/dashboard')
       }
     }
-  }, [props.authError, props.authLoading, props.authUser, router])
+  }, [authError, authLoading, authUser, router])
 
   const resetError = () => {
     setState({ ...state, errorMessage: undefined })
@@ -114,4 +114,4 @@ function Login (props) {
   )
 }
 
-export default WithAuth(Login)
+export default Login

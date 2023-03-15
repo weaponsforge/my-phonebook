@@ -1,39 +1,43 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
+import { useAuth } from '@/lib/hooks/useAuth'
+
 import LoadingCover from '@/common/layout/loadingcover'
-import WithAuth from '@/common/auth/withauth'
 
 /**
+ * HOC that listens for the Firebase user auth info from the global "user" redux states set by the useAuth() hook.
  * Displays a loading cover page while waiting for the remote authentication info to settle in.
- * Displays and returns the contents (children) of a tree if there is a signed-in user from the remote auth.
+ * Displays and returns the Component parameter if there is user data from the remote auth.
  * Redirect to the /login page if there is no user info after the remote auth settles in.
- * @param {Component} children
- * @returns {Component}
+ * @param {Component} Component
+ * @returns {Component} (Component parameter or a Loading placeholder component)
+ * Usage: export default ProtectedPage(MyComponent)
  */
-function ProtectedPage ({ children }) {
-  const router = useRouter()
-  const { authLoading, authUser } = useSelector(state => state.user)
+function ProtectedPage (Component) {
+  function AuthListener (props) {
+    const router = useRouter()
+    const { authLoading, authError, authUser } = useAuth()
 
-  useEffect(() => {
-    if (!authLoading && !authUser) {
-      router.push('/login')
-    }
-  }, [authUser, authLoading, router])
+    useEffect(() => {
+      if (!authLoading && !authUser) {
+        router.push('/login')
+      }
+    }, [authUser, authLoading, router])
 
-  const ItemComponent = () => {
-    if (authLoading) {
-      return <LoadingCover />
-    } else if (authUser) {
-      return <div>
-        {children}
-      </div>
-    } else {
-      return <LoadingCover />
+    const ItemComponent = () => {
+      if (authLoading) {
+        return <LoadingCover />
+      } else if (authUser) {
+        return <Component {...props} />
+      } else {
+        return <LoadingCover authError={authError} />
+      }
     }
+
+    return (<ItemComponent />)
   }
 
-  return (<ItemComponent />)
+  return AuthListener
 }
 
-export default WithAuth(ProtectedPage)
+export default ProtectedPage

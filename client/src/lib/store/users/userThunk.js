@@ -12,3 +12,4 @@ export const authSignOut = createAsyncThunk('auth/signout', async(errorMessage =
     return thunkAPI.rejectWithValue(err?.response?.data ?? err.message)
   }
 })
+

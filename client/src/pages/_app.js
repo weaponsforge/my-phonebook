@@ -7,6 +7,7 @@ import '@/styles/globals.css'
 // Redux
 import { Provider } from 'react-redux'
 import { store } from '@/store/store'
+import { AuthProvider } from '@/lib/hooks/useAuth'
 
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
@@ -31,7 +32,9 @@ export default function MyApp(props) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Provider store={store}>
-          <Component {...pageProps} />
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
         </Provider>
       </ThemeProvider>
     </CacheProvider>
