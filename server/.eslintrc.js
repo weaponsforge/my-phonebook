@@ -22,6 +22,7 @@ module.exports = {
     'quotes': ['error', 'single'],
     'semi': ['error', 'never'],
     'no-unused-vars': 'error',
-    'no-undef': 'error'
+    'no-undef': 'error',
+    'no-trailing-spaces': 'error'
   }
 }

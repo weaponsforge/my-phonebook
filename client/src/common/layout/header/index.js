@@ -1,8 +1,10 @@
 // REACT
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 // NEXT
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // MUI
 import AppBar from '@mui/material/AppBar'
@@ -25,18 +27,37 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 // LIB
 import { Avalon } from '@/lib/mui/theme'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { useAuth } from '@/lib/hooks/useAuth'
 
 // VARIABLES
 const pages = ['about']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const settings = [
+  {
+    name: 'Profile',
+    route: 'userProfile'
+  },
+  {
+    name: 'Account',
+    route: '/'
+  },
+  {
+    name: 'Dashboard',
+    route: 'dashboard'
+  },
+  {
+    name: 'Logout',
+    route: '#'
+  }
+]
 
 function Header() {
   // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const [isLoggedIn] = useState(false)
   const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
-
+  const { authUser, authSignOut } = useAuth()
+  const dispatch = useDispatch()
+  const router = useRouter()
 
   class eventsHandler {
     static themeHandler = () => {
@@ -54,8 +75,11 @@ function Header() {
     static handleCloseUserMenu = () => {
       setAnchorElUser(null)
     }
+    static handleClickNavMenu = (route) => {
+      router.push(route)
+    }
   }
-  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu} = eventsHandler
+  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu, handleClickNavMenu} = eventsHandler
 
   return (
     <AppBar elevation={10} sx={{
@@ -152,7 +176,7 @@ function Header() {
             ))}
           </Box>
 
-          {isLoggedIn 
+          {(authUser !== null)
             ?
             <Box sx={{ flex: 0 }}>
               <Tooltip title="Open settings">
@@ -177,11 +201,15 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                {settings.map((setting, id) => {
+                  return (setting.name === 'Logout')
+                    ? <MenuItem key={id} onClick={() => dispatch(authSignOut())}>
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
+                    : <MenuItem key={id} onClick={() => handleClickNavMenu(setting.route)}>
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
+                })}
               </Menu>
             </Box>
             :
@@ -190,7 +218,7 @@ function Header() {
             }}>
               <Link href='/login' style={{ textDecoration: 'none' }}>
                 <Button
-                  sx={{ 
+                  sx={{
                     my: 2,
                     color: 'black',
                     display: { xs: 'none', md: 'flex' },
@@ -203,7 +231,7 @@ function Header() {
               </Link>
               <Link href='/register' style={{ textDecoration: 'none' }}>
                 <Button
-                  sx={{ 
+                  sx={{
                     my: 2,
                     color: 'black',
                     display: { xs: 'none', md: 'flex' },
@@ -218,7 +246,7 @@ function Header() {
           }
           <Link href='/login' style={{ textDecoration: 'none' }}>
             <IconButton
-              sx={{ 
+              sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
@@ -237,7 +265,7 @@ function Header() {
           </Link>
           <Link href='/register' style={{ textDecoration: 'none' }}>
             <IconButton
-              sx={{ 
+              sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
                 justifyContent:'center',
@@ -261,7 +289,7 @@ function Header() {
             alignItems:'center',
           }} onClick={themeHandler}
           >
-            {activeTheme === 'dark' 
+            {activeTheme === 'dark'
               ?
               <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
               :

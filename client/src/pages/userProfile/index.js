@@ -1,5 +1,6 @@
 import { UserProfileComponent } from '@/components/userProfile'
 import { useEffect, useRef, useState } from 'react'
+import ProtectedPage from '@/common/auth/protectedpage'
 
 const defaultState = {
   user:{
@@ -54,4 +55,4 @@ const UserProfile = () => {
   )
 }
 
-export default UserProfile
+export default ProtectedPage(UserProfile)
