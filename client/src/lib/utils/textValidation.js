@@ -2,7 +2,7 @@
  * Validate class contains static methods that validate input fields.
  */
 export class Validate {
-    
+
   /**
    * Validates an email address.
    * @param {string} text - The email address to validate.
@@ -82,7 +82,7 @@ export class Validate {
 
   /**
    * Checks if the given text contains at least one uppercase letter.
-   * 
+   *
    * @param {string} text - The text to check for uppercase letters.
    * @returns {boolean} - true if the text has at least one uppercase letter, false otherwise.
    */
@@ -93,7 +93,7 @@ export class Validate {
 
   /**
    * Checks if the given text contains at least one lowercase letter.
-   * 
+   *
    * @param {string} text - The text to check for lowercase letters.
    * @returns {boolean} - true if the text has at least one lowercase letter, false otherwise.
    */
@@ -104,7 +104,7 @@ export class Validate {
 
   /**
    * Checks if the given text contains at least one digit.
-   * 
+   *
    * @param {string} text - The text to check for digits.
    * @returns {boolean} - true if the text has at least one digit, false otherwise.
    */
@@ -185,7 +185,7 @@ export class Validate {
       return 'Valid email'
     }
   }
-    
+
   /**
    * Composes a helper text for password validation based on the validation errors
    *

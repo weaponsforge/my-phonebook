@@ -11,12 +11,14 @@ import CheckIcon from '@mui/icons-material/Check'
 import Paper from '@mui/material/Paper'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import TransparentTextfield from '@/common/ui/transparentfield'
+import LoadingButton from '@/common/ui/loadingbutton'
 import { useTheme } from '@emotion/react'
 
-function LoginComponent ({state, eventsHandler}) {
+function LoginComponent ({ state, eventsHandler, resetError }) {
   const theme = useTheme()
-  const { username, password, errorMessage, joke } = state
+  const { username, password, errorMessage, joke, loading } = state
   const { usernameHandler, passwordHandler, loginHandler } = eventsHandler
+
   return (
     <Page>
       <Paper sx={{
@@ -59,6 +61,7 @@ function LoginComponent ({state, eventsHandler}) {
             size="small"
             type="text"
             fullwidth="true"
+            disabled={loading}
             required={true}
             color={username.color}
             helperText={username.helperText}
@@ -76,6 +79,7 @@ function LoginComponent ({state, eventsHandler}) {
             size="small"
             type="password"
             fullwidth="true"
+            disabled={loading}
             required={true}
             value={password.value}
             error={password.error}
@@ -104,18 +108,20 @@ function LoginComponent ({state, eventsHandler}) {
               LOGIN
               </Button>
               :
-              <Button
+              <LoadingButton
                 variant="contained"
                 id="login"
+                disabled={loading}
+                isloading={loading}
                 sx={{
                   fontWeight:'bold',
                   color: theme.palette.primary.contrastText,
                   gridArea: 'login'
                 }}
-                onClick={loginHandler}
+                handleClick={loginHandler}
+                label='LOGIN'
               >
-            LOGIN
-              </Button>
+              </LoadingButton>
           }
           <Link href="/recoverPassword" style={{gridArea: 'forgot'}}>
             <Typography
@@ -130,7 +136,7 @@ function LoginComponent ({state, eventsHandler}) {
             </Typography>
           </Link>
           {errorMessage &&
-            <SimpleSnackbar message={errorMessage}/>
+            <SimpleSnackbar message={errorMessage} closeHandler={resetError} />
           }
         </Paper>
       </Paper>

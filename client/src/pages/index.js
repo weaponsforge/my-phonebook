@@ -8,7 +8,7 @@ const defaultState = {
   activeTheme:''
 }
 
-export default function Index() {
+function Index() {
   const [state, setState] = useState(defaultState)
   const [activeTheme] = useSyncLocalStorage('activeTheme')
 
@@ -30,8 +30,10 @@ export default function Index() {
   },[activeTheme])
 
   return (
-    <HomeComponent 
+    <HomeComponent
       state={state}
     />
   )
 }
+
+export default Index

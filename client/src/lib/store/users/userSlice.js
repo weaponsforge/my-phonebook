@@ -4,6 +4,7 @@ import {
 } from '@reduxjs/toolkit'
 
 import { ADAPTER_STATES, USER_STATES } from '@/store/constants'
+import { authSignOut } from './userThunk'
 
 const userAdapter = createEntityAdapter({
   selectId: (app) => app.id,
@@ -12,28 +13,77 @@ const userAdapter = createEntityAdapter({
 const userSlice = createSlice({
   name: 'user',
   initialState: userAdapter.getInitialState({
+    /** Descriptive Auth status info. One of USER_STATES */
+    authStatus: USER_STATES.LOADING,
+    /** Firebase Auth is waiting to settle down from 1st page load or during signOut  */
+    authLoading: true,
+    /** Firebase Auth errors */
+    authError: '',
+    /** Firebase Auth user account */
+    authUser: null,
+    /** User Profile document */
+    profile: null,
     status: ADAPTER_STATES.IDLE,
-    authState: USER_STATES.LOADING,
     message: '',
-    error: '',
-    profile: null
+    error: ''
   }),
   reducers: {
-    profileReceived (state, action) {
-      state.profile = action.payload
-      state.authState = (action.payload !== null)
+    authReceived (state, action) {
+      state.authUser = action.payload
+      state.authLoading = false
+
+      state.authStatus = (action.payload !== null)
         ? USER_STATES.SIGNED_IN
         : USER_STATES.SIGNED_OUT
+
+      if (action.payload !== null) {
+        state.authError = ''
+      }
     },
-    authStateReceived (state, action) {
-      state.authState = action.payload
+    authStatusReceived (state, action) {
+      state.authStatus = action.payload
+      state.authLoading = (state.authStatus === USER_STATES.LOADING)
     },
+    authErrorReceived (state, action) {
+      state.authError = action.payload
+    },
+    authLoadingReceived (state, action) {
+      state.authLoading = action.payload
+
+      if (action.payload) {
+        state.authStatus == USER_STATES.LOADING
+      }
+    },
+    profileReceived (state, action) {
+      state.profile = action.payload
+    }
+  },
+  extraReducers: (builder) => {
+    // Sign-out success
+    builder.addCase(authSignOut.fulfilled, (state, { payload }) => {
+      state.authStatus = USER_STATES.SIGNED_OUT
+      state.authLoading = false
+      state.authError = payload
+    })
+
+    // Sign-out failure
+    builder.addCase(authSignOut.rejected, (state, action) => {
+      const { message } = action.error
+      state.authStatus = USER_STATES.SIGNED_IN
+      state.authLoading = false
+      state.authError = `${message}. ${action.payload}`
+    })
   }
 })
 
 export const {
-  authStateReceived,
-  profileReceived
+  authErrorReceived,
+  authInitReceived,
+  authLoadingReceived,
+  authReceived,
+  authStatusReceived,
+  profileReceived,
+  userLoading
 } = userSlice.actions
 
 export default userSlice.reducer
