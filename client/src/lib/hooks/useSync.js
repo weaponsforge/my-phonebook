@@ -2,6 +2,9 @@ import { useSyncExternalStore } from 'react'
 
 const useSyncLocalStorageSubscribers = {}
 const useSyncSessionStorageSubscribers = {}
+const useSyncGlobalVariableSubscribers = {}
+
+const globalVariable = {}
 
 export const useSyncLocalStorage = (saveDirectory = 'global') => {
   if (!useSyncLocalStorageSubscribers[saveDirectory]) {
@@ -71,6 +74,44 @@ export const useSyncSessionStorage = (saveDirectory = 'global') => {
 
   const setState = (newState) => {
     sessionStorage[saveDirectory] = JSON.stringify(newState)
+    emitChange()
+  }
+
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+
+  return [state ? JSON.parse(state) : undefined, setState]
+}
+
+export const useSyncGlobalVariable = (saveDirectory = 'global') => {
+  if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
+    useSyncGlobalVariableSubscribers[saveDirectory] = []
+  }
+
+  const subscribe = (callback) => {
+    useSyncGlobalVariableSubscribers[saveDirectory] = [...useSyncGlobalVariableSubscribers[saveDirectory], callback]
+    return () => {
+      useSyncGlobalVariableSubscribers[saveDirectory] = useSyncGlobalVariableSubscribers[saveDirectory].filter(
+        (el) => el !== callback
+      )
+    }
+  }
+
+  const getSnapshot = () => {
+    return JSON.stringify(globalVariable[saveDirectory])
+  }
+
+  const getServerSnapshot = () => {
+    return true
+  }
+
+  const emitChange = () => {
+    for (let subscriber of useSyncGlobalVariableSubscribers[saveDirectory]) {
+      subscriber()
+    }
+  }
+
+  const setState = (newState) => {
+    globalVariable[saveDirectory] = newState
     emitChange()
   }
 

@@ -1,9 +1,9 @@
-import { Box } from "@mui/material"
+import { Box } from '@mui/material'
 
 export const SearchContactContainer = () => {
-    return (
-        <Box>
+  return (
+    <Box>
 
-        </Box>
-    )
+    </Box>
+  )
 }
