@@ -24,27 +24,6 @@ function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
     const [search, setSearch] = useSyncGlobalVariable('search')
 
-    // divide state.contacts into each container
-    const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
-
-    const filterContacts = (searchText) => {
-        const filteredContactsByField = [...sortedContacts].reduce((prev, curr) => {
-            for (let [key, value] of Object.entries(curr)) {
-                if (new RegExp(String.raw`${searchText}`, 'i').test(value)) {
-                    if (!prev[key]) {
-                        prev[key] = []
-                    }
-                    prev[key] = [...prev[key], curr]
-                }
-            }
-            return prev
-        }, {})
-        return filteredContactsByField
-    }
-
-    const searchResults = filterContacts(search)
-    const searchResultsArr = Object.entries(searchResults)
-
     return (
         <Page>
             <Box sx={{
@@ -98,7 +77,7 @@ function ContactListComponent({ state, eventsHandler }) {
                     }}>
                     {search
                         ?
-                            <SearchResultsContainer/>
+                            <SearchResultsContainer state={state}/>
                         :
                             <ContactCardsContainer state={state}/>
                     }
