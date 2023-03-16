@@ -26,7 +26,7 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'%ds',
+            first_name:'ads',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),
@@ -36,47 +36,7 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'#dsad',
-            last_name:'third',
-            middle_name:'second',
-            date_created:new Date(),
-            date_updated:new Date(),
-            contact_no:'somerandomnumber',
-            contact_email:'somerandomemail'
-        },
-        {
-            doc_id:'somerandomid',
-            first_name:'zirst',
-            last_name:'third',
-            middle_name:'second',
-            date_created:new Date(),
-            date_updated:new Date(),
-            contact_no:'somerandomnumber',
-            contact_email:'somerandomemail'
-        },
-        {
-            doc_id:'somerandomid',
-            first_name:'scond',
-            last_name:'third',
-            middle_name:'second',
-            date_created:new Date(),
-            date_updated:new Date(),
-            contact_no:'somerandomnumber',
-            contact_email:'somerandomemail'
-        },
-        {
-            doc_id:'somerandomid',
-            first_name:'%ds',
-            last_name:'third',
-            middle_name:'second',
-            date_created:new Date(),
-            date_updated:new Date(),
-            contact_no:'somerandomnumber',
-            contact_email:'somerandomemail'
-        },
-        {
-            doc_id:'somerandomid',
-            first_name:'#dsad',
+            first_name:'adsad',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),
@@ -106,7 +66,7 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'%ds',
+            first_name:'bds',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),
@@ -116,7 +76,7 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'#dsad',
+            first_name:'cdsad',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),
@@ -136,7 +96,7 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'scond',
+            first_name:'dcond',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),
@@ -146,7 +106,7 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'%ds',
+            first_name:'eds',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),
@@ -156,7 +116,147 @@ const defaultState = {
         },
         {
             doc_id:'somerandomid',
-            first_name:'#dsad',
+            first_name:'edsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'zirst',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'fcond',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'gds',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
+            last_name:'third',
+            middle_name:'second',
+            date_created:new Date(),
+            date_updated:new Date(),
+            contact_no:'somerandomnumber',
+            contact_email:'somerandomemail'
+        },
+        {
+            doc_id:'somerandomid',
+            first_name:'adsad',
             last_name:'third',
             middle_name:'second',
             date_created:new Date(),

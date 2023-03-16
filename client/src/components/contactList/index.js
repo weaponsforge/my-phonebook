@@ -29,7 +29,7 @@ function ContactListComponent({ state, eventsHandler }) {
             if (!acc.misc) acc.misc = []
             acc.misc = [...acc.misc, curr]
         } else {
-            if (!acc[capitalizedFirstNameFirstLetterChar]) {
+            if (!acc[capitalizedFirstNameFirstLetterChar.toUpperCase()]) {
                 acc[capitalizedFirstNameFirstLetterChar.toUpperCase()] = []
             }
             acc[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [
@@ -40,7 +40,7 @@ function ContactListComponent({ state, eventsHandler }) {
         return acc
     }, {})
     const groupedSortedContactsArr = Object.entries(groupedSortedContacts)
-
+    console.log(groupedSortedContacts)
     return (
         <Page>
             <Box sx={{
@@ -59,7 +59,6 @@ function ContactListComponent({ state, eventsHandler }) {
                         padding: '20px',
                         overflow: 'hidden',
                         width: '100%',
-                        height: '100%'
                     }}
                 >
                     <Box>

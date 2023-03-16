@@ -36,6 +36,9 @@ export const ContactCard = ({ contact }) => {
             alignItems: 'center',
             borderRadius: '10px',
             width:'auto',
+            '&:hover' :{
+                backdropFilter: 'contrast(120%)'
+            }
         }}>
             <Avatar
                 sx={{

@@ -6,14 +6,31 @@ import { ContactCard } from "./contactCard"
 export const ContactCardsContainer = ({ content }) => {
     const { group, contacts } = content
     return (
-        <Box>
-            <Typography variant="h4">{group === 'misc' ? '' : group}</Typography>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: '50px 1fr',
+                padding: '20px'
+            }}
+        >
+            <Typography variant="h4"
+                sx={{
+                    padding: '15px',
+                    paddingLeft:'0',
+                    aspectRatio: '1',
+                    position: 'sticky',
+                    top: 0,
+                }}
+            >
+                {group === 'misc' ? '' : group}
+            </Typography>
             <Box sx={{
                 backgroundColor: 'inherit',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
                 alignItems: 'start',
-                gap: '15px',
+                gap: '10px',
+                flex: '1'
             }}>
                 {contacts.map((el, index) => {
                     return (
