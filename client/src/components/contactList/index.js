@@ -25,30 +25,53 @@ function ContactListComponent({ state, eventsHandler }) {
 
     // divide state.contacts into each container
     const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
-
-    const groupedSortedContacts = [...sortedContacts].reduce((acc, curr) => {
+    const groupedSortedContacts = [...sortedContacts].reduce((prev, curr) => {
         const capitalizedFirstNameFirstLetterChar = curr.first_name.match(new RegExp(
             String.raw`(?<firstLetterChar>^[a-z])|`, 'i'))[0]
         if (!capitalizedFirstNameFirstLetterChar) {
-            if (!acc.misc) acc.misc = []
-            acc.misc = [...acc.misc, curr]
+            if (!prev.misc) prev.misc = []
+            prev.misc = [...prev.misc, curr]
         } else {
-            if (!acc[capitalizedFirstNameFirstLetterChar.toUpperCase()]) {
-                acc[capitalizedFirstNameFirstLetterChar.toUpperCase()] = []
+            if (!prev[capitalizedFirstNameFirstLetterChar.toUpperCase()]) {
+                prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = []
             }
-            acc[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [
-                ...acc[capitalizedFirstNameFirstLetterChar.toUpperCase()],
+            prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [
+                ...prev[capitalizedFirstNameFirstLetterChar.toUpperCase()],
                 curr
             ]
         }
-        return acc
+        return prev
     }, {})
 
     const groupedSortedContactsArr = Object.entries(groupedSortedContacts)
-    
+
     const filterContacts = (searchText) => {
-        
+        const filteredContactsByField = [...sortedContacts].reduce((prev, curr) => {
+            const matchingFirstName = new RegExp(String.raw`${searchText}`, 'i').test(curr.first_name)
+            const matchingMiddleName = new RegExp(String.raw`${searchText}`, 'i').test(curr.middle_name)
+            const matchingLastName = new RegExp(String.raw`${searchText}`, 'i').test(curr.last_name)
+            const matchingContactNo = new RegExp(String.raw`${searchText}`, 'i').test(curr.contact_no)
+            const matchingContactEmail = new RegExp(String.raw`${searchText}`, 'i').test(curr.contact_email)
+
+            for (let [key, value] of Object.entries(curr)) {
+                // if (key !== 'first_name' || key !== 'middle_name' || key !== 'last_name' || key !== 'contact_no' || key !== 'contact_email') {
+                // } else {
+                console.log(key, value)
+                if (new RegExp(String.raw`${searchText}`, 'i').test(value)) {
+                    if (!prev[key]) {
+                        prev[key] = []
+                    }
+                    prev[key] = [...prev[key], curr]
+                }
+            }
+            return prev
+        }, {})
+        return filteredContactsByField
     }
+
+    const searchResults = filterContacts(search)
+    const searchResultsArr = Object.entries(searchResults)
+
     return (
         <Page>
             <Box sx={{
@@ -101,12 +124,16 @@ function ContactListComponent({ state, eventsHandler }) {
                         },
                     }}>
                     {search
-                        ? 
+                        ?
                         <Box sx={{
                             width: '100%',
                             height: '100%',
                         }}>
-                            search results
+                            {searchResultsArr.map((el, index) => {
+                                return (
+                                    <ContactCardsContainer key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
+                                )
+                            })}
                         </Box>
                         :
                         <Box sx={{
