@@ -1,0 +1,58 @@
+import { Avatar, Paper, Typography, useTheme } from "@mui/material"
+import { useState } from "react"
+
+export const ContactCard = ({ contact }) => {
+    const theme = useTheme()
+
+    const backgroundColorGenerator = (name) => {
+        let value = 0
+        for (let i = 0; i < name.length; i++) {
+            value = value + name.charCodeAt(i)
+        }
+        value = value % 255
+        return value
+    }
+
+    const getInitial = (first, second, last) => {
+        const firstInitial = (first.match(new RegExp(
+            String.raw`(?<firstNameInitial>^[a-z])`, 'i')) ?? [''])[0]
+        const middleInitial = (second.match(new RegExp(
+            String.raw`(?<middleNameInitial>^[a-z])`, 'i')) ?? [''])[0]
+        const lastInitial = (second.match(new RegExp(
+            String.raw`(?<lastNameInitial>^[a-z])`, 'i')) ?? [''])[0]
+        return `${firstInitial}${middleInitial}${lastInitial}`
+    }
+
+    const initial = getInitial(contact.first_name, contact.middle_name, contact.last_name).toUpperCase()
+
+    const backgroundColor = backgroundColorGenerator(initial)
+    return (
+        <Paper elevation={3} sx={{
+            backgroundColor: 'inherit',
+            backdropFilter: 'blur(2px)',
+            display: 'flex',
+            padding: '15px',
+            gap: '15px',
+            alignItems: 'center',
+            borderRadius: '15px'
+            // border:'2px solid red'
+        }}>
+            <Avatar
+                sx={{
+                    backgroundColor: `hsla(${backgroundColor},50%,80%,100%)`,
+                }}
+            >
+                {initial}
+            </Avatar>
+
+            <Typography
+                variant="h6"
+                sx={{
+                    flex: '3',
+                    color: theme.palette.primary
+                }}>
+                {contact.first_name} {contact.middle_name} {contact.last_name}
+            </Typography>
+        </Paper>
+    )
+}

@@ -1,6 +1,7 @@
 /* for debug */
 * {
   outline: 1px solid gray;
+  overflow: unset;
 }
 
 html, body {
