@@ -1,44 +1,40 @@
 import { Avatar, Box, Paper, Typography } from '@mui/material'
 import { useState } from 'react'
 import { ContactCard } from './contactCard'
+import { ContactCardsGroup } from './contactCardGroup'
 
+export const ContactCardsContainer = ({ state }) => {
+  const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
+  const groupedSortedContacts = [...sortedContacts].reduce((prev, curr) => {
+      const capitalizedFirstNameFirstLetterChar = curr.first_name.match(new RegExp(
+          String.raw`(?<firstLetterChar>^[a-z])|`, 'i'))[0]
+      if (!capitalizedFirstNameFirstLetterChar) {
+          if (!prev.misc) prev.misc = []
+          prev.misc = [...prev.misc, curr]
+      } else {
+          if (!prev[capitalizedFirstNameFirstLetterChar.toUpperCase()]) {
+              prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = []
+          }
+          prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [
+              ...prev[capitalizedFirstNameFirstLetterChar.toUpperCase()],
+              curr
+          ]
+      }
+      return prev
+  }, {})
 
-export const ContactCardsContainer = ({ content }) => {
-  const { group, contacts } = content
+  const groupedSortedContactsArr = Object.entries(groupedSortedContacts)
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: '50px 1fr',
-        padding: '20px',
-        borderBottom:'1px dashed grey'
-      }}
-    >
-      <Typography variant="h4"
-        sx={{
-          padding: '15px',
-          paddingLeft:'0',
-          aspectRatio: '1',
-          position: 'sticky',
-          top: 0,
-        }}
-      >
-        {group === 'misc' ? '' : group}
-      </Typography>
-      <Box sx={{
-        backgroundColor: 'inherit',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-        alignItems: 'start',
-        gap: '10px',
-        flex: '1',
-      }}>
-        {contacts.map((el, index) => {
-          return (
-            <ContactCard key={index} contact={el} />
-          )
-        })}
-      </Box>
+    <Box sx={{
+      width: '100%',
+      height: '100%',
+    }}>
+      {groupedSortedContactsArr.map((el, index) => {
+        return (
+          <ContactCardsGroup key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
+        )
+      })}
     </Box>
+
   )
 }

@@ -18,6 +18,7 @@ import { ContactCardsContainer } from '@/common/contactsCardContainer'
 import { TextFields } from '@mui/icons-material'
 import { SearchContactContainer } from '@/common/searchContactContainer'
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
+import { SearchResultsContainer } from '@/common/searchResultsContainer'
 
 function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
@@ -25,25 +26,6 @@ function ContactListComponent({ state, eventsHandler }) {
 
     // divide state.contacts into each container
     const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
-    const groupedSortedContacts = [...sortedContacts].reduce((prev, curr) => {
-        const capitalizedFirstNameFirstLetterChar = curr.first_name.match(new RegExp(
-            String.raw`(?<firstLetterChar>^[a-z])|`, 'i'))[0]
-        if (!capitalizedFirstNameFirstLetterChar) {
-            if (!prev.misc) prev.misc = []
-            prev.misc = [...prev.misc, curr]
-        } else {
-            if (!prev[capitalizedFirstNameFirstLetterChar.toUpperCase()]) {
-                prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = []
-            }
-            prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [
-                ...prev[capitalizedFirstNameFirstLetterChar.toUpperCase()],
-                curr
-            ]
-        }
-        return prev
-    }, {})
-
-    const groupedSortedContactsArr = Object.entries(groupedSortedContacts)
 
     const filterContacts = (searchText) => {
         const filteredContactsByField = [...sortedContacts].reduce((prev, curr) => {
@@ -116,27 +98,9 @@ function ContactListComponent({ state, eventsHandler }) {
                     }}>
                     {search
                         ?
-                        <Box sx={{
-                            width: '100%',
-                            height: '100%',
-                        }}>
-                            {searchResultsArr.map((el, index) => {
-                                return (
-                                    <ContactCardsContainer key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
-                                )
-                            })}
-                        </Box>
+                            <SearchResultsContainer/>
                         :
-                        <Box sx={{
-                            width: '100%',
-                            height: '100%',
-                        }}>
-                            {groupedSortedContactsArr.map((el, index) => {
-                                return (
-                                    <ContactCardsContainer key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
-                                )
-                            })}
-                        </Box>
+                            <ContactCardsContainer state={state}/>
                     }
                 </Box>
             </Box>
