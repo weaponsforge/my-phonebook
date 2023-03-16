@@ -1,4 +1,5 @@
 import ContactListComponent from '@/components/contactList'
+import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
 import { useEffect, useState } from 'react'
 
 
@@ -470,6 +471,7 @@ const defaultState = {
 
 function ContactList () {
   const [state, setState] = useState(defaultState)
+
   const eventsHandler = () => {
 
   }
