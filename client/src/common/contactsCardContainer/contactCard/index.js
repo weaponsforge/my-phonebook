@@ -30,13 +30,15 @@ export const ContactCard = ({ contact }) => {
         <Paper elevation={3} sx={{
             backgroundColor: 'inherit',
             backdropFilter: 'blur(2px)',
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: '1fr 6fr',
+            gridAutoRows: '1fr',
             padding: '15px',
             gap: '15px',
             alignItems: 'center',
             borderRadius: '10px',
-            width:'auto',
-            '&:hover' :{
+            width: 'auto',
+            '&:hover': {
                 backdropFilter: 'contrast(120%)'
             }
         }}>
@@ -51,10 +53,12 @@ export const ContactCard = ({ contact }) => {
             <Typography
                 variant="h6"
                 sx={{
-                    flex: '3',
                     color: theme.palette.primary,
-                    
-                }}>
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                }}
+            >
                 {contact.first_name} {contact.middle_name} {contact.last_name}
             </Typography>
         </Paper>

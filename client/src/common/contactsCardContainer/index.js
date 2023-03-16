@@ -30,7 +30,8 @@ export const ContactCardsContainer = ({ content }) => {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
                 alignItems: 'start',
                 gap: '10px',
-                flex: '1'
+                flex: '1',
+                borderBottom:'1px dashed grey',
             }}>
                 {contacts.map((el, index) => {
                     return (
