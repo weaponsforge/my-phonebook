@@ -88,7 +88,7 @@ function Header() {
       background: 'inherit',
       backdropFilter: 'blur(5px)',
     }}>
-      <Container maxWidth="xl">
+      <Container maxWidth="xxl">
         <Toolbar disableGutters >
           <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
             <Typography

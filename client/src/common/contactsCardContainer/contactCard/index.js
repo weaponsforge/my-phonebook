@@ -34,12 +34,12 @@ export const ContactCard = ({ contact }) => {
             padding: '15px',
             gap: '15px',
             alignItems: 'center',
-            borderRadius: '15px'
-            // border:'2px solid red'
+            borderRadius: '10px',
+            width:'auto',
         }}>
             <Avatar
                 sx={{
-                    backgroundColor: `hsla(${backgroundColor},50%,80%,100%)`,
+                    backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
                 }}
             >
                 {initial}
@@ -49,7 +49,8 @@ export const ContactCard = ({ contact }) => {
                 variant="h6"
                 sx={{
                     flex: '3',
-                    color: theme.palette.primary
+                    color: theme.palette.primary,
+                    
                 }}>
                 {contact.first_name} {contact.middle_name} {contact.last_name}
             </Typography>

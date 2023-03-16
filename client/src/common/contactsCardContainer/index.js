@@ -7,7 +7,7 @@ export const ContactCardsContainer = ({ content }) => {
     const { group, contacts } = content
     return (
         <Box>
-            <Typography variant="h4">{group}</Typography>
+            <Typography variant="h4">{group === 'misc' ? '' : group}</Typography>
             <Box sx={{
                 backgroundColor: 'inherit',
                 display: 'grid',

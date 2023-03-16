@@ -56,8 +56,10 @@ function ContactListComponent({ state, eventsHandler }) {
                         minWidth: '200px',
                         zIndex: '50',
                         backgroundColor: 'inherit',
-                        padding: '20px'
-                        // backdropFilter:'contrast(80%)'
+                        padding: '20px',
+                        overflow: 'hidden',
+                        width: '100%',
+                        height: '100%'
                     }}
                 >
                     <Box>
@@ -82,16 +84,24 @@ function ContactListComponent({ state, eventsHandler }) {
                         minWidth: '500px',
                         border: '2px solid black',
                         maxHeight: '100%',
-                        overflowY: 'auto',
-                        padding:'20px',
+                        width: '100%',
+                        height: '100%',
+                        padding: '20px',
+                        overflowY:'scroll',
+                        userSelect:'none',
+                        '&::-webkit-scrollbar': {
+                            display:'none',
+                        },
                     }}>
-                    <Box sx={{}}>
+                    <Box sx={{
+                        width: '100%',
+                        height: '100%',
+                    }}>
                         {groupedSortedContactsArr.map((el, index) => {
                             return (
                                 <ContactCardsContainer key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
                             )
                         })}
-
                     </Box>
                 </Box>
             </Box>
