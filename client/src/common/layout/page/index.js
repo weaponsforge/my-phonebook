@@ -24,10 +24,8 @@ const Background = () => {
         position: 'fixed',
         zIndex: '-1',
         top: 0,
-        width: '100vw',
-        height: '100vh',
-        width: '100vmax',
-        height: '100vmax',
+        width: '100%',
+        height: '100%',
         background: `hsla(${bgColor},40%,80%,${activeTheme === 'dark' ? '10%' : '80%'})`,
         animation: 'animate 90s linear infinite',
       },
@@ -81,11 +79,10 @@ function Page ({ children }) {
       <Background/>
       <Box sx={{
         width: '100%',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
         height: '100%',
+        display:'grid',
+        gridTemplateRows:'auto 1fr auto',
+        border:'5px solid black',
       }}>
         <Header />
 

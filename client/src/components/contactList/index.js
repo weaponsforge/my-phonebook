@@ -13,7 +13,7 @@ import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import TransparentTextfield from '@/common/ui/transparentfield'
 import { useTheme } from '@emotion/react'
 import { ContactCard } from '@/common/contactsCardContainer/contactCard'
-import { Box } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 import { ContactCardsContainer } from '@/common/contactsCardContainer'
 
 function ContactListComponent({ state, eventsHandler }) {
@@ -46,16 +46,24 @@ function ContactListComponent({ state, eventsHandler }) {
                 flex: 1,
                 display: 'flex',
                 flexWrap: 'wrap',
-                gridTemplateColumns: '2fr 5fr',
                 gap: '10px',
-                position: 'relative'
+                overflow:'hidden'
             }}>
-                <Box sx={{ position: 'relative', flex: '200px' }}>
-                    Left Container
+                <Box sx={{ flex:2, minWidth:'200px' }}>
+                    <Box>
+                        Search bar 
+                    </Box>
+                    <Box>
+                        {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
+                        View Profile
+                    </Box>
+                    <Box>
+                        {/* related setting to print or export pdf */}
+                        Settings
+                    </Box>
                 </Box>
-
-                <Box sx={{ maxHeight:'100svh'}}>
-                    <Box sx={{ overflowY:'auto'}}>
+                <Box sx={{ flex:5, border:'2px solid black', maxHeight:'100%', overflowY:'auto'}}>
+                    <Box sx={{}}>
                         {groupedSortedContactsArr.map((el, index) => {
                             return (
                                 <ContactCardsContainer key={index} content={{ 'group': el[0], 'contacts': el[1] }} />

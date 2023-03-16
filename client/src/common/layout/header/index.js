@@ -83,8 +83,7 @@ function Header() {
 
   return (
     <AppBar elevation={10} sx={{
-      position:'sticky',
-      top: 0,
+      position:'relative',
       zIndex: 100,
       background: 'inherit',
       backdropFilter: 'blur(5px)',
