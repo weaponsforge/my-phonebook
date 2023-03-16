@@ -27,7 +27,7 @@ export const ContactCard = ({ contact }) => {
 
     const backgroundColor = backgroundColorGenerator(initial)
     return (
-        <Paper elevation={3} sx={{
+        <Paper elevation={8} sx={{
             backgroundColor: 'inherit',
             backdropFilter: 'blur(2px)',
             display: 'grid',
@@ -38,6 +38,7 @@ export const ContactCard = ({ contact }) => {
             alignItems: 'center',
             borderRadius: '10px',
             width: 'auto',
+            border: '1px solid grey',
             '&:hover': {
                 backdropFilter: 'contrast(120%)'
             }
@@ -45,6 +46,7 @@ export const ContactCard = ({ contact }) => {
             <Avatar
                 sx={{
                     backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
+                    border:'1px solid grey'
                 }}
             >
                 {initial}

@@ -10,7 +10,8 @@ export const ContactCardsContainer = ({ content }) => {
             sx={{
                 display: 'grid',
                 gridTemplateColumns: '50px 1fr',
-                padding: '20px'
+                padding: '20px',
+                borderBottom:'1px dashed grey'
             }}
         >
             <Typography variant="h4"
@@ -31,7 +32,6 @@ export const ContactCardsContainer = ({ content }) => {
                 alignItems: 'start',
                 gap: '10px',
                 flex: '1',
-                borderBottom:'1px dashed grey',
             }}>
                 {contacts.map((el, index) => {
                     return (
