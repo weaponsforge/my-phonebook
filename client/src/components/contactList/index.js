@@ -47,16 +47,7 @@ function ContactListComponent({ state, eventsHandler }) {
 
     const filterContacts = (searchText) => {
         const filteredContactsByField = [...sortedContacts].reduce((prev, curr) => {
-            const matchingFirstName = new RegExp(String.raw`${searchText}`, 'i').test(curr.first_name)
-            const matchingMiddleName = new RegExp(String.raw`${searchText}`, 'i').test(curr.middle_name)
-            const matchingLastName = new RegExp(String.raw`${searchText}`, 'i').test(curr.last_name)
-            const matchingContactNo = new RegExp(String.raw`${searchText}`, 'i').test(curr.contact_no)
-            const matchingContactEmail = new RegExp(String.raw`${searchText}`, 'i').test(curr.contact_email)
-
             for (let [key, value] of Object.entries(curr)) {
-                // if (key !== 'first_name' || key !== 'middle_name' || key !== 'last_name' || key !== 'contact_no' || key !== 'contact_email') {
-                // } else {
-                console.log(key, value)
                 if (new RegExp(String.raw`${searchText}`, 'i').test(value)) {
                     if (!prev[key]) {
                         prev[key] = []
