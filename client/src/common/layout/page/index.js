@@ -82,7 +82,6 @@ function Page ({ children }) {
         height: '100%',
         display:'grid',
         gridTemplateRows:'auto 1fr auto',
-        border:'5px solid black',
       }}>
         <Header />
 

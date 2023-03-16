@@ -15,6 +15,7 @@ import { useTheme } from '@emotion/react'
 import { ContactCard } from '@/common/contactsCardContainer/contactCard'
 import { Box, TextField } from '@mui/material'
 import { ContactCardsContainer } from '@/common/contactsCardContainer'
+import { TextFields } from '@mui/icons-material'
 
 function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
@@ -46,23 +47,44 @@ function ContactListComponent({ state, eventsHandler }) {
                 flex: 1,
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: '10px',
-                overflow:'hidden'
+                overflow: 'hidden',
             }}>
-                <Box sx={{ flex:2, minWidth:'200px' }}>
+                <Paper
+                    elevation={10}
+                    sx={{
+                        flex: 3.14,
+                        minWidth: '200px',
+                        zIndex: '50',
+                        backgroundColor: 'inherit',
+                        padding: '20px'
+                        // backdropFilter:'contrast(80%)'
+                    }}
+                >
                     <Box>
-                        Search bar 
+                        <TextField id="searchField" label="Search" variant="outlined" />
                     </Box>
                     <Box>
                         {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
-                        View Profile
+                        <Typography>
+                            View Profile
+                        </Typography>
                     </Box>
                     <Box>
                         {/* related setting to print or export pdf */}
-                        Settings
+                        <Typography>
+                            Settings
+                        </Typography>
                     </Box>
-                </Box>
-                <Box sx={{ flex:5, border:'2px solid black', maxHeight:'100%', overflowY:'auto'}}>
+                </Paper>
+                <Box
+                    sx={{
+                        flex: 6.8,
+                        minWidth: '500px',
+                        border: '2px solid black',
+                        maxHeight: '100%',
+                        overflowY: 'auto',
+                        padding:'20px',
+                    }}>
                     <Box sx={{}}>
                         {groupedSortedContactsArr.map((el, index) => {
                             return (
