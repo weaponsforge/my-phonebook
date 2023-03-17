@@ -58,7 +58,6 @@ function ContactListComponent({ state, eventsHandler }) {
                             sx={{
                                 display: 'grid',
                                 gap: '10px',
-                                overflow:'hidden'
                             }}
                         >
                             {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
@@ -70,7 +69,7 @@ function ContactListComponent({ state, eventsHandler }) {
                                 maxWidth: '100%',
                                 border: '1px solid black',
                                 padding: '20px',
-                                overflowY:'scroll'
+
 
                             }}>
                                 <Avatar sx={{

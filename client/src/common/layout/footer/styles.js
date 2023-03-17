@@ -1,5 +1,6 @@
 const styles = {
   footer: {
+    display: { xs: 'none' , md:'block'},
     width: '100%',
     minHeight: (theme) => theme.spacing(4),
     padding: (theme) => theme.spacing(2),
