@@ -1,5 +1,4 @@
 import { useCallback, useSyncExternalStore } from 'react'
-import { getRandomJoke } from '../services/random'
 
 const useSyncLocalStorageSubscribers = {}
 const useSyncSessionStorageSubscribers = {}
@@ -84,7 +83,7 @@ export const useSyncSessionStorage = (saveDirectory = 'global') => {
 }
 
 export const useSyncGlobalVariable = (saveDirectory = 'global') => {
-  
+
   const subscribe = useCallback((callback) => {
     if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
       useSyncGlobalVariableSubscribers[saveDirectory] = []
@@ -95,7 +94,7 @@ export const useSyncGlobalVariable = (saveDirectory = 'global') => {
         (el) => el !== callback
       )
     }
-  })
+  },[saveDirectory])
 
   const getSnapshot = () => {
     return globalVariable[saveDirectory]

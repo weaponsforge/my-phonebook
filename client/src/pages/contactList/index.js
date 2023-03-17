@@ -1,7 +1,4 @@
 import ContactListComponent from '@/components/contactList'
-import { CreateUseSyncExternalStore, useSyncGlobalVariable } from '@/lib/hooks/useSync'
-import { getRandomJoke } from '@/lib/services/random'
-import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { useState } from 'react'
 
 
@@ -475,16 +472,12 @@ function ContactList() {
   const [state, setState] = useState(defaultState)
 
   const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
-  const [api, setApi] = useSyncGlobalVariable('api')
 
   useState(() => {
     setState(prev => ({
       ...prev,
       contacts: sortedContacts
     }))
-    FirebaseFirestore.subscribeDoc('/test/2SCdmBqBHRda31sxq9Z6', (doc)=>{
-      setApi(doc.data())
-    })
   }, [])
 
 
