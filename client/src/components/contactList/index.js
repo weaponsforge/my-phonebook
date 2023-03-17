@@ -19,11 +19,12 @@ import { TextFields } from '@mui/icons-material'
 import { SearchContactContainer } from '@/common/searchContactContainer'
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
 import { SearchResultsContainer } from '@/common/searchResultsContainer'
+import { useDeferredValue } from 'react'
 
 function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
     const [search, setSearch] = useSyncGlobalVariable('search')
-
+    const deferredSearch = useDeferredValue(search)
     return (
         <Page>
             <Box sx={{
@@ -75,7 +76,7 @@ function ContactListComponent({ state, eventsHandler }) {
                             display: 'none',
                         },
                     }}>
-                    {search
+                    {deferredSearch
                         ?
                             <SearchResultsContainer state={state}/>
                         :

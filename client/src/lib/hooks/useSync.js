@@ -97,7 +97,7 @@ export const useSyncGlobalVariable = (saveDirectory = 'global') => {
   }
 
   const getSnapshot = () => {
-    return JSON.stringify(globalVariable[saveDirectory])
+    return globalVariable[saveDirectory]
   }
 
   const getServerSnapshot = () => {
@@ -111,11 +111,11 @@ export const useSyncGlobalVariable = (saveDirectory = 'global') => {
   }
 
   const setState = (newState) => {
-    globalVariable[saveDirectory] = newState
+    globalVariable[saveDirectory] = JSON.stringify(newState)
     emitChange()
   }
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  return [state ? JSON.parse(state) : undefined, setState]
+  return [state ? JSON.parse(state) : undefined, setState, globalVariable]
 }
