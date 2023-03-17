@@ -11,14 +11,14 @@ export const ContactCardsGroup = ({ content }) => {
         display: 'grid',
         gridTemplateColumns: '40px 1fr',
         pt: '10px',
-        pb:'10px',
-        borderBottom:'1px dashed grey'
+        pb: '10px',
+        borderBottom: '1px dashed grey'
       }}
     >
       <Typography variant="h4"
         sx={{
           padding: '15px',
-          paddingLeft:'0',
+          paddingLeft: '0',
           aspectRatio: '1',
           position: 'sticky',
           top: 0,

@@ -56,17 +56,12 @@ function ContactListComponent({ state, eventsHandler }) {
                     {viewContact &&
                         <Box
                             sx={{
-                                borderTop: '1px dashed black',
-                                borderBottom: '1px dashed black',
-                                padding: '10px',
                                 display: 'grid',
                                 gap: '10px',
+                                overflow:'hidden'
                             }}
                         >
                             {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
-                            <Typography variant="h4">
-                                Contact Detail :
-                            </Typography>
                             <Box sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -74,35 +69,48 @@ function ContactListComponent({ state, eventsHandler }) {
                                 alignItems: 'center',
                                 maxWidth: '100%',
                                 border: '1px solid black',
+                                padding: '20px',
+                                overflowY:'scroll'
 
                             }}>
                                 <Avatar sx={{
-                                    width: '200px',
-                                    height: '200px',
+                                    width: '50vw',
+                                    maxWidth: '200px',
+                                    maxHeight: '200px',
+                                    height: '50vw',
                                     justifySelf: 'center',
-                                    gridColumn: '1/-1'
+                                    gridColumn: '1/-1',
+                                    border: '1px dashed grey'
                                 }}>
                                 </Avatar>
-                                <Typography variant="h6">
-                                    First Name :
-                                </Typography>
-                                <TextField value={viewContact.first_name} />
-                                <Typography variant="h6">
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    alignItems:'center',
+                                    gap:'10px'
+                                }}>
+                                    <Typography variant="h8" sx={{}}>
+                                        First Name :
+                                    </Typography>
+                                    <TextField value={viewContact.first_name} size="small" sx={{width:'100%'}}/>
+
+                                </Box>
+                                <Typography variant="h8">
                                     Middle Name :
                                 </Typography>
-                                <TextField value={viewContact.middle_name} />
-                                <Typography variant="h6">
+                                <TextField value={viewContact.middle_name} size="small" />
+                                <Typography variant="h8">
                                     Last Name:
                                 </Typography>
-                                <TextField value={viewContact.last_name} />
-                                <Typography variant="h6">
+                                <TextField value={viewContact.last_name} size="small" />
+                                <Typography variant="h8">
                                     Contact Number:
                                 </Typography>
-                                <TextField value={viewContact.contact_no} />
-                                <Typography variant="h6">
+                                <TextField value={viewContact.contact_no} size="small" />
+                                <Typography variant="h8">
                                     Contact Email:
                                 </Typography>
-                                <TextField value={viewContact.contact_email} />
+                                <TextField value={viewContact.contact_email} size="small" />
                             </Box>
                         </Box>
                     }
