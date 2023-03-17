@@ -1,6 +1,5 @@
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
-import { Avatar, Divider, Paper, Typography, useTheme } from '@mui/material'
-import { useState } from 'react'
+import { Avatar, Paper, Typography, useTheme } from '@mui/material'
 
 const getInitial = (first, second, last) => {
   const firstInitial = (first.match(new RegExp(
@@ -23,7 +22,7 @@ const backgroundColorGenerator = (name) => {
 
 export const ContactCard = ({ contact }) => {
   const theme = useTheme()
-  const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
+  const [, setViewContact] = useSyncGlobalVariable('viewContact')
 
   const initial = getInitial(contact.first_name, contact.middle_name, contact.last_name).toUpperCase()
 

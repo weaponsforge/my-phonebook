@@ -1,6 +1,5 @@
 import ContactListComponent from '@/components/contactList'
-import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 
 const defaultState = {
@@ -472,6 +471,7 @@ const defaultState = {
 function ContactList () {
   const [state, setState] = useState(defaultState)
   const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
+
   useState(()=>{
     setState(prev=>({
       ...prev,

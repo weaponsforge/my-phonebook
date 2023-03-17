@@ -88,7 +88,7 @@ function Header() {
       background: 'inherit',
       backdropFilter: 'blur(5px)',
     }}
-      id="appBar"
+    id="appBar"
     >
       <Container maxWidth="xxl">
         <Toolbar disableGutters >

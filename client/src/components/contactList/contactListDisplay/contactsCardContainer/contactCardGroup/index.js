@@ -1,5 +1,4 @@
-import { Avatar, Box, Paper, Typography } from '@mui/material'
-import { useState } from 'react'
+import { Box, Typography } from '@mui/material'
 import { ContactCard } from '../contactCard'
 
 
