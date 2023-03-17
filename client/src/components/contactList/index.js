@@ -27,7 +27,6 @@ import { ContactListDisplay } from './contactListDisplay'
 
 function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
-    const [viewContact, setViewContact, status] = useSyncGlobalVariable('viewContact')
 
     return (
         <Page>
@@ -35,7 +34,7 @@ function ContactListComponent({ state, eventsHandler }) {
                 flex: 1,
                 display: 'flex',
                 flexWrap: 'wrap',
-                overflow: 'hidden',
+                // overflow: 'hidden',
             }}>
                 <ContactListSidebar/>
                 <ContactListDisplay state={state} eventsHandler={eventsHandler}/>
