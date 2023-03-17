@@ -9,8 +9,9 @@ export const ContactCardsGroup = ({ content }) => {
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: '50px 1fr',
-        padding: '20px',
+        gridTemplateColumns: '40px 1fr',
+        pt: '10px',
+        pb:'10px',
         borderBottom:'1px dashed grey'
       }}
     >

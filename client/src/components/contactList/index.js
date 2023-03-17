@@ -24,7 +24,8 @@ import { useDeferredValue } from 'react'
 function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
     const [search, setSearch] = useSyncGlobalVariable('search')
-    const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
+    const [viewContact, setViewContact, status] = useSyncGlobalVariable('viewContact')
+    console.log(status)
     const deferredSearch = useDeferredValue(search)
     return (
         <Page>
@@ -46,7 +47,7 @@ function ContactListComponent({ state, eventsHandler }) {
                         padding: '20px',
                         overflow: 'hidden',
                         width: '100%',
-                        gap: '30px'
+                        gap: '20px'
                     }}
                 >
                     <Box>
@@ -67,43 +68,44 @@ function ContactListComponent({ state, eventsHandler }) {
                                 Contact Detail :
                             </Typography>
                             <Box sx={{
-                                display: 'grid',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px',
+                                alignItems: 'center',
+                                maxWidth: '100%',
+                                border: '1px solid black',
 
                             }}>
                                 <Avatar sx={{
                                     width: '200px',
                                     height: '200px',
-                                    justifySelf: 'center'
+                                    justifySelf: 'center',
+                                    gridColumn: '1/-1'
                                 }}>
                                 </Avatar>
                                 <Typography variant="h6">
-                                    First Name : {viewContact.first_name}
+                                    First Name :
                                 </Typography>
-                                <Typography>
-                                    Middle Name:
-                                    {viewContact.middle_name}
+                                <TextField value={viewContact.first_name} />
+                                <Typography variant="h6">
+                                    Middle Name :
                                 </Typography>
-                                <Typography>
+                                <TextField value={viewContact.middle_name} />
+                                <Typography variant="h6">
                                     Last Name:
-                                    {viewContact.last_name}
                                 </Typography>
-                                <Typography>
+                                <TextField value={viewContact.last_name} />
+                                <Typography variant="h6">
                                     Contact Number:
-                                    {viewContact.contact_no}
                                 </Typography>
-                                <Typography>
+                                <TextField value={viewContact.contact_no} />
+                                <Typography variant="h6">
                                     Contact Email:
-                                    {viewContact.contact_email}
                                 </Typography>
+                                <TextField value={viewContact.contact_email} />
                             </Box>
                         </Box>
                     }
-                    <Box>
-                        {/* related setting to print or export pdf */}
-                        <Typography>
-                            Settings
-                        </Typography>
-                    </Box>
                 </Paper>
                 <Box
                     sx={{

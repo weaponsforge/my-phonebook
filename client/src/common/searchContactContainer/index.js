@@ -10,10 +10,11 @@ export const SearchContactContainer = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', maxWidth:'90vw' }}>
             <SearchIcon fontSize="large" sx={{ aspectRatio: 1, }} />
             <TextField
                 fullWidth
+                size="small"
                 variant="outlined"
                 value={search ?? ''}
                 onChange={searchFieldHandler}

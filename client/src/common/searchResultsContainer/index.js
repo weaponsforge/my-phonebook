@@ -29,28 +29,29 @@ export const SearchResultsContainer = ({ state }) => {
 
     const searchResults = filterContacts(deferredSearch)
     const searchResultsArr = Object.entries(searchResults)
-    
-    if (searchResultsArr.length > 1) {
-        setViewContact()
-    } else if (searchResultsArr.length === 1) {
-        for (let [key, value] of Object.entries(searchResults)) {
-            if (value.length !== 1) break
-            setViewContact(value[0])
+    useEffect(()=>{
+        if (searchResultsArr.length === 1) {
+            for (let [key, value] of Object.entries(searchResults)) {
+                if (value.length !== 1) break
+                setViewContact(value[0])
+            }
+        } else {
+            setViewContact()
         }
-    }
+    },[deferredSearch])
 
     return (
         <Box sx={{
             width: '100%',
             height: '100%',
         }}>
-            <Typography variant="h4"
+            {/* <Typography variant="h4"
                 sx={{
                     paddingLeft: '0',
                 }}
             >
                 Search result(s):
-            </Typography>
+            </Typography> */}
             <Box sx={{
                 opacity: search !== deferredSearch ? 0.5 : 1
             }}>
