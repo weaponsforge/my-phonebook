@@ -1,6 +1,8 @@
 import { useSyncGlobalVariable } from "@/lib/hooks/useSync"
 import { useDeferredValue, useEffect, useState } from "react"
 import { ContactCardsGroup } from "../contactsCardContainer/contactCardGroup"
+import Typography from '@mui/material/Typography'
+import { SearchResultsGroup } from "./searchResultsGroup"
 
 const { Box } = require("@mui/material")
 
@@ -32,14 +34,24 @@ export const SearchResultsContainer = ({ state }) => {
             width: '100%',
             height: '100%',
         }}>
-            {
-                searchResultsArr.map((el, index) => {
-                    return (
-                        // <div key={index}>{el[0]}</div>
-                        <ContactCardsGroup key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
-                    )
-                })
-            }
+            <Typography variant="h4"
+                sx={{
+                    paddingLeft: '0',
+                }}
+            >
+                Search result(s):
+            </Typography>
+            <Box sx={{
+                opacity: search !== deferredSearch ? 0.5 : 1
+            }}>
+                {
+                    searchResultsArr.map((el, index) => {
+                        return (
+                            <SearchResultsGroup key={index} content={{ 'group': el[0], 'contacts': el[1] }} />
+                        )
+                    })
+                }
+            </Box>
         </Box>
     )
 }

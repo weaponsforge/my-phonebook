@@ -65,7 +65,6 @@ function ContactListComponent({ state, eventsHandler }) {
                     sx={{
                         flex: 6.8,
                         minWidth: '500px',
-                        border: '2px solid black',
                         maxHeight: '100%',
                         width: '100%',
                         height: '100%',
