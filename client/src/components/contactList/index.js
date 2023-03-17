@@ -13,7 +13,7 @@ import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import TransparentTextfield from '@/common/ui/transparentfield'
 import { useTheme } from '@emotion/react'
 import { ContactCard } from '@/common/contactsCardContainer/contactCard'
-import { Box, TextField } from '@mui/material'
+import { Avatar, Box, TextField } from '@mui/material'
 import { ContactCardsContainer } from '@/common/contactsCardContainer'
 import { TextFields } from '@mui/icons-material'
 import { SearchContactContainer } from '@/common/searchContactContainer'
@@ -24,6 +24,7 @@ import { useDeferredValue } from 'react'
 function ContactListComponent({ state, eventsHandler }) {
     const theme = useTheme()
     const [search, setSearch] = useSyncGlobalVariable('search')
+    const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
     const deferredSearch = useDeferredValue(search)
     return (
         <Page>
@@ -37,23 +38,66 @@ function ContactListComponent({ state, eventsHandler }) {
                     elevation={10}
                     sx={{
                         flex: 3.14,
+                        display: 'flex',
+                        flexDirection: 'column',
                         minWidth: '200px',
                         zIndex: '50',
                         backgroundColor: 'inherit',
                         padding: '20px',
                         overflow: 'hidden',
                         width: '100%',
+                        gap: '30px'
                     }}
                 >
                     <Box>
                         <SearchContactContainer />
                     </Box>
-                    <Box>
-                        {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
-                        <Typography>
-                            View Profile
-                        </Typography>
-                    </Box>
+                    {viewContact &&
+                        <Box
+                            sx={{
+                                borderTop: '1px dashed black',
+                                borderBottom: '1px dashed black',
+                                padding: '10px',
+                                display: 'grid',
+                                gap: '10px',
+                            }}
+                        >
+                            {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
+                            <Typography variant="h4">
+                                Contact Detail :
+                            </Typography>
+                            <Box sx={{
+                                display: 'grid',
+
+                            }}>
+                                <Avatar sx={{
+                                    width: '200px',
+                                    height: '200px',
+                                    justifySelf: 'center'
+                                }}>
+                                </Avatar>
+                                <Typography variant="h6">
+                                    First Name : {viewContact.first_name}
+                                </Typography>
+                                <Typography>
+                                    Middle Name:
+                                    {viewContact.middle_name}
+                                </Typography>
+                                <Typography>
+                                    Last Name:
+                                    {viewContact.last_name}
+                                </Typography>
+                                <Typography>
+                                    Contact Number:
+                                    {viewContact.contact_no}
+                                </Typography>
+                                <Typography>
+                                    Contact Email:
+                                    {viewContact.contact_email}
+                                </Typography>
+                            </Box>
+                        </Box>
+                    }
                     <Box>
                         {/* related setting to print or export pdf */}
                         <Typography>
@@ -77,9 +121,9 @@ function ContactListComponent({ state, eventsHandler }) {
                     }}>
                     {deferredSearch
                         ?
-                            <SearchResultsContainer state={state}/>
+                        <SearchResultsContainer state={state} />
                         :
-                            <ContactCardsContainer state={state}/>
+                        <ContactCardsContainer state={state} />
                     }
                 </Box>
             </Box>

@@ -1,3 +1,4 @@
+import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
 import { Avatar, Paper, Typography, useTheme } from '@mui/material'
 import { useState } from 'react'
 
@@ -22,31 +23,41 @@ const backgroundColorGenerator = (name) => {
 
 export const ContactCard = ({ contact }) => {
   const theme = useTheme()
+  const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
 
   const initial = getInitial(contact.first_name, contact.middle_name, contact.last_name).toUpperCase()
 
   const backgroundColor = backgroundColorGenerator(initial)
+
+  const contactClickHandler = (e) => {
+    e.stopPropagation()
+    setViewContact(contact)
+  }
   return (
-    <Paper elevation={8} sx={{
-      backgroundColor: 'inherit',
-      backdropFilter: 'blur(2px)',
-      display: 'grid',
-      gridTemplateColumns: '1fr 6fr',
-      gridAutoRows: '1fr',
-      padding: '15px',
-      gap: '15px',
-      alignItems: 'center',
-      borderRadius: '10px',
-      width: 'auto',
-      border: '1px solid grey',
-      '&:hover': {
-        backdropFilter: 'contrast(120%)'
-      }
-    }}>
+    <Paper
+      elevation={8}
+      sx={{
+        backgroundColor: 'inherit',
+        backdropFilter: 'blur(2px)',
+        display: 'grid',
+        gridTemplateColumns: '1fr 6fr',
+        gridAutoRows: '1fr',
+        padding: '15px',
+        gap: '15px',
+        alignItems: 'center',
+        borderRadius: '10px',
+        width: 'auto',
+        maxWidth: '70vw',
+        border: '1px solid grey',
+        '&:hover': {
+          backdropFilter: 'contrast(120%)'
+        },
+      }}
+      onClick={contactClickHandler}>
       <Avatar
         sx={{
           backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
-          border:'1px solid grey'
+          border: '1px solid grey'
         }}
       >
         {initial}

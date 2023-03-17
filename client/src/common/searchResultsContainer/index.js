@@ -8,6 +8,8 @@ const { Box } = require("@mui/material")
 
 export const SearchResultsContainer = ({ state }) => {
     const [search, setSearch] = useSyncGlobalVariable('search')
+    const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
+
     const deferredSearch = useDeferredValue(search)
 
     const filterContacts = (searchText) => {
@@ -27,7 +29,15 @@ export const SearchResultsContainer = ({ state }) => {
 
     const searchResults = filterContacts(deferredSearch)
     const searchResultsArr = Object.entries(searchResults)
-
+    
+    if (searchResultsArr.length > 1) {
+        setViewContact()
+    } else if (searchResultsArr.length === 1) {
+        for (let [key, value] of Object.entries(searchResults)) {
+            if (value.length !== 1) break
+            setViewContact(value[0])
+        }
+    }
 
     return (
         <Box sx={{
