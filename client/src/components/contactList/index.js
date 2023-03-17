@@ -19,7 +19,7 @@ import { TextFields } from '@mui/icons-material'
 
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
 
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useRef } from 'react'
 import { SearchResultsContainer } from './contactListDisplay/searchResultsContainer'
 import { ContactCardsContainer } from './contactListDisplay/contactsCardContainer'
 import { ContactListSidebar } from './contactListSidebar'
@@ -35,8 +35,13 @@ function ContactListComponent({ state, eventsHandler }) {
                 display: 'flex',
                 flexWrap: 'wrap',
                 // overflow: 'hidden',
+                overflowY: 'scroll',
+                userSelect: 'none',
+                '&::-webkit-scrollbar': {
+                    display: 'none',
+                },
             }}>
-                <ContactListSidebar/>
+                <ContactListSidebar />
                 <ContactListDisplay state={state} eventsHandler={eventsHandler}/>
             </Box>
         </Page>

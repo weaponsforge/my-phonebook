@@ -79,15 +79,17 @@ function Header() {
       router.push(route)
     }
   }
-  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu, handleClickNavMenu} = eventsHandler
+  const { themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu, handleClickNavMenu } = eventsHandler
 
   return (
     <AppBar elevation={10} sx={{
-      position:'relative',
+      position: 'relative',
       zIndex: 100,
       background: 'inherit',
       backdropFilter: 'blur(5px)',
-    }}>
+    }}
+      id="appBar"
+    >
       <Container maxWidth="xxl">
         <Toolbar disableGutters >
           <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
@@ -102,14 +104,14 @@ function Header() {
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
-                color: (theme)=>theme.palette.text.primary,
+                color: (theme) => theme.palette.text.primary,
               }}
             >
               myPhonebook
             </Typography>
           </Link>
 
-          <Box sx={{  display: { xs: 'flex', md: 'none' }}}>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -145,7 +147,7 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <Link href='/' style={{ textDecoration: 'none', display: 'flex', flex:1, justifyContent:'center' }}>
+          <Link href='/' style={{ textDecoration: 'none', display: 'flex', flex: 1, justifyContent: 'center' }}>
             <Typography
               className={Avalon.className}
               variant="h5"
@@ -156,7 +158,7 @@ function Header() {
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
                 marginTop: '5px',
-                color: (theme)=>theme.palette.text.primary,
+                color: (theme) => theme.palette.text.primary,
               }}
             >
               myPhonebook
@@ -164,10 +166,10 @@ function Header() {
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link key={page} href={`/${page}`} style={{ textDecoration:'none'}}>
+              <Link key={page} href={`/${page}`} style={{ textDecoration: 'none' }}>
                 <Button
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color:(theme)=>theme.palette.text.primary, display: 'block', fontWeight: 'bold' }}
+                  sx={{ my: 2, color: (theme) => theme.palette.text.primary, display: 'block', fontWeight: 'bold' }}
                 >
                   {page}
                 </Button>
@@ -223,7 +225,7 @@ function Header() {
                     display: { xs: 'none', md: 'flex' },
                   }}
                 >
-                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme) => theme.palette.text.primary, }}>
                     Login
                   </Typography>
                 </Button>
@@ -236,7 +238,7 @@ function Header() {
                     display: { xs: 'none', md: 'flex' },
                   }}
                 >
-                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme) => theme.palette.text.primary, }}>
                     Register
                   </Typography>
                 </Button>
@@ -248,17 +250,17 @@ function Header() {
               sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
-                justifyContent:'center',
-                alignItems:'center',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               {activeTheme === 'dark'
                 ?
                 <LoginIcon style={{
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
-                }}/>
+                }} />
                 :
-                <LoginIcon/>
+                <LoginIcon />
               }
             </IconButton>
           </Link>
@@ -267,15 +269,15 @@ function Header() {
               sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
-                justifyContent:'center',
-                alignItems:'center',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               {activeTheme === 'dark'
                 ?
                 <HowToRegIcon style={{
                   filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
-                }}/>
+                }} />
                 :
                 <HowToRegIcon />
               }
@@ -284,13 +286,13 @@ function Header() {
           <IconButton sx={{
             color: 'black',
             display: 'flex',
-            justifyContent:'center',
-            alignItems:'center',
+            justifyContent: 'center',
+            alignItems: 'center',
           }} onClick={themeHandler}
           >
             {activeTheme === 'dark'
               ?
-              <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
+              <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)' }} />
               :
               <DarkModeIcon />
             }

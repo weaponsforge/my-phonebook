@@ -28,8 +28,8 @@ export const ContactListSidebar = () => {
                 },
             }}
         >
-            <SearchField/>
-            <ViewContact/>
+            <SearchField />
+            <ViewContact />
         </Paper>
     )
 }
