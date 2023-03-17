@@ -7,8 +7,8 @@ export class FirebaseFirestore {
      *
      *
      * @static
-     * @param {*} path <collectionID>
-     * @param {*} data {<key>:<value>}
+     * @param {String} path <collectionID>
+     * @param {Object} data {<key>:<value>}
      * @memberof FirebaseFirestore
      */
   static createDoc = async (path, data) => {
@@ -27,7 +27,7 @@ export class FirebaseFirestore {
      *
      *
      * @static
-     * @param {*} path <collectionID>/<docID>
+     * @param {String} path <collectionID>/<docID>
      * @memberof FirebaseFirestore
      */
   static readDoc = async (path) => {
@@ -41,7 +41,7 @@ export class FirebaseFirestore {
      *
      * @static
      * @param {String} path <collectionID>/<docID>/<collectionID>
-     * @param {*} queryDef eg: (where('<fieldKey>', '==','<fieldValue>'))
+     * @param {Object} queryDef eg: (where('<fieldKey>', '==','<fieldValue>'))
      * @memberof FirebaseFirestore
      */
   static readCollection = async (path, queryDef) => {
@@ -60,8 +60,8 @@ export class FirebaseFirestore {
    *
    *
    * @static
-   * @param {*} path <collectionID>
-   * @param {*} queryDef eg: where('<key>','==','<value>')
+   * @param {String} path <collectionID>
+   * @param {Object} queryDef eg: where('<key>','==','<value>')
    * @memberof FirebaseFirestore
    */
   static readCollectionGroup = async (path, queryDef) => {
@@ -81,8 +81,8 @@ export class FirebaseFirestore {
    *
    *
    * @static
-   * @param {*} path eg:/<collectionID>/<docID>
-   * @param {*} data {<key>:<value>}
+   * @param {String} path eg:/<collectionID>/<docID>
+   * @param {Object} data {<key>:<value>}
    * @memberof FirebaseFirestore
    */
   static updateDoc = async (path, data) => {
@@ -98,7 +98,7 @@ export class FirebaseFirestore {
    *
    *
    * @static
-   * @param {*} path eg:/<collectionID>/<docID>
+   * @param {String} path eg:/<collectionID>/<docID>
    * @memberof FirebaseFirestore
    */
   static deleteDoc = async (path) => {
@@ -111,8 +111,8 @@ export class FirebaseFirestore {
    *
    *
    * @static
-   * @param {*} path eg:/<collectionID>/<docID>
-   * @param {*} callback eg: (doc)=>console.log(doc.data())
+   * @param {String} path eg:/<collectionID>/<docID>
+   * @param {Function} callback eg: (doc)=>console.log(doc.data())
    * @memberof FirebaseFirestore
    */
   static subscribeDoc = async (path, callback) => {
@@ -125,9 +125,9 @@ export class FirebaseFirestore {
    *
    *
    * @static
-   * @param {*} path <collectionID>/<docID>/<collectionID>
-   * @param {*} queryDef where('<key>','==','<value>')
-   * @param {*} callback (doc)=>console.log(doc.data())
+   * @param {String} path <collectionID>/<docID>/<collectionID>
+   * @param {Object} queryDef where('<key>','==','<value>')
+   * @param {Function} callback (doc)=>console.log(doc.data())
    * @memberof FirebaseFirestore
    */
   static subscribeCollection = async (path, queryDef, callback) => {
@@ -141,9 +141,9 @@ export class FirebaseFirestore {
    *
    *
    * @static
-   * @param {*} path <collectionID>
-   * @param {*} queryDef where('<key>','==','<value>')
-   * @param {*} callback (doc)=>console.log(doc.data())
+   * @param {String} path <collectionID>
+   * @param {Object} queryDef where('<key>','==','<value>')
+   * @param {Function} callback (doc)=>console.log(doc.data())
    * @memberof FirebaseFirestore
    */
   static subscribeCollectionGroup = async (path, queryDef, callback) => {
