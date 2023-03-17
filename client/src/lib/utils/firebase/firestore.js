@@ -1,16 +1,29 @@
 import { app } from './config'
-import { collection, getDocs, getFirestore, query, updateDoc, doc, deleteDoc, setDoc, getDoc, serverTimestamp, collectionGroup, onSnapshot } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  updateDoc,
+  doc,
+  deleteDoc,
+  setDoc,
+  getDoc,
+  serverTimestamp,
+  collectionGroup,
+  onSnapshot,
+} from 'firebase/firestore'
 
 export class FirebaseFirestore {
   static db = getFirestore(app)
   /**
-     *
-     *
-     * @static
-     * @param {String} path <collectionID>
-     * @param {Object} data {<key>:<value>}
-     * @memberof FirebaseFirestore
-     */
+   *
+   *
+   * @static
+   * @param {String} path <collectionID>
+   * @param {Object} data {<key>:<value>}
+   * @memberof FirebaseFirestore
+   */
   static createDoc = async (path, data) => {
     const colRef = collection(this.db, path)
     const docRef = doc(colRef)
@@ -19,17 +32,17 @@ export class FirebaseFirestore {
       ...data,
       uid,
       date_created: serverTimestamp(),
-      date_updated: serverTimestamp()
+      date_updated: serverTimestamp(),
     })
     return response
   }
   /**
-     *
-     *
-     * @static
-     * @param {String} path <collectionID>/<docID>
-     * @memberof FirebaseFirestore
-     */
+   *
+   *
+   * @static
+   * @param {String} path <collectionID>/<docID>
+   * @memberof FirebaseFirestore
+   */
   static readDoc = async (path) => {
     const docRef = doc(this.db, path)
     const response = await getDoc(docRef)
@@ -37,23 +50,22 @@ export class FirebaseFirestore {
     return data
   }
   /**
-     *
-     *
-     * @static
-     * @param {String} path <collectionID>/<docID>/<collectionID>
-     * @param {Object} queryDef eg: (where('<fieldKey>', '==','<fieldValue>'))
-     * @memberof FirebaseFirestore
-     */
+   *
+   *
+   * @static
+   * @param {String} path <collectionID>/<docID>/<collectionID>
+   * @param {Object} queryDef eg: (where('<fieldKey>', '==','<fieldValue>'))
+   * @memberof FirebaseFirestore
+   */
   static readCollection = async (path, queryDef) => {
     const colRef = collection(this.db, path)
     const q = query(colRef, queryDef)
     const snapshot = await getDocs(q)
-    const data = snapshot.docs
-      .map((doc) => {
-        return {
-          ...doc.data()
-        }
-      })
+    const data = snapshot.docs.map((doc) => {
+      return {
+        ...doc.data(),
+      }
+    })
     return data
   }
   /**
@@ -68,12 +80,11 @@ export class FirebaseFirestore {
     const colGroupRef = collectionGroup(this.db, path)
     const q = query(colGroupRef, queryDef)
     const snapshot = await getDocs(q)
-    const data = snapshot.docs
-      .map((doc) => {
-        return {
-          ...doc.data()
-        }
-      })
+    const data = snapshot.docs.map((doc) => {
+      return {
+        ...doc.data(),
+      }
+    })
     return data
   }
 
@@ -84,12 +95,14 @@ export class FirebaseFirestore {
    * @param {String} path eg:/<collectionID>/<docID>
    * @param {Object} data {<key>:<value>}
    * @memberof FirebaseFirestore
+   * @returns
+   * A Promise resolved once the data has been successfully written to the backend (note that it won't resolve while you're offline).
    */
   static updateDoc = async (path, data) => {
     const docRef = doc(this.db, path)
     const response = await updateDoc(docRef, {
       ...data,
-      date_updated: serverTimestamp()
+      date_updated: serverTimestamp(),
     })
     return response
   }
