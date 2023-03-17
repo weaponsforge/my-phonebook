@@ -1,5 +1,5 @@
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
-import { Avatar, Paper, Typography, useTheme } from '@mui/material'
+import { Avatar, Divider, Paper, Typography, useTheme } from '@mui/material'
 import { useState } from 'react'
 
 const getInitial = (first, second, last) => {
@@ -34,12 +34,13 @@ export const ContactCard = ({ contact }) => {
     setViewContact(contact)
   }
   return (
+    <>
     <Paper
-      elevation={8}
+      elevation={1}
       sx={{
         backgroundColor: 'inherit',
         backdropFilter: 'blur(2px)',
-        display: 'grid',
+        display: { xs: 'none', md: 'grid' },
         gridTemplateColumns: '1fr 6fr',
         gridAutoRows: '1fr',
         padding: '15px',
@@ -47,13 +48,14 @@ export const ContactCard = ({ contact }) => {
         alignItems: 'center',
         borderRadius: '10px',
         width: 'auto',
-        maxWidth: '70vw',
-        border: '1px solid grey',
+        maxWidth: '80vw',
+        // border: '1px solid grey',
         '&:hover': {
           backdropFilter: 'contrast(120%)'
         },
       }}
-      onClick={contactClickHandler}>
+      onClick={contactClickHandler}
+    >
       <Avatar
         sx={{
           backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
@@ -64,7 +66,7 @@ export const ContactCard = ({ contact }) => {
       </Avatar>
 
       <Typography
-        variant="h6"
+        variant="h8"
         sx={{
           color: theme.palette.primary,
           overflow: 'hidden',
@@ -75,5 +77,47 @@ export const ContactCard = ({ contact }) => {
         {contact.first_name} {contact.middle_name} {contact.last_name}
       </Typography>
     </Paper>
+    <Paper
+      elevation={0}
+      sx={{
+        backgroundColor: 'inherit',
+        backdropFilter: 'blur(2px)',
+        display: { xs: 'grid', md: 'none' },
+        gridTemplateColumns: '1fr 6fr',
+        gridAutoRows: '1fr',
+        padding: '15px',
+        gap: '15px',
+        alignItems: 'center',
+        borderRadius: '10px',
+        width: 'auto',
+        maxWidth: '80vw',
+        '&:hover': {
+          backdropFilter: 'contrast(120%)'
+        },
+      }}
+      onClick={contactClickHandler}
+    >
+      <Avatar
+        sx={{
+          backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
+          border: '1px solid grey'
+        }}
+      >
+        {initial}
+      </Avatar>
+
+      <Typography
+        variant="h8"
+        sx={{
+          color: theme.palette.primary,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        {contact.first_name} {contact.middle_name} {contact.last_name}
+      </Typography>
+    </Paper>
+    </>
   )
 }

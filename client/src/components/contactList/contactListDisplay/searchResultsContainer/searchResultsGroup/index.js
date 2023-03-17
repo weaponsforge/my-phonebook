@@ -1,7 +1,8 @@
-import { ContactCard } from '@/common/contactsCardContainer/contactCard'
+
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
 import { Avatar, Box, Paper, Typography } from '@mui/material'
 import { useState } from 'react'
+import { ContactCard } from '../../contactsCardContainer/contactCard'
 
 const groupNameMapping = {
     first_name: 'Matching First Name',

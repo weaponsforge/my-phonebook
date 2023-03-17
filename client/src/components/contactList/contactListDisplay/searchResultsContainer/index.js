@@ -45,13 +45,6 @@ export const SearchResultsContainer = ({ state }) => {
             width: '100%',
             height: '100%',
         }}>
-            {/* <Typography variant="h4"
-                sx={{
-                    paddingLeft: '0',
-                }}
-            >
-                Search result(s):
-            </Typography> */}
             <Box sx={{
                 opacity: search !== deferredSearch ? 0.5 : 1
             }}>

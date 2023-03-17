@@ -10,8 +10,7 @@ export const ContactCardsGroup = ({ content }) => {
       sx={{
         display: 'grid',
         gridTemplateColumns: '40px 1fr',
-        pt: '10px',
-        pb: '10px',
+        p: '25px',
         borderBottom: '1px dashed grey'
       }}
     >
