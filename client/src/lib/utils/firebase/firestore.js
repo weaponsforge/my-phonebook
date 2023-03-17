@@ -22,20 +22,34 @@ export class FirebaseFirestore {
    * @static
    * @param {String} path <collectionID>
    * @param {Object} data {<key>:<value>}
+   * @param {String} path optional <documentID>
    * @memberof FirebaseFirestore
    */
-  static createDoc = async (path, data) => {
-    const colRef = collection(this.db, path)
-    const docRef = doc(colRef)
-    const uid = docRef.id
-    const response = await setDoc(docRef, {
-      ...data,
-      uid,
-      date_created: serverTimestamp(),
-      date_updated: serverTimestamp(),
-    })
-    return response
+  static createDoc = async (path, data, id) => {
+    if (id) {
+      const docRef = doc(this.db, path, id)
+      const uid = id
+      const response = await setDoc(docRef, {
+        ...data,
+        uid,
+        date_created: serverTimestamp(),
+        date_updated: serverTimestamp(),
+      })
+      return response
+    } else {
+      const colRef = collection(this.db, path)
+      const docRef = doc(colRef)
+      const uid = docRef.id
+      const response = await setDoc(docRef, {
+        ...data,
+        uid,
+        date_created: serverTimestamp(),
+        date_updated: serverTimestamp(),
+      })
+      return response
+    }
   }
+
   /**
    *
    *
