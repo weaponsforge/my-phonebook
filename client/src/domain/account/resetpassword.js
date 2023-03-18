@@ -15,7 +15,7 @@ const INPUT_ID = {
   CONFIRM_PASSWORD: 'confirmpassword'
 }
 
-function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
+function ResetPasswordComponent ({ loading, locked, handleResetPasswordSubmit }) {
   const [password, setPassword] = useState(defaultState)
   const [confirmpassword, setConfirmPassword] = useState(defaultState)
   const [activeTheme] = useSyncLocalStorage('activeTheme')
@@ -50,7 +50,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
         width: '100%'
       }
     }}>
-      <form id="resetpassword" onSubmit={handleFormSubmit}>
+      <form id="resetpassword" onSubmit={handleResetPasswordSubmit}>
         <TransparentTextfield
           id={INPUT_ID.PASSWORD}
           type='password'
@@ -101,7 +101,7 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
 ResetPasswordComponent.propTypes = {
   loading: PropTypes.bool,
   locked: PropTypes.bool,
-  handleFormSubmit: PropTypes.func
+  handleResetPasswordSubmit: PropTypes.func
 }
 
 export default ResetPasswordComponent

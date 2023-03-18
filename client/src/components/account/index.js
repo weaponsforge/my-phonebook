@@ -6,9 +6,14 @@ import Typography from '@mui/material/Typography'
 
 import Page from '@/common/layout/page'
 import ResetPasswordComponent from '@/domain/account/resetpassword'
+import ResendVerificationComponent from '@/domain/account/resendverification'
 import { ACCOUNT_ACTION } from '@/services/account'
 
-function AccountComponent ({ state, handleFormSubmit }) {
+function AccountComponent ({
+  state,
+  handleResetPasswordSubmit,
+  handleResendEmailVerification
+}) {
   return (
     <Page>
       <Box sx={{ padding: '16px' }}>
@@ -40,7 +45,15 @@ function AccountComponent ({ state, handleFormSubmit }) {
             <ResetPasswordComponent
               loading={state.loading}
               locked={state.locked}
-              handleFormSubmit={handleFormSubmit}
+              handleResetPasswordSubmit={handleResetPasswordSubmit}
+            />
+          }
+
+          {(state.mode === ACCOUNT_ACTION.RESEND_EMAIL_VERIFICATION) &&
+            <ResendVerificationComponent
+              loading={state.loading}
+              locked={state.locked}
+              handleResendEmailVerification={handleResendEmailVerification}
             />
           }
 
@@ -51,8 +64,8 @@ function AccountComponent ({ state, handleFormSubmit }) {
                 ? <Typography variant='caption' color='error'>
                   <span dangerouslySetInnerHTML={{ __html: state.error }}></span>
                 </Typography>
-                : <Typography variant='body1' color='success.main'>
-                  {state.success}
+                : <Typography variant='caption' color='success.main'>
+                  <span dangerouslySetInnerHTML={{ __html: state.success }}></span>
                 </Typography>
             }
           </div>
@@ -64,7 +77,8 @@ function AccountComponent ({ state, handleFormSubmit }) {
 
 AccountComponent.propTypes = {
   state: PropTypes.object,
-  handleFormSubmit: PropTypes.func
+  handleResetPasswordSubmit: PropTypes.func,
+  ResendVerificationComponent: PropTypes.func
 }
 
 export default AccountComponent
