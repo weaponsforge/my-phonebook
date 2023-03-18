@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import PromiseWrapper from '@/utils/promiseWrapper'
 
 const defaultState = {
+  name: 'default',
   response: null,
   loading: false,
   error: '',
@@ -14,15 +15,17 @@ const RequestStatus = PromiseWrapper.STATUS
  * A helper/wrapper hook for handling async service methods (Promises).
  * Returns the success, error or loading status and response of a Promise as React states.
  * @param {Promise} promise - An async javascript method (Promise) that resolves and rejects.
- * @returns {Object} React state object { response, loading, error, status }
+ * @param {String} name - Optional descriptive promise name identifier
+ * @returns {Object} React state object { name, response, loading, error, status }
  */
-function usePromise (promise) {
+function usePromise (promise, name = 'default') {
   const [state, setState] = useState(defaultState)
 
   useEffect(() => {
     if (promise !== null) {
       setState(prev => ({
         ...prev,
+        name,
         response: null,
         loading: true,
         error: '',
@@ -48,9 +51,10 @@ function usePromise (promise) {
         }
       )
     }
-  }, [promise])
+  }, [promise, name])
 
   return {
+    name: state.name,
     response: state.response,
     loading: state.loading,
     error: state.error,
