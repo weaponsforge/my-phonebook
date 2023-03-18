@@ -83,18 +83,17 @@ export const useSyncSessionStorage = (saveDirectory = 'global') => {
 }
 
 export const useSyncGlobalVariable = (saveDirectory = 'global') => {
-
-  const subscribe = useCallback((callback) => {
-    if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
-      useSyncGlobalVariableSubscribers[saveDirectory] = []
-    }
+  if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
+    useSyncGlobalVariableSubscribers[saveDirectory] = []
+  }
+  const subscribe = (callback) => {
     useSyncGlobalVariableSubscribers[saveDirectory] = [...useSyncGlobalVariableSubscribers[saveDirectory], callback]
     return () => {
       useSyncGlobalVariableSubscribers[saveDirectory] = useSyncGlobalVariableSubscribers[saveDirectory].filter(
         (el) => el !== callback
       )
     }
-  },[saveDirectory])
+  }
 
   const getSnapshot = () => {
     return globalVariable[saveDirectory]

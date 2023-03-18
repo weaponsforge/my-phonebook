@@ -1,11 +1,40 @@
-import { FirebaseFirestore } from "../utils/firebase/firestore"
-import { useSyncGlobalVariable } from "./useSync"
+import { useEffect } from 'react'
+import { FirebaseFirestore } from '../utils/firebase/firestore'
+import { useSyncGlobalVariable } from './useSync'
 
-export const useSyncFirestore = (path) => {
-    const [clientModel, setClientModel] = useState('clientModel')
+/**
+ * Custom hook that synchronizes a Firestore document with a client react syncGlobalVariable state
+ *
+ * @param {string} colPath - The path of the collection containing the document.
+ * @param {string} docId - The ID of the document to synchronize.
+ * @returns {[object, function]} An array containing the synchronized client model and a function to update the Firestore document.
+ * @usage inside react component, const [model, setModel] = useSyncFirestore(firestoreColPath, firestoreDocId) 
+ * @abstract this will generate a synced object model of js private global variable using react useSyncExternalStore hook, that is subscribing
+ * to a firestore document
+ */
+export const useSyncFirestore = (colPath, docId) => {
+    const [clientModel, setClientModel] = useSyncGlobalVariable(docId);
+    const docPath = `${colPath}/${docId}`;
 
-    const setFirestore = (arg) => {
-        FirebaseFirestore.
-    }
-    return [clientModel, setFirestore]
+    useEffect(() => {
+        // Create the document if it does not exist
+        FirebaseFirestore.createDoc(colPath, {}, docId);
+
+        // Subscribe to document changes
+        FirebaseFirestore.subscribeDoc(docPath, (doc) => {
+            setClientModel(doc.data());
+        });
+    }, []);
+
+    /**
+     * Updates the Firestore document with the provided data.
+     *
+     * @param {object} data - The data to update the Firestore document with.
+     * @returns {Promise} A Promise that resolves when the Firestore document is successfully updated.
+     */
+    const setFirestore = (data) => {
+        return FirebaseFirestore.updateDoc(docPath, data);
+    };
+
+    return [clientModel, setFirestore];
 }
