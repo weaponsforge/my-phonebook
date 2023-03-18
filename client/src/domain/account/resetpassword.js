@@ -87,7 +87,9 @@ function ResetPasswordComponent ({ loading, locked, handleFormSubmit }) {
           loading ||
           locked ||
           password.error ||
-          confirmpassword.error)
+          confirmpassword.error ||
+          password.value === '' ||
+          confirmpassword === '')
         }>
           Submit
         </Button>
