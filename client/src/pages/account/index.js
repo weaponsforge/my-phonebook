@@ -79,7 +79,9 @@ function Account () {
       state={{
         ...state,
         loading,
-        error: state.error || asyncError,
+        error: (asyncError)
+          ? messages.find(item => item.mode === state.mode)?.error ?? ''
+          : state.error,
         locked: (status === RequestStatus.ERROR && state.mode === ACCOUNT_ACTION.RESET_PASSWORD),
         success: (status === RequestStatus.SUCCESS && !state.checkCode) ?
           messages.find(item => item.mode === state.mode)?.success : '',
