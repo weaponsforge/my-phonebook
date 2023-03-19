@@ -13,13 +13,13 @@ import { useSyncGlobalVariable } from './useSync'
  * to a firestore document
  */
 
-export const useSyncFirestore = (colPath, docId) => {
+export const useSyncFirestore = (docPath) => {
   const [clientModel, setClientModel] = useSyncGlobalVariable(docId)
   const docPath = `${colPath}/${docId}`
 
   useEffect(() => {
     // Create the document if it does not exist
-    FirebaseFirestore.createDoc(colPath, {}, docId)
+    FirebaseFirestore.createDoc(docPath)
 
     // Subscribe to document changes
     FirebaseFirestore.subscribeDoc(docPath, (doc) => {

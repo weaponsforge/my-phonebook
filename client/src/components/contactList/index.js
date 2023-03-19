@@ -3,10 +3,9 @@ import Page from '@/common/layout/page'
 import { Box} from '@mui/material'
 import { ContactListSidebar } from './contactListSidebar'
 import { ContactListDisplay } from './contactListDisplay'
-import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 
 function ContactListComponent({ state, eventsHandler }) {
-  FirebaseFirestore.createDoc('tests',{})
+
   return (
     <Page>
       <Box>

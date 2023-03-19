@@ -3,8 +3,11 @@ import Box from '@mui/material/Box'
 import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
+import { useEffect, useRef } from 'react'
+import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const Background = () => {
+  const [activeTheme] = useSyncLocalStorage('activeTheme')
   return (
     <Box sx={{
       '&:after,:before': {
@@ -15,22 +18,33 @@ const Background = () => {
         top: 0,
         width: '100%',
         height: '100%',
-        animation: 'animate 90s linear infinite, colorSwitcher 21s alternate infinite'
+        animation: `animate 90s linear infinite, ${activeTheme === 'dark' ? 'darkColorSwitcher' : 'lightColorSwitcher'} 42s alternate infinite`
       },
       '&:after': {
         left: '15vw',
       },
       '&:before': {
         right: '15vw',
-        animationDelay: '-30s',
+        animationDelay: '-15s',
         animationDirection: 'reverse',
       },
-      '@keyframes colorSwitcher': {
+      '@keyframes lightColorSwitcher': {
         '0%': {
-          backgroundColor: 'hsla(0,40%,80%,30%)',
+          backgroundColor: 'hsla(0,40%,80%,80%)',
+        },
+        '50%': {
+          backgroundColor: 'hsla(255,50%,80%,80%)',
         },
         '100%': {
-          backgroundColor: 'hsla(255,40%,80%,30%)',
+          backgroundColor: 'hsla(0,40%,80%,80%)',
+        }
+      },
+      '@keyframes darkColorSwitcher': {
+        '0%': {
+          backgroundColor: 'hsla(0,40%,80%,10%)',
+        },
+        '100%': {
+          backgroundColor: 'hsla(255,40%,80%,10%)',
         }
       },
       '@keyframes animate': {
