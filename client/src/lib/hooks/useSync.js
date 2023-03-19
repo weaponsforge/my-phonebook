@@ -100,7 +100,7 @@ export const useSyncGlobalVariable = (saveDirectory = 'global') => {
   }
 
   const getServerSnapshot = () => {
-    return
+    return globalVariable[saveDirectory]
   }
 
   const emitChange = () => {
