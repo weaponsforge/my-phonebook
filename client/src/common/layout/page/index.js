@@ -15,7 +15,7 @@ const Background = () => {
         top: 0,
         width: '100%',
         height: '100%',
-        animation: `animate 90s linear infinite, colorSwitcher 21s alternate infinite`
+        animation: 'animate 90s linear infinite, colorSwitcher 21s alternate infinite'
       },
       '&:after': {
         left: '15vw',
@@ -27,10 +27,10 @@ const Background = () => {
       },
       '@keyframes colorSwitcher': {
         '0%': {
-          backgroundColor: `hsla(0,40%,80%,30%)`,
+          backgroundColor: 'hsla(0,40%,80%,30%)',
         },
         '100%': {
-          backgroundColor: `hsla(255,40%,80%,30%)`,
+          backgroundColor: 'hsla(255,40%,80%,30%)',
         }
       },
       '@keyframes animate': {
