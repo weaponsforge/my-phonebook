@@ -11,21 +11,21 @@ export const useSyncLocalStorage = (saveDirectory = 'global') => {
     useSyncLocalStorageSubscribers[saveDirectory] = []
   }
 
-  const subscribe = (callback) => {
+  const subscribe = useCallback((callback) => {
     useSyncLocalStorageSubscribers[saveDirectory] = [...useSyncLocalStorageSubscribers[saveDirectory], callback]
     return () => {
       useSyncLocalStorageSubscribers[saveDirectory] = useSyncLocalStorageSubscribers[saveDirectory].filter(
         (el) => el !== callback
       )
     }
-  }
+  }, [saveDirectory])
 
   const getSnapshot = () => {
     return localStorage[saveDirectory]
   }
 
   const getServerSnapshot = () => {
-    return true
+    return 
   }
 
   const emitChange = () => {
@@ -49,21 +49,21 @@ export const useSyncSessionStorage = (saveDirectory = 'global') => {
     useSyncSessionStorageSubscribers[saveDirectory] = []
   }
 
-  const subscribe = (callback) => {
+  const subscribe = useCallback((callback) => {
     useSyncSessionStorageSubscribers[saveDirectory] = [...useSyncSessionStorageSubscribers[saveDirectory], callback]
     return () => {
       useSyncSessionStorageSubscribers[saveDirectory] = useSyncSessionStorageSubscribers[saveDirectory].filter(
         (el) => el !== callback
       )
     }
-  }
+  },[saveDirectory])
 
   const getSnapshot = () => {
     return sessionStorage[saveDirectory]
   }
 
   const getServerSnapshot = () => {
-    return true
+    return
   }
 
   const emitChange = () => {
