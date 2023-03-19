@@ -473,7 +473,7 @@ const defaultState = {
 
 function ContactList() {
   const [state, setState] = useState(defaultState)
-  const [model, setModel, status] = useSyncFirestore('config','configData')
+  // const [model, setModel, status] = useSyncFirestore('config','configData')
   const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
   useState(() => {
     setState(prev => ({
@@ -483,23 +483,23 @@ function ContactList() {
   }, [])
 
   const clickHandler = () => {
-    if (!model.number) {
-      setModel({number: 1})
-    }
+    // if (!model.number) {
+    //   setModel({number: 1})
+    // }
     // setModel({
     //   ...model,
     //   number:model.number + 1
     // })
-    setModel('test')
-    console.log(model, status)
+
+    // console.log(model, status)
   }
   const eventsHandler = () => {
 
   }
   return (
     <>
-      {model?.number ?? ''}
-      <Button onClick={clickHandler}>click</Button>
+      {/* {model?.number ?? ''}
+      <Button onClick={clickHandler}>click</Button> */}
       <ContactListComponent
         state={state}
         eventsHandler={eventsHandler}

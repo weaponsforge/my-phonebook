@@ -3,22 +3,11 @@ import Box from '@mui/material/Box'
 import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
-import { useEffect } from 'react'
-import { useBgColor } from '@/lib/hooks/useBgColor'
-import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const Background = () => {
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
-  const [bgColor, animateBgColor] = useBgColor()
-
-  useEffect(()=>{
-    animateBgColor()
-  },[animateBgColor])
-
   return (
     <Box sx={{
-      animation: 'colorSwitcher 21s linear infinite',
-      '&:after,:before' : {
+      '&:after,:before': {
         content: '""',
         display: 'block',
         position: 'fixed',
@@ -26,45 +15,29 @@ const Background = () => {
         top: 0,
         width: '100%',
         height: '100%',
-        background: `hsla(${bgColor},40%,80%,${activeTheme === 'dark' ? '10%' : '80%'})`,
-        animation: 'animate 90s linear infinite',
+        animation: `animate 90s linear infinite, colorSwitcher 21s alternate infinite`
       },
-      '&:after':{
+      '&:after': {
         left: '15vw',
       },
-      '&:before':{
+      '&:before': {
         right: '15vw',
         animationDelay: '-30s',
         animationDirection: 'reverse',
       },
       '@keyframes colorSwitcher': {
         '0%': {
-          background: '#74C390',
-        },
-        '16%': {
-          background: '#5DBDB6',
-        },
-        '33%': {
-          background: '#59D4E1',
-        },
-        '50%': {
-          background: '#51BCE8',
-        },
-        '66%': {
-          background: '#FA5374',
-        },
-        '83%': {
-          background: '#E46653',
+          backgroundColor: `hsla(0,40%,80%,30%)`,
         },
         '100%': {
-          background: '#74C390',
+          backgroundColor: `hsla(255,40%,80%,30%)`,
         }
       },
       '@keyframes animate': {
-        '0%': {
+        'from': {
           transform: 'rotate(0deg)',
         },
-        '100%': {
+        'to': {
           transform: 'rotate(360deg)'
         }
       }
@@ -73,20 +46,20 @@ const Background = () => {
   )
 }
 
-function Page ({ children }) {
+function Page({ children }) {
   return (
     <>
-      <Background/>
+      <Background />
       <Box sx={{
         width: '100%',
         height: '100%',
-        display:'grid',
-        gridTemplateRows:'auto 1fr auto',
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr auto',
       }}>
         <Header />
 
         <Section>
-          { children }
+          {children}
         </Section>
 
         <Footer />
