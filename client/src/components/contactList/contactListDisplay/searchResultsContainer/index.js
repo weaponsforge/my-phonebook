@@ -23,7 +23,7 @@ export const SearchResultsContainer = ({ state, search }) => {
   }
 
   const searchResults = filterContacts(search)
-  const searchResultsArr = Object.entries(search)
+  const searchResultsArr = Object.entries(searchResults)
   useEffect(()=>{
     if (searchResultsArr.length === 1) {
       for (let [, value] of searchResultsArr) {
@@ -41,7 +41,7 @@ export const SearchResultsContainer = ({ state, search }) => {
       height: '100%',
     }}>
       <Box sx={{
-        opacity: search !== deferredSearch ? 0.5 : 1
+        // opacity: search !== deferredSearch ? 0.5 : 1
       }}>
         {
           searchResultsArr.map((el, index) => {
