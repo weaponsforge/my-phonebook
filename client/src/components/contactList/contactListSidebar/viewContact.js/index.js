@@ -4,19 +4,17 @@ import { useState } from 'react'
 
 export const ViewContact = () => {
   const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
-  const [state] = useState({ isUpdated: false })
-
-  if (!viewContact) {
-    return
-  }
 
   const editContactHandler = (e) => {
     const fieldID = e.target.id
     const fieldValue = e.target.value
-    setViewContact({
+    const updatedValue = {
       ...viewContact,
       [fieldID]: fieldValue
-    })
+    }
+    console.log(updatedValue)
+    setViewContact(updatedValue)
+    console.log(viewContact)
   }
   return (
     <Box
@@ -27,7 +25,6 @@ export const ViewContact = () => {
         height:'auto'
       }}
     >
-      {/* this will show a profile if either only 1 result appear after search, or if user click a profile on the right */}
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -106,7 +103,7 @@ export const ViewContact = () => {
           </Typography>
           <TextField id="contact_email" value={viewContact.contact_email} size="small" sx={{ width: '100%' }} onChange={editContactHandler} />
         </Box>
-        <Button variant="contained" fullWidth disabled={!state.isUpdated}>Save</Button>
+        <Button variant="contained" fullWidth disabled>Save</Button>
       </Box>
     </Box>
   )

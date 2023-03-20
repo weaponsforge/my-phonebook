@@ -7,6 +7,7 @@ export const SearchField = () => {
   const [search, setSearch] = useSyncGlobalVariable('search')
   const [state, setState] = useState({ focused: false })
   const searchFieldHandler = (e) => {
+    e.stopPropagation()
     setSearch(e.target.value)
   }
 
