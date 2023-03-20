@@ -74,7 +74,7 @@ function ResendVerificationComponent ({
 ResendVerificationComponent.propTypes = {
   loading: PropTypes.bool,
   locked: PropTypes.bool,
-  ResendVerificationComponent: PropTypes.func
+  handleResendEmailVerification: PropTypes.func
 }
 
 export default ResendVerificationComponent

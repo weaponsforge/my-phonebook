@@ -78,7 +78,7 @@ function AccountComponent ({
 AccountComponent.propTypes = {
   state: PropTypes.object,
   handleResetPasswordSubmit: PropTypes.func,
-  ResendVerificationComponent: PropTypes.func
+  handleResendEmailVerification: PropTypes.func
 }
 
 export default AccountComponent
