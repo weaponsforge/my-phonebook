@@ -2,8 +2,8 @@ import { Box } from '@mui/material'
 import { ContactCardsGroup } from './contactCardGroup'
 
 export const ContactCardsContainer = ({ state }) => {
-  const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
-  const groupedSortedContacts = [...sortedContacts].reduce((prev, curr) => {
+  // const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
+  const groupedSortedContacts = [...state.contacts].reduce((prev, curr) => {
     const capitalizedFirstNameFirstLetterChar = curr.first_name.match(new RegExp(
       String.raw`(?<firstLetterChar>^[a-z])|`, 'i'))[0]
     if (!capitalizedFirstNameFirstLetterChar) {

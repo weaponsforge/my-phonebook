@@ -1,10 +1,10 @@
-import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
+import { setSyncStore, useSyncGlobalVariable, useSyncStore } from '@/lib/hooks/useSync'
 import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
+
 
 export const ViewContact = () => {
-  const [viewContact, setViewContact] = useSyncGlobalVariable('viewContact')
-
+  const viewContact = useSyncStore('viewContact')
+  if (!viewContact) return
   const editContactHandler = (e) => {
     const fieldID = e.target.id
     const fieldValue = e.target.value
@@ -12,9 +12,7 @@ export const ViewContact = () => {
       ...viewContact,
       [fieldID]: fieldValue
     }
-    console.log(updatedValue)
-    setViewContact(updatedValue)
-    console.log(viewContact)
+    setSyncStore('viewContact', updatedValue)
   }
   return (
     <Box

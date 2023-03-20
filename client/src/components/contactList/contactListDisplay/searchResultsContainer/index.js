@@ -1,5 +1,5 @@
-import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
-import { useDeferredValue, useEffect} from 'react'
+import { setSyncStore, useSyncGlobalVariable } from '@/lib/hooks/useSync'
+import { useEffect} from 'react'
 import { SearchResultsGroup } from './searchResultsGroup'
 
 const { Box } = require('@mui/material')
@@ -28,10 +28,10 @@ export const SearchResultsContainer = ({ state, search }) => {
     if (searchResultsArr.length === 1) {
       for (let [, value] of searchResultsArr) {
         if (value.length !== 1) break
-        setViewContact(value[0])
+        setSyncStore('viewContact', value[0])
       }
     } else {
-      setViewContact()
+      setSyncStore('viewContact',)
     }
   },[searchResultsArr])
 

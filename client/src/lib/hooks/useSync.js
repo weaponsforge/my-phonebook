@@ -3,8 +3,10 @@ import { useCallback, useSyncExternalStore } from 'react'
 const useSyncLocalStorageSubscribers = {}
 const useSyncSessionStorageSubscribers = {}
 const useSyncGlobalVariableSubscribers = {}
+const useSyncStoreSubscribers = {}
 
 const globalVariable = {}
+const store = {}
 
 export const useSyncLocalStorage = (saveDirectory = 'global') => {
   if (!useSyncLocalStorageSubscribers[saveDirectory]) {
@@ -83,10 +85,10 @@ export const useSyncSessionStorage = (saveDirectory = 'global') => {
 }
 
 export const useSyncGlobalVariable = (saveDirectory = 'global') => {
-  if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
-    useSyncGlobalVariableSubscribers[saveDirectory] = []
-  }
   const subscribe = useCallback((callback) => {
+    if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
+      useSyncGlobalVariableSubscribers[saveDirectory] = []
+    }
     useSyncGlobalVariableSubscribers[saveDirectory] = [...useSyncGlobalVariableSubscribers[saveDirectory], callback]
     return () => {
       useSyncGlobalVariableSubscribers[saveDirectory] = useSyncGlobalVariableSubscribers[saveDirectory].filter(
@@ -117,4 +119,39 @@ export const useSyncGlobalVariable = (saveDirectory = 'global') => {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   return [state ? JSON.parse(state) : undefined, setState, globalVariable]
+}
+
+// this is an attempt to solve the bug, and detach getter from setter, so calling setter won't neccesarily subscribe the component to the store
+export const useSyncStore = (saveDirectory = 'global') => {
+
+  const subscribe = (callback) => {
+    if (!useSyncStoreSubscribers[saveDirectory]) {
+      useSyncStoreSubscribers[saveDirectory] = []
+    }
+    useSyncStoreSubscribers[saveDirectory] = [...useSyncStoreSubscribers[saveDirectory], callback]
+    return () => {
+      useSyncStoreSubscribers[saveDirectory] = useSyncStoreSubscribers[saveDirectory].filter(
+        (el) => el !== callback
+      )
+    }
+  }
+
+  const getSnapshot = () => {
+    return store[saveDirectory]
+  }
+
+  const getServerSnapshot = () => {
+    return store[saveDirectory]
+  }
+
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+
+  return (state ? JSON.parse(state) : undefined)
+}
+
+export const setSyncStore = (saveDirectory, updatedValue) => {
+  store[saveDirectory] = JSON.stringify(updatedValue)
+  for (let subscriber of useSyncStoreSubscribers[saveDirectory]) {
+    subscriber()
+  }
 }

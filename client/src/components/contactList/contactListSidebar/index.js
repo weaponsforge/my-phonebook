@@ -5,7 +5,6 @@ import { SearchField } from "./searchField/searchField.js";
 import { ViewContact } from "./viewContact.js";
 
 export const ContactListSidebar = () => {
-  const [viewContact, setViewContact] = useSyncGlobalVariable("viewContact");
   return (
     <Paper
       elevation={0}
@@ -28,7 +27,7 @@ export const ContactListSidebar = () => {
       }}
     >
       <SearchField />
-      {viewContact && <ViewContact />}
+      <ViewContact />
     </Paper>
   );
 };

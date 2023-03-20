@@ -470,8 +470,8 @@ const defaultState = {
 
 function ContactList() {
   const [state, setState] = useState(defaultState)
-  const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
   useState(() => {
+    const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
     setState(prev => ({
       ...prev,
       contacts: sortedContacts

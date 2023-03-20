@@ -1,4 +1,4 @@
-import { useSyncGlobalVariable } from '@/lib/hooks/useSync'
+import { setSyncStore, useSyncGlobalVariable } from '@/lib/hooks/useSync'
 import { Avatar, Paper, Typography, useTheme } from '@mui/material'
 
 const getInitial = (first, second, last) => {
@@ -10,6 +10,7 @@ const getInitial = (first, second, last) => {
     String.raw`(?<lastNameInitial>^[a-z])`, 'i')) ?? [''])[0]
   return `${firstInitial}${middleInitial}${lastInitial}`
 }
+
 const backgroundColorGenerator = (name) => {
   let value = 0
   for (let i = 0; i < name.length; i++) {
@@ -22,7 +23,6 @@ const backgroundColorGenerator = (name) => {
 
 export const ContactCard = ({ contact }) => {
   const theme = useTheme()
-  const [, setViewContact] = useSyncGlobalVariable('viewContact')
 
   const initial = getInitial(contact.first_name, contact.middle_name, contact.last_name).toUpperCase()
 
@@ -30,7 +30,7 @@ export const ContactCard = ({ contact }) => {
 
   const contactClickHandler = (e) => {
     e.stopPropagation()
-    setViewContact(contact)
+    setSyncStore('viewContact', contact)
     // window.scrollTo({
     //   top: 0,
     //   behavior: 'smooth' // for smoothly scrolling
