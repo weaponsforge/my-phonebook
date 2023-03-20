@@ -24,7 +24,7 @@ export const ContactListDisplay = ({state}) => {
         }}>
         {deferredSearch
           ?
-          <SearchResultsContainer state={state} />
+          <SearchResultsContainer state={state} search={deferredSearch} />
           :
           <ContactCardsContainer state={state} />
         }

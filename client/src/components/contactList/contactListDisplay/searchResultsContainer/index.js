@@ -4,11 +4,8 @@ import { SearchResultsGroup } from './searchResultsGroup'
 
 const { Box } = require('@mui/material')
 
-export const SearchResultsContainer = ({ state }) => {
-  const [search] = useSyncGlobalVariable('search')
+export const SearchResultsContainer = ({ state, search }) => {
   const [, setViewContact] = useSyncGlobalVariable('viewContact')
-
-  const deferredSearch = useDeferredValue(search)
 
   const filterContacts = (searchText) => {
     const filteredContactsByField = [...state.contacts].reduce((prev, curr) => {
@@ -25,18 +22,18 @@ export const SearchResultsContainer = ({ state }) => {
     return filteredContactsByField
   }
 
-  const searchResults = filterContacts(deferredSearch)
-  const searchResultsArr = Object.entries(searchResults)
+  const searchResults = filterContacts(search)
+  const searchResultsArr = Object.entries(search)
   useEffect(()=>{
     if (searchResultsArr.length === 1) {
-      for (let [, value] of Object.entries(searchResults)) {
+      for (let [, value] of searchResultsArr) {
         if (value.length !== 1) break
         setViewContact(value[0])
       }
     } else {
       setViewContact()
     }
-  },[searchResults, searchResultsArr, setViewContact, deferredSearch])
+  },[searchResultsArr])
 
   return (
     <Box sx={{
