@@ -5,8 +5,22 @@ const useSyncSessionStorageSubscribers = {}
 const useSyncGlobalVariableSubscribers = {}
 const useSyncStoreSubscribers = {}
 
+
+
+const search = () => {
+  let data = ''
+
+  const setSearch = (newData) => {
+    data = newData
+    emitChange()
+  }
+}
+
+
 const globalVariable = {}
-const store = {}
+const store = {
+  search:search()
+}
 
 export const useSyncLocalStorage = (saveDirectory = 'global') => {
   if (!useSyncLocalStorageSubscribers[saveDirectory]) {
@@ -150,8 +164,12 @@ export const useSyncStore = (saveDirectory = 'global') => {
 }
 
 export const setSyncStore = (saveDirectory, updatedValue) => {
-  store[saveDirectory] = JSON.stringify(updatedValue)
-  for (let subscriber of useSyncStoreSubscribers[saveDirectory]) {
-    subscriber()
+  const emitChange = () => {
+    for (let subscriber of useSyncStoreSubscribers[saveDirectory]) {
+      subscriber()
+    }
   }
+  store[saveDirectory] = JSON.stringify(updatedValue)
+  emitChange()
 }
+

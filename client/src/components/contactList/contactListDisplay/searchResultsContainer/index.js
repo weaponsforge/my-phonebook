@@ -5,7 +5,6 @@ import { SearchResultsGroup } from './searchResultsGroup'
 const { Box } = require('@mui/material')
 
 export const SearchResultsContainer = ({ state, search }) => {
-  const [, setViewContact] = useSyncGlobalVariable('viewContact')
 
   const filterContacts = (searchText) => {
     const filteredContactsByField = [...state.contacts].reduce((prev, curr) => {
