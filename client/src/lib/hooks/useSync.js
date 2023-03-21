@@ -41,7 +41,7 @@ export const useSyncLocalStorage = (saveDirectory = 'global') => {
   }
 
   const getServerSnapshot = () => {
-    return 
+    return
   }
 
   const emitChange = () => {
