@@ -18,7 +18,6 @@ const contactsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchReadContacts.fulfilled, (state, action) => {
-        console.log(action);
         state.entities = action.payload;
         state.loading = "idle";
       })
