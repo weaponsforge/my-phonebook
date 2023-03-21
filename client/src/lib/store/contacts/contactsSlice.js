@@ -28,7 +28,7 @@ const contactsSlice = createSlice({
       state.loading = 'idle'
     }),
     builder.addCase(fetchCreateContact.fulfilled, (state, action) => {
-      state.entities.push(action.arg.new_contact)
+      state.entities.push(action.payload)
       state.loading = 'idle'
     }),
     builder.addCase(fetchUpdateContact.fulfilled, (state, action) => {
@@ -46,7 +46,8 @@ const contactsSlice = createSlice({
         }
       }
       state.loading = 'idle'
-    }),
+    })
+    // TODO: cases / matcher for loading and rejection / failed fetch
   }
 })
 

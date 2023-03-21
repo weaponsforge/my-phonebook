@@ -14,7 +14,6 @@ function ContactListComponent({ state, eventsHandler }) {
         flex: 1,
         display: 'flex',
         flexWrap: 'wrap',
-        // overflow: 'hidden',
         overflowY: 'scroll',
         userSelect: 'none',
         '&::-webkit-scrollbar': {

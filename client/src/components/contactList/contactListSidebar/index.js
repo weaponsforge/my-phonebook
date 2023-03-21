@@ -5,6 +5,7 @@ import { SearchField } from './searchField/searchField.js'
 import { ViewContact } from './viewContact.js'
 
 export const ContactListSidebar = () => {
+  // TODO: add logic clause to either show create contact form or edit contact form
   return (
     <Paper
       elevation={0}
@@ -27,7 +28,8 @@ export const ContactListSidebar = () => {
       }}
     >
       <SearchField />
-      <ViewContact />
+      <ViewContact type={'createContact'}/>
+      <ViewContact type={'updateContact'}/>
     </Paper>
   )
 }

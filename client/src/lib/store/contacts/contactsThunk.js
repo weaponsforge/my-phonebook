@@ -20,7 +20,7 @@ export const fetchReadContact = createAsyncThunk(
 export const fetchCreateContact = createAsyncThunk(
   'contacts/createContact',
   async (arg) =>{
-    const response = await createContact(arg.user_uid, arg.new_contact)
+    const response = await createContact(arg.user_uid, arg)
     return response
   }
 )

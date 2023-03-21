@@ -22,19 +22,20 @@ export class FirebaseFirestore {
     const segmentCount = path.match(
       new RegExp(String.raw`(?<segment>[^/]+)`, 'gi')
     ).length
+    console.log(segmentCount)
     return segmentCount
   }
 
   static #isColPath = (path) => {
-    const pathSegmentCount = this.#pathSegmentCounter(path).length
+    const pathSegmentCount = this.#pathSegmentCounter(path)
     if (pathSegmentCount === 0) return false
-    return pathSegmentCount % 2 === 0
+    return pathSegmentCount % 2 === 1
   }
 
   static #isDocPath = (path) => {
-    const pathSegmentCount = this.#pathSegmentCounter(path).length
+    const pathSegmentCount = this.#pathSegmentCounter(path)
     if (pathSegmentCount === 0) return false
-    return pathSegmentCount % 2 === 1
+    return pathSegmentCount % 2 === 0
   }
 
   /**
@@ -46,31 +47,32 @@ export class FirebaseFirestore {
    */
   static async createDoc(path, data) {
     switch (true) {
-    case this.#isDocPath(path): {
-      const docRef = doc(this.db, path)
-      const doc_id = docRef.id
-      // Set the data for the document, including the doc_id and timestamps.
-      const response = await setDoc(docRef, {
-        ...data,
-        doc_id,
-        date_created: serverTimestamp(),
-        date_updated: serverTimestamp(),
-      })
-      return response
-    }
-    case this.#isColPath(path): {
-      const colRef = collection(this.db, path)
-      const docRef = doc(colRef)
-      const doc_id = docRef.id
-      // Set the data for the document, including the doc_id and timestamps.
-      const response = await setDoc(docRef, {
-        ...data,
-        doc_id,
-        date_created: serverTimestamp(),
-        date_updated: serverTimestamp(),
-      })
-      return response
-    }
+      case this.#isDocPath(path): {
+        const docRef = doc(this.db, path)
+        const doc_id = docRef.id
+        // Set the data for the document, including the doc_id and timestamps.
+        const response = await setDoc(docRef, {
+          ...data,
+          doc_id,
+          date_created: serverTimestamp(),
+          date_updated: serverTimestamp(),
+        })
+        console.log(response)
+        return response
+      }
+      case this.#isColPath(path): {
+        const colRef = collection(this.db, path)
+        const docRef = doc(colRef)
+        const doc_id = docRef.id
+        // Set the data for the document, including the doc_id and timestamps.
+        const response = await setDoc(docRef, {
+          ...data,
+          doc_id,
+          date_created: serverTimestamp(),
+          date_updated: serverTimestamp(),
+        })
+        return response
+      }
     }
   }
 

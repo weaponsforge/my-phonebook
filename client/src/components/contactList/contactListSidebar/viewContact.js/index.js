@@ -2,7 +2,7 @@ import { setSyncStore, useSyncGlobalVariable, useSyncStore } from '@/lib/hooks/u
 import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
 
 
-export const ViewContact = () => {
+export const ViewContact = ({ type }) => {
   const viewContact = useSyncStore('viewContact')
   if (!viewContact) return
   const editContactHandler = (e) => {

@@ -2,7 +2,7 @@ import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { orderBy } from 'firebase/firestore'
 
 export const createContact = async(user_uid, newContact) => {
-  const response = await FirebaseFirestore.createDoc(`users/${user_uid}`, newContact)
+  const response = await FirebaseFirestore.createDoc(`users/${user_uid}/contacts`, newContact)
   return response
 }
 
