@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const Background = () => {
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
   return (
     <Box sx={{
       '&:after,:before': {

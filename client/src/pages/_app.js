@@ -20,7 +20,7 @@ import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 const clientSideEmotionCache = createEmotionCache()
 
 export default function MyApp(props) {
-  const[activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (

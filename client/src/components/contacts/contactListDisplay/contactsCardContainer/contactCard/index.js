@@ -39,7 +39,7 @@ export const ContactCard = ({ contact }) => {
   return (
     <>
       <Paper
-        elevation={1}
+        elevation={5}
         sx={{
           backgroundColor: 'inherit',
           backdropFilter: 'blur(2px)',

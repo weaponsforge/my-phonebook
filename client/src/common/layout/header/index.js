@@ -26,7 +26,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg'
 
 // LIB
 import { Avalon } from '@/lib/mui/theme'
-import { useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { useAuth } from '@/lib/hooks/useAuth'
 
 // VARIABLES
@@ -54,14 +54,14 @@ function Header() {
   // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
   const { authUser, authSignOut } = useAuth()
   const dispatch = useDispatch()
   const router = useRouter()
 
   class eventsHandler {
     static themeHandler = () => {
-      setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
+      setSyncLocalStorage('activeTheme', activeTheme === 'dark' ? 'light' : 'dark')
     }
     static handleOpenNavMenu = (e) => {
       setAnchorElNav(e.currentTarget)

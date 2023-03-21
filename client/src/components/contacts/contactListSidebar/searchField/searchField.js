@@ -18,7 +18,7 @@ export const SearchField = () => {
     }))
   }
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', maxWidth: '90vw' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', maxWidth: '90vw', padding:'5px' }}>
       {
         !state.focused &&
                 <SearchIcon fontSize="large" sx={{ aspectRatio: 1 }} />

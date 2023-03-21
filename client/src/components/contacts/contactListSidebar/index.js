@@ -1,10 +1,11 @@
 import { useSyncGlobalVariable } from '@/lib/hooks/useSync.js'
-import { Paper } from '@mui/material'
+import { Button, Paper, Typography } from '@mui/material'
 import { SearchField } from './searchField/searchField.js'
 
 import { ViewContact } from './viewContact.js/index.js'
 
 export const ContactListSidebar = () => {
+
   // TODO: add logic clause to either show create contact form or edit contact form
   return (
     <Paper
@@ -29,7 +30,10 @@ export const ContactListSidebar = () => {
     >
       <SearchField />
       <ViewContact type={'createContact'}/>
-      <ViewContact type={'updateContact'}/>
+      {/* <ViewContact type={'updateContact'}/> */}
+      <Button variant="contained">
+        <Typography>New Contact</Typography>
+      </Button>
     </Paper>
   )
 }

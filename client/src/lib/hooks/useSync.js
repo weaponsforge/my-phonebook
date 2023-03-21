@@ -1,33 +1,15 @@
 import { useCallback, useSyncExternalStore } from 'react'
 
 const useSyncLocalStorageSubscribers = {}
-const useSyncSessionStorageSubscribers = {}
-const useSyncGlobalVariableSubscribers = {}
 const useSyncStoreSubscribers = {}
-
-
-
-const search = () => {
-  let data = ''
-
-  const setSearch = (newData) => {
-    data = newData
-    emitChange()
-  }
-}
-
-
-const globalVariable = {}
-const store = {
-  search:search()
-}
+const store = {}
 
 export const useSyncLocalStorage = (saveDirectory = 'global') => {
-  if (!useSyncLocalStorageSubscribers[saveDirectory]) {
-    useSyncLocalStorageSubscribers[saveDirectory] = []
-  }
-
+  
   const subscribe = useCallback((callback) => {
+    if (!useSyncLocalStorageSubscribers[saveDirectory]) {
+      useSyncLocalStorageSubscribers[saveDirectory] = []
+    }
     useSyncLocalStorageSubscribers[saveDirectory] = [...useSyncLocalStorageSubscribers[saveDirectory], callback]
     return () => {
       useSyncLocalStorageSubscribers[saveDirectory] = useSyncLocalStorageSubscribers[saveDirectory].filter(
@@ -41,104 +23,28 @@ export const useSyncLocalStorage = (saveDirectory = 'global') => {
   }
 
   const getServerSnapshot = () => {
-    return
+    return undefined
   }
 
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+
+  return (state ? JSON.parse(state) : undefined)
+}
+
+export const setSyncLocalStorage = (saveDirectory='global', updatedValue) => {
   const emitChange = () => {
     for (let subscriber of useSyncLocalStorageSubscribers[saveDirectory]) {
       subscriber()
     }
   }
-
-  const setState = (newState) => {
-    localStorage[saveDirectory] = JSON.stringify(newState)
-    emitChange()
-  }
-
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-
-  return [state ? JSON.parse(state) : undefined, setState]
-}
-
-export const useSyncSessionStorage = (saveDirectory = 'global') => {
-  if (!useSyncSessionStorageSubscribers[saveDirectory]) {
-    useSyncSessionStorageSubscribers[saveDirectory] = []
-  }
-
-  const subscribe = useCallback((callback) => {
-    useSyncSessionStorageSubscribers[saveDirectory] = [...useSyncSessionStorageSubscribers[saveDirectory], callback]
-    return () => {
-      useSyncSessionStorageSubscribers[saveDirectory] = useSyncSessionStorageSubscribers[saveDirectory].filter(
-        (el) => el !== callback
-      )
-    }
-  },[saveDirectory])
-
-  const getSnapshot = () => {
-    return sessionStorage[saveDirectory]
-  }
-
-  const getServerSnapshot = () => {
-    return
-  }
-
-  const emitChange = () => {
-    for (let subscriber of useSyncSessionStorageSubscribers[saveDirectory]) {
-      subscriber()
-    }
-  }
-
-  const setState = (newState) => {
-    sessionStorage[saveDirectory] = JSON.stringify(newState)
-    emitChange()
-  }
-
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-
-  return [state ? JSON.parse(state) : undefined, setState]
-}
-
-export const useSyncGlobalVariable = (saveDirectory = 'global') => {
-  const subscribe = useCallback((callback) => {
-    if (!useSyncGlobalVariableSubscribers[saveDirectory]) {
-      useSyncGlobalVariableSubscribers[saveDirectory] = []
-    }
-    useSyncGlobalVariableSubscribers[saveDirectory] = [...useSyncGlobalVariableSubscribers[saveDirectory], callback]
-    return () => {
-      useSyncGlobalVariableSubscribers[saveDirectory] = useSyncGlobalVariableSubscribers[saveDirectory].filter(
-        (el) => el !== callback
-      )
-    }
-  },[saveDirectory])
-
-  const getSnapshot = () => {
-    return globalVariable[saveDirectory]
-  }
-
-  const getServerSnapshot = () => {
-    return globalVariable[saveDirectory]
-  }
-
-  const emitChange = () => {
-    for (let subscriber of useSyncGlobalVariableSubscribers[saveDirectory]) {
-      subscriber()
-    }
-  }
-
-  const setState = (newState) => {
-    globalVariable[saveDirectory] = JSON.stringify(newState)
-    emitChange()
-  }
-
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-
-  return [state ? JSON.parse(state) : undefined, setState, globalVariable]
+  localStorage[saveDirectory] = JSON.stringify(updatedValue)
+  emitChange()
 }
 
 // this is an attempt to solve the bug, and detach getter from setter, so calling setter won't neccesarily subscribe the component to the store
 export const useSyncStore = (saveDirectory = 'global') => {
 
-  const subscribe = (callback) => {
+  const subscribe = useCallback((callback) => {
     if (!useSyncStoreSubscribers[saveDirectory]) {
       useSyncStoreSubscribers[saveDirectory] = []
     }
@@ -148,7 +54,7 @@ export const useSyncStore = (saveDirectory = 'global') => {
         (el) => el !== callback
       )
     }
-  }
+  },[saveDirectory])
 
   const getSnapshot = () => {
     return store[saveDirectory]
@@ -163,7 +69,7 @@ export const useSyncStore = (saveDirectory = 'global') => {
   return (state ? JSON.parse(state) : undefined)
 }
 
-export const setSyncStore = (saveDirectory, updatedValue) => {
+export const setSyncStore = (saveDirectory = 'global', updatedValue) => {
   const emitChange = () => {
     for (let subscriber of useSyncStoreSubscribers[saveDirectory]) {
       subscriber()
