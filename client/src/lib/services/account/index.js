@@ -7,7 +7,8 @@ const ACCOUNT_ACTION = {
   SEND_RESET: 'send_reset',
   VERIFY_EMAIL: 'verifyEmail',
   RESET_PASSWORD: 'resetPassword',
-  RECOVER_EMAIL: 'recoverEmail'
+  RECOVER_EMAIL: 'recoverEmail',
+  RESEND_EMAIL_VERIFICATION: 'resend_email_verification'
 }
 
 /**
