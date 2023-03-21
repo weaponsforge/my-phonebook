@@ -6,9 +6,14 @@ import Typography from '@mui/material/Typography'
 
 import Page from '@/common/layout/page'
 import ResetPasswordComponent from '@/domain/account/resetpassword'
+import ResendVerificationComponent from '@/domain/account/resendverification'
 import { ACCOUNT_ACTION } from '@/services/account'
 
-function AccountComponent ({ state, handleFormSubmit }) {
+function AccountComponent ({
+  state,
+  handleResetPasswordSubmit,
+  handleResendEmailVerification
+}) {
   return (
     <Page>
       <Box sx={{ padding: '16px' }}>
@@ -22,7 +27,13 @@ function AccountComponent ({ state, handleFormSubmit }) {
           borderRadius: '8px',
           boxShadow: 'inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.1), 0 0 0 1px hsla(230, 13%, 9%, 0.075), 0 0.3px 0.4px hsla(230, 13%, 9%, 0.02), 0 0.9px 1.5px hsla(230, 13%, 9%, 0.045), 0 3.5px 6px hsla(230, 13%, 9%, 0.09)',
           textAlign: 'center',
-          padding: '24px'
+          padding: '24px',
+          '& a': (theme) => ({
+            fontSize: '12px',
+            textAlign: 'center',
+            marginTop: '-5px',
+            color: theme.palette.text.primary,
+          })
         }}>
           <div>
             {state.message &&
@@ -34,7 +45,15 @@ function AccountComponent ({ state, handleFormSubmit }) {
             <ResetPasswordComponent
               loading={state.loading}
               locked={state.locked}
-              handleFormSubmit={handleFormSubmit}
+              handleResetPasswordSubmit={handleResetPasswordSubmit}
+            />
+          }
+
+          {(state.mode === ACCOUNT_ACTION.RESEND_EMAIL_VERIFICATION) &&
+            <ResendVerificationComponent
+              loading={state.loading}
+              locked={state.locked}
+              handleResendEmailVerification={handleResendEmailVerification}
             />
           }
 
@@ -42,11 +61,11 @@ function AccountComponent ({ state, handleFormSubmit }) {
             {state.loading
               ? <CircularProgress size={24} color='secondary' />
               : (state.error !== '')
-                ? <Typography variant='caption' color='error' >
-                    Error: {state.error}
+                ? <Typography variant='caption' color='error'>
+                  <span dangerouslySetInnerHTML={{ __html: state.error }}></span>
                 </Typography>
-                : <Typography variant='body1' color='success.main'>
-                  {state.success}
+                : <Typography variant='caption' color='success.main'>
+                  <span dangerouslySetInnerHTML={{ __html: state.success }}></span>
                 </Typography>
             }
           </div>
@@ -58,7 +77,8 @@ function AccountComponent ({ state, handleFormSubmit }) {
 
 AccountComponent.propTypes = {
   state: PropTypes.object,
-  handleFormSubmit: PropTypes.func
+  handleResetPasswordSubmit: PropTypes.func,
+  handleResendEmailVerification: PropTypes.func
 }
 
 export default AccountComponent

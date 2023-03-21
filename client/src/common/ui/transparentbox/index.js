@@ -4,12 +4,15 @@ function TransparentBox ({ children }) {
   return (
     <Box sx={{
       width: {
-        md: '800px',
+        sm: '600px',
       },
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      backgroundColor: {
+        xs: 'none',
+        sm: 'rgba(255, 255, 255, 0.4)'
+      },
       borderRadius: '8px',
-      boxShadow: 'box-shadow: 0 10px 40px rgb(0 0 0 / 14%)',
       textAlign: 'center',
+      margin: '24px !important',
       padding: '24px',
       display: 'grid',
       placeContent: 'center'
