@@ -47,7 +47,6 @@ const contactsSlice = createSlice({
       }
       state.loading = 'idle'
     }),
-    builder.addMatcher(isAnyOf)
   }
 })
 
