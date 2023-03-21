@@ -5,7 +5,6 @@ import { ContactListSidebar } from './contactListSidebar'
 import { ContactListDisplay } from './contactListDisplay'
 
 function ContactsComponent({ eventsHandler }) {
-
   return (
     <Page>
       <Box>
