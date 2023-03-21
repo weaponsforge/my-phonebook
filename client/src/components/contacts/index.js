@@ -4,7 +4,7 @@ import { Box} from '@mui/material'
 import { ContactListSidebar } from './contactListSidebar'
 import { ContactListDisplay } from './contactListDisplay'
 
-function ContactListComponent({ state, eventsHandler }) {
+function ContactsComponent({ eventsHandler }) {
 
   return (
     <Page>
@@ -21,15 +21,15 @@ function ContactListComponent({ state, eventsHandler }) {
         },
       }}>
         <ContactListSidebar />
-        <ContactListDisplay state={state} eventsHandler={eventsHandler} />
+        <ContactListDisplay eventsHandler={eventsHandler} />
       </Box>
     </Page>
   )
 }
 
-ContactListComponent.propTypes = {
+ContactsComponent.propTypes = {
   state: PropTypes.object,
   eventsHandler: PropTypes.func
 }
 
-export default ContactListComponent
+export default ContactsComponent

@@ -1,9 +1,13 @@
 import { Box } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
 import { ContactCardsGroup } from './contactCardGroup'
 
-export const ContactCardsContainer = ({ state }) => {
+export const ContactCardsContainer = () => {
+  const contacts = useSelector((state)=>state.contacts.entities)
+  const dispatch = useDispatch()
+  console.log(contacts)
   // const sortedContacts = [...state.contacts].sort((a, b) => a.first_name < b.first_name ? -1 : 1)
-  const groupedSortedContacts = [...state.contacts].reduce((prev, curr) => {
+  const groupedSortedContacts = [...contacts].reduce((prev, curr) => {
     const capitalizedFirstNameFirstLetterChar = curr.first_name.match(new RegExp(
       String.raw`(?<firstLetterChar>^[a-z])|`, 'i'))[0]
     if (!capitalizedFirstNameFirstLetterChar) {

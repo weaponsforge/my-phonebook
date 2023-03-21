@@ -6,7 +6,6 @@ import { SearchResultsContainer } from './searchResultsContainer'
 
 export const ContactListDisplay = ({state}) => {
   const search = useSyncStore('search')
-
   const deferredSearch = useDeferredValue(search)
   return (
     <>
@@ -25,9 +24,9 @@ export const ContactListDisplay = ({state}) => {
         }}>
         {deferredSearch
           ?
-          <SearchResultsContainer state={state} search={deferredSearch} />
+          <SearchResultsContainer search={deferredSearch} />
           :
-          <ContactCardsContainer state={state} />
+          <ContactCardsContainer />
         }
       </Box>
     </>
