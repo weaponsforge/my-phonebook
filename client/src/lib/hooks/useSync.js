@@ -91,7 +91,7 @@ export const useSyncStore = (saveDirectory = "global") => {
    * @returns {*} A snapshot of the state of the given save directory in the store.
    */
   const getSnapshot = () => {
-    return store[saveDirectory];
+    return JSON.stringify(store[saveDirectory])
   };
 
   /**
@@ -100,7 +100,7 @@ export const useSyncStore = (saveDirectory = "global") => {
    * @returns {*} A snapshot of the state of the given save directory in the server.
    */
   const getServerSnapshot = () => {
-    return store[saveDirectory];
+    return JSON.stringify(store[saveDirectory])
   };
 
   /**
@@ -116,7 +116,7 @@ export const useSyncStore = (saveDirectory = "global") => {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   // Returns the parsed state of the given save directory
-  return state;
+  return state ? JSON.parse(state) : undefined;
 };
 
 /**

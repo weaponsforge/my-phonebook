@@ -1,10 +1,10 @@
+import { useContactsStore } from '@/lib/store/contacts/contactsStore'
 import { Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { ContactCardsGroup } from './contactCardGroup'
 
 export const ContactCardsContainer = () => {
-  const contacts = useSelector((state)=>state.contacts.entities)
-  const dispatch = useDispatch()
+  const contacts = useContactsStore((state)=>state.contacts)
   
   const groupedSortedContacts = [...contacts].reduce((prev, curr) => {
     const capitalizedFirstNameFirstLetterChar = curr.first_name.match(new RegExp(
@@ -25,6 +25,7 @@ export const ContactCardsContainer = () => {
   }, {})
 
   const groupedSortedContactsArr = Object.entries(groupedSortedContacts)
+  
   return (
     <Box sx={{
       width: '100%',

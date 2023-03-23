@@ -1,4 +1,5 @@
 import { setSyncStore, useSyncGlobalVariable } from '@/lib/hooks/useSync'
+import { useContactsStore } from '@/lib/store/contacts/contactsStore'
 import { Avatar, Paper, Typography, useTheme } from '@mui/material'
 
 const getInitial = (first, second, last) => {
@@ -22,6 +23,8 @@ const backgroundColorGenerator = (name) => {
 
 
 export const ContactCard = ({ contact }) => {
+  const [setDisplayedContact, setPhase] = useContactsStore((state)=>[state.setDisplayedContact, state.setDisplayedContactPhase])
+
   const theme = useTheme()
 
   const initial = getInitial(contact.first_name, contact.middle_name, contact.last_name).toUpperCase()
@@ -30,11 +33,8 @@ export const ContactCard = ({ contact }) => {
 
   const contactClickHandler = (e) => {
     e.stopPropagation()
-    setSyncStore('viewContact', contact)
-    // window.scrollTo({
-    //   top: 0,
-    //   behavior: 'smooth' // for smoothly scrolling
-    // });
+    setDisplayedContact(contact)
+    setPhase('edit')
   }
   return (
     <>

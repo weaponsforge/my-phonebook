@@ -1,12 +1,12 @@
 import { useSyncGlobalVariable, useSyncStore } from '@/lib/hooks/useSync'
+import { useContactsStore } from '@/lib/store/contacts/contactsStore'
 import { Box } from '@mui/material'
 import { useDeferredValue } from 'react'
 import { ContactCardsContainer } from './contactsCardContainer'
 import { SearchResultsContainer } from './searchResultsContainer'
 
 export const ContactListDisplay = ({state}) => {
-  const search = useSyncStore('search')
-  const deferredSearch = useDeferredValue(search)
+  const search = useContactsStore((state)=>state.searchKeyword)
   return (
     <>
       <Box
@@ -22,9 +22,9 @@ export const ContactListDisplay = ({state}) => {
             display: 'none',
           },
         }}>
-        {deferredSearch
+        {search
           ?
-          <SearchResultsContainer search={deferredSearch} />
+          <SearchResultsContainer />
           :
           <ContactCardsContainer />
         }

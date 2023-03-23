@@ -1,10 +1,6 @@
 import ContactsComponent from "@/components/contacts";
-import {
-  fetchCreateContact,
-  fetchReadContacts,
-} from "@/lib/store/contacts/contactsThunk";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useContactsStore } from "@/lib/store/contacts/contactsStore";
+import { useEffect } from "react";
 
 const defaultState = {
   contacts: [
@@ -20,20 +16,12 @@ const defaultState = {
 };
 
 function Contacts() {
-  const dispatch = useDispatch();
+  const subscribeContacts = useContactsStore((state) => state.subscribeContacts);
 
   useEffect(() => {
-    // dispatch(fetchCreateContact({
-    //   first_name: 'first',
-    //   middle_name: 'second',
-    //   last_name: 'tsshird',
-    //   phone_number: 'somerandomnumber',
-    //   email_address: 'somerandomemailss',
-    //   user_uid:'wtghuScAMuaWp0AKI7OKTBEwKb02'
-    // }))
-    dispatch(fetchReadContacts({ user_uid: "wtghuScAMuaWp0AKI7OKTBEwKb02" }));
+    subscribeContacts('wtghuScAMuaWp0AKI7OKTBEwKb02')
   }, []);
-
+  
   const eventsHandler = () => {};
   return (
     <>

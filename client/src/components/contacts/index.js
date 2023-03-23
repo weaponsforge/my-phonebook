@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import Page from '@/common/layout/page'
 import { Box} from '@mui/material'
-import { ContactListSidebar } from './contactListSidebar'
+import { Sidebar, SidebarComponent } from './sidebar'
 import { ContactListDisplay } from './contactListDisplay'
 
 function ContactsComponent({ eventsHandler }) {
+
   return (
     <Page>
       <Box>
@@ -19,7 +20,7 @@ function ContactsComponent({ eventsHandler }) {
           display: 'none',
         },
       }}>
-        <ContactListSidebar />
+        <SidebarComponent />
         <ContactListDisplay eventsHandler={eventsHandler} />
       </Box>
     </Page>

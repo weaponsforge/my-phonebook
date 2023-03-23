@@ -1,4 +1,4 @@
-import { app } from './config'
+import { app } from "./config";
 import {
   collection,
   getDocs,
@@ -12,31 +12,31 @@ import {
   serverTimestamp,
   collectionGroup,
   onSnapshot,
-} from 'firebase/firestore'
+} from "firebase/firestore";
 
 export class FirebaseFirestore {
   // initialize firebase config
-  static db = getFirestore(app)
+  static db = getFirestore(app);
 
   static #pathSegmentCounter = (path) => {
     const segmentCount = path.match(
-      new RegExp(String.raw`(?<segment>[^/]+)`, 'gi')
-    ).length
-    console.log(segmentCount)
-    return segmentCount
-  }
+      new RegExp(String.raw`(?<segment>[^/]+)`, "gi")
+    ).length;
+    console.log(segmentCount);
+    return segmentCount;
+  };
 
   static #isColPath = (path) => {
-    const pathSegmentCount = this.#pathSegmentCounter(path)
-    if (pathSegmentCount === 0) return false
-    return pathSegmentCount % 2 === 1
-  }
+    const pathSegmentCount = this.#pathSegmentCounter(path);
+    if (pathSegmentCount === 0) return false;
+    return pathSegmentCount % 2 === 1;
+  };
 
   static #isDocPath = (path) => {
-    const pathSegmentCount = this.#pathSegmentCounter(path)
-    if (pathSegmentCount === 0) return false
-    return pathSegmentCount % 2 === 0
-  }
+    const pathSegmentCount = this.#pathSegmentCounter(path);
+    if (pathSegmentCount === 0) return false;
+    return pathSegmentCount % 2 === 0;
+  };
 
   /**
    * Creates or updates a Firestore document in the specified collection path.
@@ -47,32 +47,32 @@ export class FirebaseFirestore {
    */
   static async createDoc(path, data) {
     switch (true) {
-    case this.#isDocPath(path): {
-      const docRef = doc(this.db, path)
-      const doc_id = docRef.id
-      // Set the data for the document, including the doc_id and timestamps.
-      const response = await setDoc(docRef, {
-        ...data,
-        doc_id,
-        date_created: serverTimestamp(),
-        date_updated: serverTimestamp(),
-      })
-      console.log(response)
-      return response
-    }
-    case this.#isColPath(path): {
-      const colRef = collection(this.db, path)
-      const docRef = doc(colRef)
-      const doc_id = docRef.id
-      // Set the data for the document, including the doc_id and timestamps.
-      const response = await setDoc(docRef, {
-        ...data,
-        doc_id,
-        date_created: serverTimestamp(),
-        date_updated: serverTimestamp(),
-      })
-      return response
-    }
+      case this.#isDocPath(path): {
+        const docRef = doc(this.db, path);
+        const doc_id = docRef.id;
+        // Set the data for the document, including the doc_id and timestamps.
+        const response = await setDoc(docRef, {
+          ...data,
+          doc_id,
+          date_created: serverTimestamp(),
+          date_updated: serverTimestamp(),
+        });
+        console.log(response);
+        return response;
+      }
+      case this.#isColPath(path): {
+        const colRef = collection(this.db, path);
+        const docRef = doc(colRef);
+        const doc_id = docRef.id;
+        // Set the data for the document, including the doc_id and timestamps.
+        const response = await setDoc(docRef, {
+          ...data,
+          doc_id,
+          date_created: serverTimestamp(),
+          date_updated: serverTimestamp(),
+        });
+        return response;
+      }
     }
   }
 
@@ -82,15 +82,15 @@ export class FirebaseFirestore {
    * @returns {Promise} A Promise that resolves to the data contained in the Firestore document.
    */
   static async readDoc(docPath) {
-    if (!this.#isDocPath(docPath)) return
+    if (!this.#isDocPath(docPath)) return;
     // Get a reference to the document.
-    const docRef = doc(this.db, docPath)
+    const docRef = doc(this.db, docPath);
 
     // Get the document data.
-    const response = await getDoc(docRef)
-    const data = response.data()
+    const response = await getDoc(docRef);
+    const data = response.data();
 
-    return data
+    return data;
   }
 
   /**
@@ -100,22 +100,22 @@ export class FirebaseFirestore {
    * @returns {Promise} A Promise that resolves to an array of data objects from the Firestore documents in the collection.
    */
   static async readCol(colPath, queryDef) {
-    if (!this.#isColPath(colPath)) return
+    if (!this.#isColPath(colPath)) return;
     // Get a reference to the collection and apply the query definition.
-    const colRef = collection(this.db, colPath)
-    const q = query(colRef, queryDef)
+    const colRef = collection(this.db, colPath);
+    const q = query(colRef, queryDef);
 
     // Get the documents in the collection that match the query.
-    const snapshot = await getDocs(q)
+    const snapshot = await getDocs(q);
 
     // Map the documents to an array of data objects and return it.
     const data = snapshot.docs.map((doc) => {
       return {
         ...doc.data(),
-      }
-    })
+      };
+    });
 
-    return data
+    return data;
   }
 
   /**
@@ -125,22 +125,22 @@ export class FirebaseFirestore {
    * @returns {Promise} A Promise that resolves to an array of data objects from the Firestore documents in the collection group.
    */
   static async readColGroup(colGroupId, queryDef) {
-    if(this.#pathSegmentCounter(colGroupId) !== 1) return
+    if (this.#pathSegmentCounter(colGroupId) !== 1) return;
     // Get a reference to the collection group and apply the query definition.
-    const colGroupRef = collectionGroup(this.db, colGroupId)
-    const q = query(colGroupRef, queryDef)
+    const colGroupRef = collectionGroup(this.db, colGroupId);
+    const q = query(colGroupRef, queryDef);
 
     // Get the documents in the collection group that match the query.
-    const snapshot = await getDocs(q)
+    const snapshot = await getDocs(q);
 
     // Map the documents to an array of data objects and return it.
     const data = snapshot.docs.map((doc) => {
       return {
         ...doc.data(),
-      }
-    })
+      };
+    });
 
-    return data
+    return data;
   }
 
   /**
@@ -150,16 +150,16 @@ export class FirebaseFirestore {
    * @returns {Promise} A Promise that resolves to the Firestore response object.
    */
   static async updateDoc(docPath, data) {
-    if (!this.#isDocPath(docPath)) return
+    if (!this.#isDocPath(docPath)) return;
     // Get a reference to the document and update it with the given data.
-    const docRef = doc(this.db, docPath)
+    const docRef = doc(this.db, docPath);
     const response = await updateDoc(docRef, {
       ...data,
       date_updated: serverTimestamp(),
-    })
+    });
 
     // Return the Firestore response object.
-    return response
+    return response;
   }
 
   /**
@@ -168,13 +168,13 @@ export class FirebaseFirestore {
    * @returns {Promise} A Promise that resolves to the Firestore response object.
    */
   static async deleteDoc(docPath) {
-    if (!this.#isDocPath(docPath)) return
+    if (!this.#isDocPath(docPath)) return;
     // Get a reference to the document and delete it.
-    const docRef = doc(this.db, docPath)
-    const response = await deleteDoc(docRef)
+    const docRef = doc(this.db, docPath);
+    const response = await deleteDoc(docRef);
 
     // Return the Firestore response object.
-    return response
+    return response;
   }
 
   /**
@@ -184,46 +184,46 @@ export class FirebaseFirestore {
    * @returns {function} A function to unsubscribe from the Firestore document.
    */
   static async subscribeDoc(docPath, callback) {
-    if (!this.#isDocPath(docPath)) return
+    if (!this.#isDocPath(docPath)) return;
     // Get a reference to the document and subscribe to changes.
-    const docRef = doc(this.db, docPath)
-    const unsubscribe = onSnapshot(docRef, callback)
+    const docRef = doc(this.db, docPath);
+    const unsubscribe = onSnapshot(docRef, callback);
 
     // Return the function to unsubscribe from the Firestore document.
-    return unsubscribe
+    return unsubscribe;
   }
 
   /**
    * Subscribes to changes in a Firestore collection with the given path and query.
    * @param {string} colPath - The path of the Firestore collection to subscribe to.
-   * @param {object} queryDef - A query definition object to define the filters and sorting of the data.
    * @param {function} callback - A callback function to be called when the collection changes.
+   * @param {object} queryDef - A query definition object to define the filters and sorting of the data.
    * @returns {function} A function to unsubscribe from the Firestore collection.
    */
-  static async subscribeCol(colPath, queryDef, callback) {
-    if (!this.#isColPath(colPath)) return
+  static async subscribeCol(colPath, callback, queryDef) {
+    if (!this.#isColPath(colPath)) return;
     // Get a reference to the collection and query, and subscribe to changes.
-    const colRef = collection(this.db, colPath)
-    const q = query(colRef, queryDef)
-    const unsubscribe = onSnapshot(q, callback)
+    const colRef = collection(this.db, colPath);
+    const q = query(colRef, queryDef);
+    const unsubscribe = onSnapshot(q, callback);
 
     // Return the function to unsubscribe from the Firestore collection.
-    return unsubscribe
+    return unsubscribe;
   }
 
   /**
    * Subscribes to changes in a collection group with the specified query definition.
    *
    * @param {string} colGroupId - The ID of the collection group to subscribe to.
-   * @param {object} queryDef - The query definition object.
    * @param {function} callback - The callback function to be called when the subscribed collection group changes.
+   * @param {object} queryDef - The query definition object.
    * @returns {function} The unsubscribe function to stop listening to changes in the subscribed collection group.
    */
-  static subscribeColGroup = async (colGroupId, queryDef, callback) => {
-    if (this.#pathSegmentCounter(colGroupId) !== 1) return
-    const colGroupRef = collectionGroup(this.db, colGroupId)
-    const q = query(colGroupRef, queryDef)
-    const unsubscribe = onSnapshot(q, callback)
-    return unsubscribe
-  }
+  static subscribeColGroup = async (colGroupId, callback, queryDef) => {
+    if (this.#pathSegmentCounter(colGroupId) !== 1) return;
+    const colGroupRef = collectionGroup(this.db, colGroupId);
+    const q = query(colGroupRef, queryDef);
+    const unsubscribe = onSnapshot(q, callback);
+    return unsubscribe;
+  };
 }
