@@ -19,16 +19,28 @@ export const useContactsStore = create((set, get) => ({
     );
     return response;
   },
-  updateContacts: async (user_uid, doc_id, updatedContact) => {
+  updateContact: async (user_uid, doc_id, updatedContact) => {
     const response = await FirebaseFirestore.updateDoc(
       `users/${user_uid}/contacts/${doc_id}`,
       updatedContact
     );
     return response;
   },
+  createContact: async (user_uid, newContact) => {
+    const response = await FirebaseFirestore.createDoc(`users/${user_uid}/contacts`, newContact)
+    return response
+  },
+  deleteContact: async(user_uid, doc_id) => {
+    const response = await FirebaseFirestore.deleteDoc(`users/${user_uid}/contacts/${doc_id}`)
+    return response
+  },
 
-  displayedContactPhase: "edit",
+  displayedContactPhase: null,
   displayedContact: null,
+  uneditedContact: null,
+  setUneditedContact: (contact) => {
+    set((state) => ({ uneditedContact: contact }));
+  },
   setDisplayedContact: (contact) => {
     set((state) => ({ displayedContact: contact }));
   },
@@ -42,6 +54,7 @@ export const useContactsStore = create((set, get) => ({
         email_address: "",
       };
       set((state) => ({ displayedContact: emptyContactForm }));
+      set((state) => ({ uneditedContact: emptyContactForm }));
     }
     set((state) => ({ displayedContactPhase: phase }));
   },
@@ -68,8 +81,7 @@ export const useContactsStore = create((set, get) => ({
 
     const searchResults = filterContacts(keyword);
     set((state) => ({
-      searchResults: searchResults,
-      displayedContactPhase: "edit",
+      searchResults: searchResults
     }));
   },
 }));

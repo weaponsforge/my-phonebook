@@ -6,9 +6,10 @@ import { SearchResultsGroup } from "./searchResultsGroup";
 const { Box } = require("@mui/material");
 
 export const SearchResultsContainer = () => {
-  const [searchResults, setDisplayedContact] = useContactsStore((state) => [
+  const [searchResults, setDisplayedContact, setDisplayedContactPhase] = useContactsStore((state) => [
     state.searchResults,
     state.setDisplayedContact,
+    state.setDisplayedContactPhase
   ]);
 
   const searchResultsArr = Object.entries(searchResults);
@@ -18,9 +19,10 @@ export const SearchResultsContainer = () => {
       for (let [, value] of searchResultsArr) {
         if (value.length !== 1) break;
         setDisplayedContact(value[0]);
+        setDisplayedContactPhase('edit')
       }
     } else {
-      setDisplayedContact();
+      setDisplayedContactPhase()
     }
   }, [searchResults]);
 

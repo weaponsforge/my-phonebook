@@ -1,39 +1,79 @@
 import { setSyncStore, useSyncStore } from "@/lib/hooks/useSync";
+import { createContact } from "@/lib/services/contacts";
 import { useContactsStore } from "@/lib/store/contacts/contactsStore";
 import { Test } from "@/lib/utils/test";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { useDeferredValue, useEffect, useRef, useState } from "react";
 
 export const ViewContactComponent = ({ actionType }) => {
-  const [displayedContact, setDisplayedContact] = useContactsStore((state) => [
+  const [
+    displayedContact,
+    setDisplayedContact,
+    uneditedContact,
+    updateContact,
+    createContact,
+    setPhase,
+    setUneditedContact,
+  ] = useContactsStore((state) => [
     state.displayedContact,
     state.setDisplayedContact,
+    state.uneditedContact,
+    state.updateContact,
+    state.createContact,
+    state.setDisplayedContactPhase,
+    state.setUneditedContact,
   ]);
   const [isFormChanged, setIsFormChanged] = useState(false);
-  const originalState = useRef();
 
   const editContactHandler = (e) => {
-    if (!originalState.current) {
-      originalState.current = displayedContact;
-    }
     const fieldID = e.target.id;
     const fieldValue = e.target.value;
     const updatedValue = {
       ...displayedContact,
       [fieldID]: fieldValue,
     };
-    console.log(originalState.current);
-    if (
-      JSON.stringify(updatedValue) === JSON.stringify(originalState.current)
-    ) {
+    setDisplayedContact(updatedValue);
+    if (JSON.stringify(updatedValue) === JSON.stringify(uneditedContact)) {
       setIsFormChanged(false);
     } else {
       setIsFormChanged(true);
     }
-    setDisplayedContact(updatedValue);
   };
 
-  if (!displayedContact) return;
+  const saveHandler = () => {
+    switch (actionType) {
+      case "Edit contact": {
+        console.log("edit contact", displayedContact.doc_id);
+        const updatedContact = {
+          first_name: displayedContact.first_name,
+          middle_name: displayedContact.middle_name,
+          last_name: displayedContact.last_name,
+          phone_number: displayedContact.phone_number,
+          email_address: displayedContact.email_address,
+          // TODO: profile picture upload to storage and upload url to firestore
+        };
+        const doc_id = displayedContact.doc_id;
+        const response = updateContact(
+          `wtghuScAMuaWp0AKI7OKTBEwKb02`,
+          doc_id,
+          updatedContact
+        );
+        setUneditedContact(displayedContact);
+        setIsFormChanged(false);
+        break;
+      }
+      case "Create contact": {
+        console.log("create contact", displayedContact.doc_id);
+        const createdContact = displayedContact;
+        const response = createContact(
+          "wtghuScAMuaWp0AKI7OKTBEwKb02",
+          createdContact
+        );
+        setPhase("create");
+        break;
+      }
+    }
+  };
   return (
     <Box
       sx={{
@@ -50,7 +90,7 @@ export const ViewContactComponent = ({ actionType }) => {
           gap: "10px",
           alignItems: "center",
           width: "100%",
-          padding: "30px",
+          // padding: "30px",
         }}
       >
         <Typography variant="h4" sx={{ alignSelf: "start" }}>
@@ -158,7 +198,12 @@ export const ViewContactComponent = ({ actionType }) => {
             onChange={editContactHandler}
           />
         </Box>
-        <Button variant="contained" fullWidth disabled={!isFormChanged}>
+        <Button
+          variant="contained"
+          fullWidth
+          disabled={!isFormChanged}
+          onClick={saveHandler}
+        >
           Save
         </Button>
       </Box>

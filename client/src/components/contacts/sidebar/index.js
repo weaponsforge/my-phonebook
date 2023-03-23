@@ -1,15 +1,25 @@
 import { useSyncGlobalVariable } from "@/lib/hooks/useSync.js";
 import { useContactsStore } from "@/lib/store/contacts/contactsStore.js";
+import { FirebaseFirestore } from "@/lib/utils/firebase/firestore.js";
 import { Button, Paper, Typography } from "@mui/material";
 import { SearchField } from "./searchField/searchField.js";
 
 import { ViewContact, ViewContactComponent } from "./viewContact.js/index.js";
 
 export const SidebarComponent = () => {
-  const [phase,setPhase] = useContactsStore((state) => [state.displayedContactPhase, state.setDisplayedContactPhase]);
+  const [displayedContact,deleteContact] = useContactsStore((state)=> [state.displayedContact, state.deleteContact])
+  const [phase, setPhase] = useContactsStore((state) => [
+    state.displayedContactPhase,
+    state.setDisplayedContactPhase,
+  ]);
   const createContactHandler = () => {
-    setPhase('create')
+    setPhase("create");
   };
+
+  const deleteContactHandler = () => {
+    const docIdToDelete = displayedContact.doc_id
+    const response = deleteContact('wtghuScAMuaWp0AKI7OKTBEwKb02', docIdToDelete)
+  }
   return (
     <Paper
       elevation={0}
@@ -36,8 +46,13 @@ export const SidebarComponent = () => {
         <ViewContactComponent actionType={"Create contact"} />
       )}
       {phase === "edit" && <ViewContactComponent actionType={"Edit contact"} />}
-      <Button variant="contained" onClick={createContactHandler}>
-        <Typography>Create Contact</Typography>
+      {phase !== "create" && (
+        <Button variant="contained" onClick={createContactHandler}>
+          <Typography>Create Contact</Typography>
+        </Button>
+      )}
+      <Button variant="contained" onClick={deleteContactHandler}>
+        <Typography>Delete Contact</Typography>
       </Button>
     </Paper>
   );

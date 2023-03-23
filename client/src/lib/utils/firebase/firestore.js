@@ -157,7 +157,7 @@ export class FirebaseFirestore {
       ...data,
       date_updated: serverTimestamp(),
     });
-
+    console.log({response})
     // Return the Firestore response object.
     return response;
   }
