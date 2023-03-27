@@ -1,25 +1,33 @@
-import { useSyncGlobalVariable } from "@/lib/hooks/useSync.js";
 import { useContactsStore } from "@/lib/store/contacts/contactsStore.js";
-import { FirebaseFirestore } from "@/lib/utils/firebase/firestore.js";
 import { Button, Paper, Typography } from "@mui/material";
+import { createSyncV, debugSyncV, readSyncV, updateSyncV, useSyncV } from "use-sync-v";
 import { SearchField } from "./searchField/searchField.js";
 
-import { ViewContact, ViewContactComponent } from "./viewContact.js/index.js";
+import { ViewContactComponent } from "./viewContact.js/index.js";
 
 export const SidebarComponent = () => {
-  const [displayedContact,deleteContact] = useContactsStore((state)=> [state.displayedContact, state.deleteContact])
-  const [phase, setPhase] = useContactsStore((state) => [
-    state.displayedContactPhase,
-    state.setDisplayedContactPhase,
-  ]);
+  const phase = useSyncV("ui.phase")
   const createContactHandler = () => {
-    setPhase("create");
+    createSyncV("ui.phase.createContact", true)
+    createSyncV("ui.activeContact", {
+      doc_id:"",
+      first_name:"",
+      middle_name:"",
+      last_name:"",
+      phone_number:"",
+      email_address:"",
+      profile_picture_url:""
+    })
   };
 
   const deleteContactHandler = () => {
-    const docIdToDelete = displayedContact.doc_id
-    const response = deleteContact('wtghuScAMuaWp0AKI7OKTBEwKb02', docIdToDelete)
-  }
+    const docIdToDelete = displayedContact.doc_id;
+    const response = deleteContact(
+      "wtghuScAMuaWp0AKI7OKTBEwKb02",
+      docIdToDelete
+    );
+  };
+
   return (
     <Paper
       elevation={0}
@@ -42,11 +50,10 @@ export const SidebarComponent = () => {
       }}
     >
       <SearchField />
-      {phase === "create" && (
-        <ViewContactComponent actionType={"Create contact"} />
+      {phase.editContact || phase.createContact && (
+        <ViewContactComponent />
       )}
-      {phase === "edit" && <ViewContactComponent actionType={"Edit contact"} />}
-      {phase !== "create" && (
+      {!phase.createContact && (
         <Button variant="contained" onClick={createContactHandler}>
           <Typography>Create Contact</Typography>
         </Button>

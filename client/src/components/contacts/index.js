@@ -7,7 +7,6 @@ import { ContactListDisplay } from "./contactListDisplay";
 function ContactsComponent({ eventsHandler }) {
   return (
     <Page>
-      <Box></Box>
       <Box
         sx={{
           flex: 1,
@@ -21,15 +20,11 @@ function ContactsComponent({ eventsHandler }) {
         }}
       >
         <SidebarComponent />
-        <ContactListDisplay eventsHandler={eventsHandler} />
+        <ContactListDisplay />
       </Box>
     </Page>
   );
 }
 
-ContactsComponent.propTypes = {
-  state: PropTypes.object,
-  eventsHandler: PropTypes.func,
-};
 
 export default ContactsComponent;

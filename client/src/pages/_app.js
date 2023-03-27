@@ -13,7 +13,10 @@ import { AuthProvider } from '@/lib/hooks/useAuth'
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 import { lightTheme, darkTheme } from '@/lib/mui/theme'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { init } from '@/lib/store'
 
+
+init()
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
 // Date: 20230225 @v5.11.10
 // Client-side cache, shared for the whole session of the user in the browser.
