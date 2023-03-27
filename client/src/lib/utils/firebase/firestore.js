@@ -22,7 +22,6 @@ export class FirebaseFirestore {
     const segmentCount = path.match(
       new RegExp(String.raw`(?<segment>[^/]+)`, "gi")
     ).length;
-    console.log(segmentCount);
     return segmentCount;
   };
 
@@ -157,7 +156,6 @@ export class FirebaseFirestore {
       ...data,
       date_updated: serverTimestamp(),
     });
-    console.log({response})
     // Return the Firestore response object.
     return response;
   }
