@@ -1,6 +1,7 @@
 import { setSyncStore, useSyncGlobalVariable } from "@/lib/hooks/useSync";
 import { useContactsStore } from "@/lib/store/contacts/contactsStore";
 import { Avatar, Paper, Typography, useTheme } from "@mui/material";
+import { createSyncV, debugSyncV, deleteSyncV } from "use-sync-v";
 
 const getInitial = (first, second, last) => {
   const firstInitial = (first.match(
@@ -45,9 +46,10 @@ export const ContactCard = ({ contact }) => {
 
   const contactClickHandler = (e) => {
     e.stopPropagation();
-    setDisplayedContact(contact);
-    setUneditedContact(contact)
-    setPhase("edit");
+    deleteSyncV("ui.phase")
+    createSyncV("ui.phase.editContact", true)
+    createSyncV("ui.activeContact", contact)
+    debugSyncV("ui")
   };
   return (
     <>

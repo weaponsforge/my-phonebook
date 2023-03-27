@@ -7,6 +7,7 @@ import { ViewContactComponent } from "./viewContact.js/index.js";
 
 export const SidebarComponent = () => {
   const phase = useSyncV("ui.phase")
+  console.log("phase")
   const createContactHandler = () => {
     createSyncV("ui.phase.createContact", true)
     createSyncV("ui.activeContact", {
@@ -50,7 +51,7 @@ export const SidebarComponent = () => {
       }}
     >
       <SearchField />
-      {phase.editContact || phase.createContact && (
+      {(phase.editContact || phase.createContact) && (
         <ViewContactComponent />
       )}
       {!phase.createContact && (

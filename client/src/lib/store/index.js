@@ -6,8 +6,7 @@ createSyncV("ui",{
     search:{
         searchKeyword:"",
         searchResults:[]
-    }
+    },
 })
 
-debugSyncV("ui")
 export const init = ()=>{}

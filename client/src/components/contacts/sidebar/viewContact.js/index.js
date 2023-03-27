@@ -1,14 +1,19 @@
 import { createContact } from "@/lib/services/contacts";
 import { FirebaseFirestore } from "@/lib/utils/firebase/firestore";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { createSyncV, readSyncV, useSyncV } from "use-sync-v";
+import { useEffect, useState } from "react";
+import { createSyncV, readSyncV, updateAsyncV, useSyncV } from "use-sync-v";
 
 export const ViewContactComponent = () => {
-  const activeContact = readSyncV("ui.activeContact");
+  const activeContact = useSyncV("ui.activeContact");
   const { editContact, createContact } = useSyncV("ui.phase");
   const [form, setForm] = useState(activeContact);
   const [isFormChanged, setIsFormChanged] = useState(activeContact);
+
+  useEffect(()=>{
+    setForm(activeContact)
+    console.log(activeContact)
+  },[activeContact])
 
   const editContactHandler = (e) => {
     const fieldID = e.target.id;
@@ -18,6 +23,7 @@ export const ViewContactComponent = () => {
       [fieldID]: fieldValue,
     };
     setForm(updatedValue);
+    console.log(updatedValue)
     if (JSON.stringify(updatedValue) === JSON.stringify(activeContact)) {
       setIsFormChanged(false);
     } else {
@@ -29,29 +35,29 @@ export const ViewContactComponent = () => {
     switch (true) {
       case editContact: {
         const updatedContact = {
-          first_name: form.first_name,
-          middle_name: form.middle_name,
-          last_name: form.last_name,
-          phone_number: form.phone_number,
-          email_address: form.email_address,
-          // TODO: profile picture upload to storage and upload url to firestore
+          first_name: form?.first_name ?? "",
+          middle_name: form?.middle_name ?? "",
+          last_name: form?.last_name ?? "",
+          phone_number: form?.phone_number ?? "",
+          email_address: form?.email_address ?? "",
+          profile_picture_url: form?.profile_picture_url ?? ""
         };
-        const doc_id = form.doc_id;
-        const response = FirebaseFirestore.updateDoc(`users/test/contacts/${doc_id}`,updatedContact)
-        createSyncV("ui.activeContact", response)
-        setForm(activeContact)
+        const doc_id = activeContact.doc_id;
+        FirebaseFirestore.updateDoc(`users/test/contacts/${doc_id}`,updatedContact)
+          .then (response=>{
+            console.log(response)
+          })
         setIsFormChanged(false);
         break;
       }
       case createContact: {
         const createdContact = form
         const response = FirebaseFirestore.createDoc(`users/test/contacts/`,createdContact)
-        setForm(readSyncV("ui.activeContact"))
+        setForm(activeContact)
         break;
       }
     }
   };
-  console.log('rener')
   return (
     <Box
       sx={{

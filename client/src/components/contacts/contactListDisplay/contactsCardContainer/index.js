@@ -1,13 +1,13 @@
 import { useContactsStore } from "@/lib/store/contacts/contactsStore";
-import { Box } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useAsyncV, useSyncV } from "use-sync-v";
+import { createAsyncV, useAsyncV, useSyncV } from "use-sync-v";
 import { ContactCardsGroup } from "./contactCardGroup";
 
 export const ContactCardsContainer = () => {
-  const { data, loading, error } = useAsyncV("contacts");
+  const { data, error } = useAsyncV("contacts");
 
-  const groupedSortedContacts = [...data ?? []].reduce((prev, curr) => {
+  const groupedSortedContacts = [...(data ?? [])].reduce((prev, curr) => {
     const capitalizedFirstNameFirstLetterChar = curr.first_name.match(
       new RegExp(String.raw`(?<firstLetterChar>^[a-z])|`, "i")
     )[0];
@@ -44,8 +44,6 @@ export const ContactCardsContainer = () => {
             />
           );
         })}
-
-      {loading && <div>Loading contacts</div>}
       {error && <div>Error</div>}
     </Box>
   );
