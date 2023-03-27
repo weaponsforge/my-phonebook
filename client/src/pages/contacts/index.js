@@ -1,6 +1,9 @@
 import ContactsComponent from "@/components/contacts";
-import { useContactsStore } from "@/lib/store/contacts/contactsStore";
+import { FirebaseFirestore } from "@/lib/utils/firebase/firestore";
 import { useEffect } from "react";
+import { updateAsyncV } from "use-sync-v";
+
+const user_uid = "test"
 
 function Contacts() {
 
@@ -12,7 +15,9 @@ function Contacts() {
         querySnapshot.forEach((doc) => {
           data.push(doc.data());
         });
-        updateAsyncV("contacts", data);
+        updateAsyncV("contacts", ()=>{
+          return data
+        });
       }
     );
   }, []);
