@@ -1,11 +1,15 @@
 import { useSyncGlobalVariable, useSyncStore } from '@/lib/hooks/useSync'
 import { useContactsStore } from '@/lib/store/contacts/contactsStore'
+import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { Box } from '@mui/material'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useEffect } from 'react'
+import { createSyncV, debugSyncV, useAsyncV, useQueryV, useSyncV } from 'use-sync-v'
 import { ContactCardsContainer } from './contactsCardContainer'
 import { SearchResultsContainer } from './searchResultsContainer'
 
+
 export const ContactListDisplay = ({state}) => {
+
   const search = useContactsStore((state)=>state.searchKeyword)
   return (
     <>
