@@ -4,7 +4,7 @@ import { USER_STATES } from '@/store/constants'
 
 // Reducers
 import userSlice from '@/store/users/userSlice'
-import contactsSlice from './contacts/contactsSlice'
+import contactsSlice from './contacts/contactsSlice.js.unused'
 
 const combinedReducer = combineReducers({
   user: userSlice,

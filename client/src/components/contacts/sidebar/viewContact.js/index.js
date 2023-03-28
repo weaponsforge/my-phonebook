@@ -1,105 +1,99 @@
-import { createContact } from "@/lib/services/contacts";
-import { FirebaseFirestore } from "@/lib/utils/firebase/firestore";
-import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { createSyncV, readSyncV, updateAsyncV, useSyncV } from "use-sync-v";
+import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useSyncV } from 'use-sync-v'
 
 export const ViewContactComponent = () => {
-  const activeContact = useSyncV("ui.activeContact");
-  const { editContact, createContact } = useSyncV("ui.phase");
-  const [form, setForm] = useState(activeContact);
-  const [isFormChanged, setIsFormChanged] = useState(activeContact);
+  const activeContact = useSyncV('ui.activeContact')
+  const { editContact, createContact } = useSyncV('ui.phase')
+  const [form, setForm] = useState(activeContact)
+  const [isFormChanged, setIsFormChanged] = useState(activeContact)
 
   useEffect(()=>{
     setForm(activeContact)
-    console.log(activeContact)
   },[activeContact])
 
   const editContactHandler = (e) => {
-    const fieldID = e.target.id;
-    const fieldValue = e.target.value;
+    const fieldID = e.target.id
+    const fieldValue = e.target.value
     const updatedValue = {
       ...form,
       [fieldID]: fieldValue,
-    };
-    setForm(updatedValue);
-    console.log(updatedValue)
-    if (JSON.stringify(updatedValue) === JSON.stringify(activeContact)) {
-      setIsFormChanged(false);
-    } else {
-      setIsFormChanged(true);
     }
-  };
+    setForm(updatedValue)
+    if (JSON.stringify(updatedValue) === JSON.stringify(activeContact)) {
+      setIsFormChanged(false)
+    } else {
+      setIsFormChanged(true)
+    }
+  }
 
   const saveHandler = () => {
     switch (true) {
-      case editContact: {
-        const updatedContact = {
-          first_name: form?.first_name ?? "",
-          middle_name: form?.middle_name ?? "",
-          last_name: form?.last_name ?? "",
-          phone_number: form?.phone_number ?? "",
-          email_address: form?.email_address ?? "",
-          profile_picture_url: form?.profile_picture_url ?? ""
-        };
-        const doc_id = activeContact.doc_id;
-        FirebaseFirestore.updateDoc(`users/test/contacts/${doc_id}`,updatedContact)
-          .then (response=>{
-            console.log(response)
-          })
-        setIsFormChanged(false);
-        break;
+    case editContact: {
+      const updatedContact = {
+        first_name: form?.first_name ?? '',
+        middle_name: form?.middle_name ?? '',
+        last_name: form?.last_name ?? '',
+        phone_number: form?.phone_number ?? '',
+        email_address: form?.email_address ?? '',
+        profile_picture_url: form?.profile_picture_url ?? ''
       }
-      case createContact: {
-        const createdContact = form
-        const response = FirebaseFirestore.createDoc(`users/test/contacts/`,createdContact)
-        setForm(activeContact)
-        break;
-      }
+      const doc_id = activeContact.doc_id
+      FirebaseFirestore.updateDoc(`users/test/contacts/${doc_id}`,updatedContact)
+      setIsFormChanged(false)
+      break
     }
-  };
+    case createContact: {
+      const createdContact = form
+      FirebaseFirestore.createDoc('users/test/contacts/',createdContact)
+      setForm(activeContact)
+      break
+    }
+    }
+  }
   return (
     <Box
       sx={{
-        display: "grid",
-        gap: "10px",
-        width: "100%",
-        height: "auto",
+        display: 'grid',
+        gap: '10px',
+        width: '100%',
+        height: 'auto',
       }}
     >
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          alignItems: "center",
-          width: "100%",
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+          alignItems: 'center',
+          width: '100%',
           // padding: "30px",
         }}
       >
-        <Typography variant="h4" sx={{ alignSelf: "start" }}>
-          {editContact && "Edit Contact"}
-          {createContact && "Create Contact"}
+        <Typography variant="h4" sx={{ alignSelf: 'start' }}>
+          {editContact && 'Edit Contact'}
+          {createContact && 'Create Contact'}
         </Typography>
         <Avatar
           sx={{
-            width: "50vw",
-            maxWidth: "200px",
-            maxHeight: "200px",
-            height: "50vw",
-            justifySelf: "center",
-            gridColumn: "1/-1",
-            border: "5px dashed gray",
-            margin: "10px",
+            width: '50vw',
+            maxWidth: '200px',
+            maxHeight: '200px',
+            height: '50vw',
+            justifySelf: 'center',
+            gridColumn: '1/-1',
+            border: '5px dashed gray',
+            margin: '10px',
           }}
         />
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "10px",
-            width: "100%",
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '10px',
+            width: '100%',
           }}
         >
           <Typography variant="h8">First Name :</Typography>
@@ -107,17 +101,17 @@ export const ViewContactComponent = () => {
             id="first_name"
             value={form.first_name}
             size="small"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             onChange={editContactHandler}
           />
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "10px",
-            width: "100%",
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '10px',
+            width: '100%',
           }}
         >
           <Typography variant="h8">Middle Name :</Typography>
@@ -125,17 +119,17 @@ export const ViewContactComponent = () => {
             id="middle_name"
             value={form.middle_name}
             size="small"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             onChange={editContactHandler}
           />
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "10px",
-            width: "100%",
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '10px',
+            width: '100%',
           }}
         >
           <Typography variant="h8">Last Name:</Typography>
@@ -143,17 +137,17 @@ export const ViewContactComponent = () => {
             id="last_name"
             value={form.last_name}
             size="small"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             onChange={editContactHandler}
           />
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "10px",
-            width: "100%",
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '10px',
+            width: '100%',
           }}
         >
           <Typography variant="h8">Phone Number:</Typography>
@@ -161,17 +155,17 @@ export const ViewContactComponent = () => {
             id="phone_number"
             value={form.phone_number}
             size="small"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             onChange={editContactHandler}
           />
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "10px",
-            width: "100%",
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '10px',
+            width: '100%',
           }}
         >
           <Typography variant="h8">Email Address:</Typography>
@@ -179,7 +173,7 @@ export const ViewContactComponent = () => {
             id="email_address"
             value={form.email_address}
             size="small"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             onChange={editContactHandler}
           />
         </Box>
@@ -193,5 +187,5 @@ export const ViewContactComponent = () => {
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}

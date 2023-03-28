@@ -1,21 +1,20 @@
-import PropTypes from "prop-types";
-import Page from "@/common/layout/page";
-import { Box } from "@mui/material";
-import { Sidebar, SidebarComponent } from "./sidebar";
-import { ContactListDisplay } from "./contactListDisplay";
+import Page from '@/common/layout/page'
+import { Box } from '@mui/material'
+import { SidebarComponent } from './sidebar'
+import { ContactListDisplay } from './contactListDisplay'
 
-function ContactsComponent({ eventsHandler }) {
+function ContactsComponent() {
   return (
     <Page>
       <Box
         sx={{
           flex: 1,
-          display: "flex",
-          flexWrap: "wrap",
-          overflowY: "scroll",
-          userSelect: "none",
-          "&::-webkit-scrollbar": {
-            display: "none",
+          display: 'flex',
+          flexWrap: 'wrap',
+          overflowY: 'scroll',
+          userSelect: 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
           },
         }}
       >
@@ -23,8 +22,8 @@ function ContactsComponent({ eventsHandler }) {
         <ContactListDisplay />
       </Box>
     </Page>
-  );
+  )
 }
 
 
-export default ContactsComponent;
+export default ContactsComponent

@@ -1,38 +1,36 @@
-import { useContactsStore } from "@/lib/store/contacts/contactsStore";
-import { Box, LinearProgress } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { createAsyncV, useAsyncV, useSyncV } from "use-sync-v";
-import { ContactCardsGroup } from "./contactCardGroup";
+import { Box } from '@mui/material'
+import { useAsyncV } from 'use-sync-v'
+import { ContactCardsGroup } from './contactCardGroup'
 
 export const ContactCardsContainer = () => {
-  const { data, error } = useAsyncV("contacts");
+  const { data, error } = useAsyncV('contacts')
 
   const groupedSortedContacts = [...(data ?? [])].reduce((prev, curr) => {
     const capitalizedFirstNameFirstLetterChar = curr.first_name.match(
-      new RegExp(String.raw`(?<firstLetterChar>^[a-z])|`, "i")
-    )[0];
+      new RegExp(String.raw`(?<firstLetterChar>^[a-z])|`, 'i')
+    )[0]
     if (!capitalizedFirstNameFirstLetterChar) {
-      if (!prev.misc) prev.misc = [];
-      prev.misc = [...prev.misc, curr];
+      if (!prev.misc) prev.misc = []
+      prev.misc = [...prev.misc, curr]
     } else {
       if (!prev[capitalizedFirstNameFirstLetterChar.toUpperCase()]) {
-        prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [];
+        prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = []
       }
       prev[capitalizedFirstNameFirstLetterChar.toUpperCase()] = [
         ...prev[capitalizedFirstNameFirstLetterChar.toUpperCase()],
         curr,
-      ];
+      ]
     }
-    return prev;
-  }, {});
+    return prev
+  }, {})
 
-  const groupedSortedContactsArr = Object.entries(groupedSortedContacts);
+  const groupedSortedContactsArr = Object.entries(groupedSortedContacts)
 
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
+        width: '100%',
+        height: '100%',
       }}
     >
       {data &&
@@ -42,9 +40,9 @@ export const ContactCardsContainer = () => {
               key={index}
               content={{ group: el[0], contacts: el[1] }}
             />
-          );
+          )
         })}
       {error && <div>Error</div>}
     </Box>
-  );
-};
+  )
+}

@@ -1,85 +1,84 @@
-import { createSlice, isAnyOf, isPending, isRejected } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
+import { createSlice, isPending, isRejected } from '@reduxjs/toolkit'
 import {
   fetchCreateContact,
   fetchDeleteContact,
   fetchReadContact,
   fetchReadContacts,
   fetchUpdateContact,
-} from "./contactsThunk";
+} from './contactsThunk.js.unused'
 
 const contactsSlice = createSlice({
-  name: "contacts",
+  name: 'contacts',
   initialState: {
     entities: [],
-    loading: "idle" | "pending" | "succeeded" | "failed",
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
     error: false,
-    searchKeyword: "",
+    searchKeyword: '',
     searchResults: [],
     displayedContact: {},
   },
   reducers: {
     search: (state, action) => {
-      state.searchKeyword = action.payload;
+      state.searchKeyword = action.payload
 
-      const filterContacts = (searchFilter) => {
+      const filterContacts = () => {
         const filteredContactsByField = state.entities.reduce((prev, curr) => {
           for (let [key, value] of Object.entries(curr)) {
-            if (new RegExp(String.raw`${searchText}`, "i").test(value)) {
+            if (new RegExp(String.raw`${searchText}`, 'i').test(value)) {
               if (!prev[key]) {
-                prev[key] = [];
+                prev[key] = []
               }
-              prev[key] = [...prev[key], curr];
+              prev[key] = [...prev[key], curr]
             }
           }
-          return prev;
-        }, {});
-        return filteredContactsByField;
-      };
+          return prev
+        }, {})
+        return filteredContactsByField
+      }
 
-      const searchResults = filterContacts(search);
-      const searchResultsArr = Object.entries(searchResults);
-      state.searchResults = searchResultsArr;
+      const searchResults = filterContacts(search)
+      const searchResultsArr = Object.entries(searchResults)
+      state.searchResults = searchResultsArr
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchReadContacts.fulfilled, (state, action) => {
-        state.loading = "succeeded";
-        state.entities = action.payload;
-        state.loading = "idle";
+        state.loading = 'succeeded'
+        state.entities = action.payload
+        state.loading = 'idle'
       })
       .addCase(fetchReadContact.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = 'succeeded'
         for (let i = 0; i < state.entities.length; i++) {
           if (action.arg.doc_id === state.entities[i].doc_id) {
-            state.entities[i] = action.payload;
+            state.entities[i] = action.payload
           }
         }
-        state.loading = "idle";
+        state.loading = 'idle'
       })
       .addCase(fetchCreateContact.fulfilled, (state, action) => {
-        state.loading = "succeeded";
-        state.entities.push(action.payload);
-        state.loading = "idle";
+        state.loading = 'succeeded'
+        state.entities.push(action.payload)
+        state.loading = 'idle'
       })
       .addCase(fetchUpdateContact.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = 'succeeded'
         for (let i = 0; i < state.entities.length; i++) {
           if (action.arg.doc_id === state.entities[i].doc_id) {
-            state.entities[i] = action.payload;
+            state.entities[i] = action.payload
           }
         }
-        state.loading = "idle";
+        state.loading = 'idle'
       })
       .addCase(fetchDeleteContact.fulfilled, (state, action) => {
-        state.loading = "succeeded";
+        state.loading = 'succeeded'
         for (let i = 0; i < state.entities.length; i++) {
           if (action.arg.doc_id === state.entities[i].doc_id) {
-            state.entities.splice(i, 1);
+            state.entities.splice(i, 1)
           }
         }
-        state.loading = "idle";
+        state.loading = 'idle'
       })
       .addMatcher(
         isPending(
@@ -89,8 +88,8 @@ const contactsSlice = createSlice({
           fetchUpdateContact,
           fetchDeleteContact
         ),
-        (state, action) => {
-          state.loading = "pending";
+        (state) => {
+          state.loading = 'pending'
         }
       )
       .addMatcher(
@@ -103,13 +102,12 @@ const contactsSlice = createSlice({
         ),
         (state, action) => {
           state.error = true
-          console.log(action)
         }
-      );
+      )
     // TODO: cases / matcher for loading and rejection / failed fetch
   },
-});
+})
 
-export const {} = contactsSlice.actions;
+export const {} = contactsSlice.actions
 
-export default contactsSlice.reducer;
+export default contactsSlice.reducer
