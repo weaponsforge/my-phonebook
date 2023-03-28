@@ -10,6 +10,7 @@ export const SidebarComponent = () => {
   const doc_id = useSyncV("ui.activeContact.doc_id")
   const phase = useSyncV("ui.phase")
   const createContactHandler = () => {
+    createSyncV("ui.phase.editContact", false)
     createSyncV("ui.phase.createContact", true)
     createSyncV("ui.activeContact", {
       doc_id:"",
@@ -24,8 +25,8 @@ export const SidebarComponent = () => {
 
   const deleteContactHandler = () => {
     FirebaseFirestore.deleteDoc(`users/test/contacts/${doc_id}`)
-    deleteSyncV("ui.activeContact")
-    deleteSyncV("ui.phase")
+    createSyncV("ui.activeContact",null)
+    createSyncV("ui.phase",null)
     debugSyncV("ui")
   };
 
