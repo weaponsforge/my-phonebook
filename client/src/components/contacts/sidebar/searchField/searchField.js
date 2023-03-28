@@ -7,7 +7,7 @@ import { Box, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useContactsStore } from "@/lib/store/contacts/contactsStore";
-import { createSyncV, useSyncV } from "use-sync-v";
+import { createSyncV, debugSyncV, useSyncV } from "use-sync-v";
 
 export const SearchField = () => {
   const { searchKeyword } = useSyncV("ui.search");
@@ -15,6 +15,7 @@ export const SearchField = () => {
     e.stopPropagation();
     createSyncV("ui.search.searchKeyword", e.target.value);
     if (e.target.value === "") {
+      createSyncV("ui.phase.editContact", false)
       createSyncV("ui.phase.search", false);
     } else {
       createSyncV("ui.phase.search", true);

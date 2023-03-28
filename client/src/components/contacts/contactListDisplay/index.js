@@ -14,7 +14,7 @@ import { ContactCardsContainer } from "./contactsCardContainer";
 import { SearchResultsContainer } from "./searchResultsContainer";
 
 export const ContactListDisplay = ({ state }) => {
-  const { search } = useSyncV("ui.phase");
+  const phase = useSyncV("ui.phase");
 
   return (
     <>
@@ -32,7 +32,7 @@ export const ContactListDisplay = ({ state }) => {
           },
         }}
       >
-        {search ? <SearchResultsContainer /> : <ContactCardsContainer />}
+        {phase?.search ? <SearchResultsContainer /> : <ContactCardsContainer />}
       </Box>
     </>
   );
