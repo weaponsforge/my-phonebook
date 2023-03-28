@@ -7,61 +7,67 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // MUI
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import Menu from '@mui/material/Menu'
-import Container from '@mui/material/Container'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
-import MenuItem from '@mui/material/MenuItem'
-import LoginIcon from '@mui/icons-material/Login'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import LightModeIcon from '@mui/icons-material/LightMode'
-import MenuIcon from '@mui/icons-material/Menu'
 import HowToRegIcon from '@mui/icons-material/HowToReg'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import LoginIcon from '@mui/icons-material/Login'
+import MenuIcon from '@mui/icons-material/Menu'
+import AppBar from '@mui/material/AppBar'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Toolbar from '@mui/material/Toolbar'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 
 // LIB
-import { Avalon } from '@/lib/mui/theme'
-import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { useAuth } from '@/lib/hooks/useAuth'
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { Avalon } from '@/lib/mui/theme'
+import { LinearProgress } from '@mui/material'
+import { useAsyncV } from 'use-sync-v'
 
 // VARIABLES
 const pages = ['about']
 const settings = [
   {
     name: 'Profile',
-    route: 'userProfile'
+    route: 'userProfile',
   },
   {
     name: 'Account',
-    route: '/'
+    route: '/',
   },
   {
     name: 'Dashboard',
-    route: 'dashboard'
+    route: 'dashboard',
   },
   {
     name: 'Logout',
-    route: '#'
-  }
+    route: '#',
+  },
 ]
 
 function Header() {
   // HOOKS
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const [activeTheme, setActiveTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
   const { authUser, authSignOut } = useAuth()
   const dispatch = useDispatch()
   const router = useRouter()
+  const { loading } = useAsyncV('contacts')
 
   class eventsHandler {
     static themeHandler = () => {
-      setActiveTheme(activeTheme === 'dark' ? 'light' : 'dark')
+      setSyncLocalStorage(
+        'activeTheme',
+        activeTheme === 'dark' ? 'light' : 'dark'
+      )
     }
     static handleOpenNavMenu = (e) => {
       setAnchorElNav(e.currentTarget)
@@ -79,19 +85,29 @@ function Header() {
       router.push(route)
     }
   }
-  const {themeHandler, handleOpenNavMenu, handleOpenUserMenu, handleCloseNavMenu, handleCloseUserMenu, handleClickNavMenu} = eventsHandler
+  const {
+    themeHandler,
+    handleOpenNavMenu,
+    handleOpenUserMenu,
+    handleCloseNavMenu,
+    handleCloseUserMenu,
+    handleClickNavMenu,
+  } = eventsHandler
 
   return (
-    <AppBar elevation={10} sx={{
-      position:'sticky',
-      top: 0,
-      zIndex: 100,
-      background: 'inherit',
-      backdropFilter: 'blur(5px)',
-    }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters >
-          <Link href='/' style={{ textDecoration: 'none', display: 'flex' }}>
+    <AppBar
+      elevation={10}
+      sx={{
+        position: 'relative',
+        zIndex: 100,
+        background: 'inherit',
+        backdropFilter: 'blur(5px)',
+      }}
+      id="appBar"
+    >
+      <Container maxWidth="xxl">
+        <Toolbar disableGutters>
+          <Link href="/" style={{ textDecoration: 'none', display: 'flex' }}>
             <Typography
               className={Avalon.className}
               variant="h6"
@@ -103,14 +119,14 @@ function Header() {
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
-                color: (theme)=>theme.palette.text.primary,
+                color: (theme) => theme.palette.text.primary,
               }}
             >
               myPhonebook
             </Typography>
           </Link>
 
-          <Box sx={{  display: { xs: 'flex', md: 'none' }}}>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -146,7 +162,15 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <Link href='/' style={{ textDecoration: 'none', display: 'flex', flex:1, justifyContent:'center' }}>
+          <Link
+            href="/"
+            style={{
+              textDecoration: 'none',
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'center',
+            }}
+          >
             <Typography
               className={Avalon.className}
               variant="h5"
@@ -157,7 +181,7 @@ function Header() {
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
                 marginTop: '5px',
-                color: (theme)=>theme.palette.text.primary,
+                color: (theme) => theme.palette.text.primary,
               }}
             >
               myPhonebook
@@ -165,10 +189,19 @@ function Header() {
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link key={page} href={`/${page}`} style={{ textDecoration:'none'}}>
+              <Link
+                key={page}
+                href={`/${page}`}
+                style={{ textDecoration: 'none' }}
+              >
                 <Button
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color:(theme)=>theme.palette.text.primary, display: 'block', fontWeight: 'bold' }}
+                  sx={{
+                    my: 2,
+                    color: (theme) => theme.palette.text.primary,
+                    display: 'block',
+                    fontWeight: 'bold',
+                  }}
                 >
                   {page}
                 </Button>
@@ -176,13 +209,15 @@ function Header() {
             ))}
           </Box>
 
-          {(authUser !== null)
-            ?
+          {authUser !== null ? (
             <Box sx={{ flex: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* will use google profile picture from firebase ? */}
-                  <Avatar alt="avatarPicture" src="/static/images/avatar/2.jpg" />
+                  <Avatar
+                    alt="avatarPicture"
+                    src="/static/images/avatar/2.jpg"
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -202,21 +237,28 @@ function Header() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting, id) => {
-                  return (setting.name === 'Logout')
-                    ? <MenuItem key={id} onClick={() => dispatch(authSignOut())}>
+                  return setting.name === 'Logout' ? (
+                    <MenuItem key={id} onClick={() => dispatch(authSignOut())}>
                       <Typography textAlign="center">{setting.name}</Typography>
                     </MenuItem>
-                    : <MenuItem key={id} onClick={() => handleClickNavMenu(setting.route)}>
+                  ) : (
+                    <MenuItem
+                      key={id}
+                      onClick={() => handleClickNavMenu(setting.route)}
+                    >
                       <Typography textAlign="center">{setting.name}</Typography>
                     </MenuItem>
+                  )
                 })}
               </Menu>
             </Box>
-            :
-            <Box sx={{
-              display: 'flex',
-            }}>
-              <Link href='/login' style={{ textDecoration: 'none' }}>
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+              }}
+            >
+              <Link href="/login" style={{ textDecoration: 'none' }}>
                 <Button
                   sx={{
                     my: 2,
@@ -224,12 +266,18 @@ function Header() {
                     display: { xs: 'none', md: 'flex' },
                   }}
                 >
-                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                  <Typography
+                    variant="h8"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: (theme) => theme.palette.text.primary,
+                    }}
+                  >
                     Login
                   </Typography>
                 </Button>
               </Link>
-              <Link href='/register' style={{ textDecoration: 'none' }}>
+              <Link href="/register" style={{ textDecoration: 'none' }}>
                 <Button
                   sx={{
                     my: 2,
@@ -237,67 +285,92 @@ function Header() {
                     display: { xs: 'none', md: 'flex' },
                   }}
                 >
-                  <Typography variant="h8" sx={{ fontWeight: 'bold', color: (theme)=>theme.palette.text.primary, }}>
+                  <Typography
+                    variant="h8"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: (theme) => theme.palette.text.primary,
+                    }}
+                  >
                     Register
                   </Typography>
                 </Button>
               </Link>
             </Box>
-          }
-          <Link href='/login' style={{ textDecoration: 'none' }}>
+          )}
+          <Link href="/login" style={{ textDecoration: 'none' }}>
             <IconButton
               sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
-                justifyContent:'center',
-                alignItems:'center',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              {activeTheme === 'dark'
-                ?
-                <LoginIcon style={{
-                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'
-                }}/>
-                :
-                <LoginIcon/>
-              }
+              {activeTheme === 'dark' ? (
+                <LoginIcon
+                  style={{
+                    filter:
+                      'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                  }}
+                />
+              ) : (
+                <LoginIcon />
+              )}
             </IconButton>
           </Link>
-          <Link href='/register' style={{ textDecoration: 'none' }}>
+          <Link href="/register" style={{ textDecoration: 'none' }}>
             <IconButton
               sx={{
                 color: 'black',
                 display: { xs: 'flex', md: 'none' },
-                justifyContent:'center',
-                alignItems:'center',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              {activeTheme === 'dark'
-                ?
-                <HowToRegIcon style={{
-                  filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
-                }}/>
-                :
+              {activeTheme === 'dark' ? (
+                <HowToRegIcon
+                  style={{
+                    filter:
+                      'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                  }}
+                />
+              ) : (
                 <HowToRegIcon />
-              }
+              )}
             </IconButton>
           </Link>
-          <IconButton sx={{
-            color: 'black',
-            display: 'flex',
-            justifyContent:'center',
-            alignItems:'center',
-          }} onClick={themeHandler}
+          <IconButton
+            sx={{
+              color: 'black',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onClick={themeHandler}
           >
-            {activeTheme === 'dark'
-              ?
-              <LightModeIcon style={{ filter: 'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)'}}/>
-              :
+            {activeTheme === 'dark' ? (
+              <LightModeIcon
+                style={{
+                  filter:
+                    'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                }}
+              />
+            ) : (
               <DarkModeIcon />
-            }
+            )}
           </IconButton>
         </Toolbar>
       </Container>
+      {loading && (
+        <LinearProgress
+          sx={{
+            position: 'fixed',
+            bottom: '0px',
+            width: '100vw',
+          }}
+        />
+      )}
     </AppBar>
   )
 }
