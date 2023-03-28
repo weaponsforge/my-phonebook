@@ -1,7 +1,7 @@
 import Page from '@/common/layout/page'
 import { Box } from '@mui/material'
 import { SidebarComponent } from './sidebar'
-import { ContactListDisplay } from './contactListDisplay'
+import { ContactListDisplay } from './display'
 
 function ContactsComponent() {
   return (

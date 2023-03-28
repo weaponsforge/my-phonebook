@@ -1,9 +1,9 @@
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore.js'
 import { Button, Paper, Typography } from '@mui/material'
 import { createSyncV, debugSyncV, useSyncV } from 'use-sync-v'
-import { SearchField } from './searchField/searchField.js'
+import { SearchFieldComponent } from './search/searchField.js'
 
-import { ViewContactComponent } from './viewContact.js/index.js'
+import { ContactFormComponent } from './contactForm/index.js'
 
 export const SidebarComponent = () => {
   const doc_id = useSyncV('ui.activeContact.doc_id')
@@ -50,9 +50,9 @@ export const SidebarComponent = () => {
         },
       }}
     >
-      <SearchField />
+      <SearchFieldComponent />
       {(phase?.editContact || phase?.createContact) && (
-        <ViewContactComponent />
+        <ContactFormComponent/>
       )}
       {!phase?.createContact && (
         <Button variant="contained" onClick={createContactHandler}>

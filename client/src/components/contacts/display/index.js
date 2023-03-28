@@ -1,7 +1,5 @@
 import { Box } from '@mui/material'
-import {
-  useSyncV,
-} from 'use-sync-v'
+import { useSyncV } from 'use-sync-v'
 import { ContactCardsContainer } from './contactsCardContainer'
 import { SearchResultsContainer } from './searchResultsContainer'
 

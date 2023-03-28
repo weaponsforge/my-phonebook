@@ -97,11 +97,11 @@ export class FirebaseFirestore {
    * @param {Object} queryDef - The query definition object for filtering and sorting the collection.
    * @returns {Promise} A Promise that resolves to an array of data objects from the Firestore documents in the collection.
    */
-  static async readCol(colPath, queryDef) {
+  static async readCol(colPath, ...queryDef) {
     if (!this.#isColPath(colPath)) return
     // Get a reference to the collection and apply the query definition.
     const colRef = collection(this.db, colPath)
-    const q = query(colRef, queryDef)
+    const q = query(colRef, ...queryDef)
 
     // Get the documents in the collection that match the query.
     const snapshot = await getDocs(q)
@@ -122,11 +122,11 @@ export class FirebaseFirestore {
    * @param {Object} queryDef - The query definition object for filtering and sorting the collection group.
    * @returns {Promise} A Promise that resolves to an array of data objects from the Firestore documents in the collection group.
    */
-  static async readColGroup(colGroupId, queryDef) {
+  static async readColGroup(colGroupId, ...queryDef) {
     if (this.#pathSegmentCounter(colGroupId) !== 1) return
     // Get a reference to the collection group and apply the query definition.
     const colGroupRef = collectionGroup(this.db, colGroupId)
-    const q = query(colGroupRef, queryDef)
+    const q = query(colGroupRef, ...queryDef)
 
     // Get the documents in the collection group that match the query.
     const snapshot = await getDocs(q)
@@ -197,11 +197,11 @@ export class FirebaseFirestore {
    * @param {object} queryDef - A query definition object to define the filters and sorting of the data.
    * @returns {function} A function to unsubscribe from the Firestore collection.
    */
-  static async subscribeCol(colPath, callback, queryDef) {
+  static async subscribeCol(colPath, callback, ...queryDef) {
     if (!this.#isColPath(colPath)) return
     // Get a reference to the collection and query, and subscribe to changes.
     const colRef = collection(this.db, colPath)
-    const q = query(colRef, queryDef)
+    const q = query(colRef, ...queryDef)
     const unsubscribe = onSnapshot(q, callback)
 
     // Return the function to unsubscribe from the Firestore collection.
@@ -216,10 +216,10 @@ export class FirebaseFirestore {
    * @param {object} queryDef - The query definition object.
    * @returns {function} The unsubscribe function to stop listening to changes in the subscribed collection group.
    */
-  static subscribeColGroup = async (colGroupId, callback, queryDef) => {
+  static subscribeColGroup = async (colGroupId, callback, ...queryDef) => {
     if (this.#pathSegmentCounter(colGroupId) !== 1) return
     const colGroupRef = collectionGroup(this.db, colGroupId)
-    const q = query(colGroupRef, queryDef)
+    const q = query(colGroupRef, ...queryDef)
     const unsubscribe = onSnapshot(q, callback)
     return unsubscribe
   }

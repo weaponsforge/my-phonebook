@@ -3,7 +3,7 @@ import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSyncV } from 'use-sync-v'
 
-export const ViewContactComponent = () => {
+export const ContactFormComponent = () => {
   const activeContact = useSyncV('ui.activeContact')
   const { editContact, createContact } = useSyncV('ui.phase')
   const [form, setForm] = useState(activeContact)
@@ -68,7 +68,6 @@ export const ViewContactComponent = () => {
           gap: '10px',
           alignItems: 'center',
           width: '100%',
-          // padding: "30px",
         }}
       >
         <Typography variant="h4" sx={{ alignSelf: 'start' }}>
@@ -85,6 +84,7 @@ export const ViewContactComponent = () => {
             gridColumn: '1/-1',
             border: '5px dashed gray',
             margin: '10px',
+            src:`${form?.profile_picture_url}`
           }}
         />
         <Box

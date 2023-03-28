@@ -2,7 +2,7 @@ import { Box, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { createSyncV, updateSyncV, useSyncV } from 'use-sync-v'
 
-export const SearchField = () => {
+export const SearchFieldComponent = () => {
   const { searchKeyword } = useSyncV('ui.search')
   const searchFieldHandler = (e) => {
     e.stopPropagation()
