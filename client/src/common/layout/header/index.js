@@ -29,7 +29,7 @@ import { Avalon } from "@/lib/mui/theme";
 import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { LinearProgress } from "@mui/material";
-import { debugSyncV, useSyncV } from "use-sync-v";
+import { debugSyncV, useAsyncV, useSyncV } from "use-sync-v";
 
 // VARIABLES
 const pages = ["about"];
@@ -54,13 +54,13 @@ const settings = [
 
 function Header() {
   // HOOKS
-  const loading = useSyncV("contacts.loading")
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const activeTheme = useSyncLocalStorage("activeTheme");
   const { authUser, authSignOut } = useAuth();
   const dispatch = useDispatch();
   const router = useRouter();
+  const { loading } = useAsyncV("contacts");
 
   class eventsHandler {
     static themeHandler = () => {
@@ -362,13 +362,15 @@ function Header() {
           </IconButton>
         </Toolbar>
       </Container>
-      {loading && <LinearProgress
-        sx={{
-          position: "fixed",
-          bottom: "0px",
-          width:'100vw'
-        }}
-      />}
+      {loading && (
+        <LinearProgress
+          sx={{
+            position: "fixed",
+            bottom: "0px",
+            width: "100vw",
+          }}
+        />
+      )}
     </AppBar>
   );
 }

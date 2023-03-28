@@ -1,13 +1,14 @@
 import { useContactsStore } from "@/lib/store/contacts/contactsStore.js";
+import { FirebaseFirestore } from "@/lib/utils/firebase/firestore.js";
 import { Button, Paper, Typography } from "@mui/material";
-import { createSyncV, debugSyncV, readSyncV, updateSyncV, useSyncV } from "use-sync-v";
+import { createSyncV, debugSyncV, deleteSyncV, readSyncV, updateSyncV, useSyncV } from "use-sync-v";
 import { SearchField } from "./searchField/searchField.js";
 
 import { ViewContactComponent } from "./viewContact.js/index.js";
 
 export const SidebarComponent = () => {
+  const doc_id = useSyncV("ui.activeContact.doc_id")
   const phase = useSyncV("ui.phase")
-  console.log("phase")
   const createContactHandler = () => {
     createSyncV("ui.phase.createContact", true)
     createSyncV("ui.activeContact", {
@@ -22,11 +23,10 @@ export const SidebarComponent = () => {
   };
 
   const deleteContactHandler = () => {
-    const docIdToDelete = displayedContact.doc_id;
-    const response = deleteContact(
-      "wtghuScAMuaWp0AKI7OKTBEwKb02",
-      docIdToDelete
-    );
+    FirebaseFirestore.deleteDoc(`users/test/contacts/${doc_id}`)
+    deleteSyncV("ui.activeContact")
+    deleteSyncV("ui.phase")
+    debugSyncV("ui")
   };
 
   return (
@@ -51,10 +51,10 @@ export const SidebarComponent = () => {
       }}
     >
       <SearchField />
-      {(phase.editContact || phase.createContact) && (
+      {(phase?.editContact || phase?.createContact) && (
         <ViewContactComponent />
       )}
-      {!phase.createContact && (
+      {!phase?.createContact && (
         <Button variant="contained" onClick={createContactHandler}>
           <Typography>Create Contact</Typography>
         </Button>
