@@ -1,22 +1,22 @@
-import { app } from './config'
 import {
   collection,
+  collectionGroup,
+  deleteDoc,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
-  query,
-  updateDoc,
-  doc,
-  deleteDoc,
-  setDoc,
-  getDoc,
-  serverTimestamp,
-  collectionGroup,
   onSnapshot,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
 } from 'firebase/firestore'
+import { firebaseApp } from './config'
 
 export class FirebaseFirestore {
   // initialize firebase config
-  static db = getFirestore(app)
+  static db = getFirestore(firebaseApp)
 
   static #pathSegmentCounter = (path) => {
     const segmentCount = path.match(
