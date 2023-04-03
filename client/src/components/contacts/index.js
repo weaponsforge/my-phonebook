@@ -1,11 +1,21 @@
 import Page from '@/common/layout/page'
-import { Box } from '@mui/material'
-import { SidebarComponent } from './sidebar'
+import { Box, LinearProgress } from '@mui/material'
+import { useAsyncV } from 'use-sync-v'
 import { ContactListDisplay } from './display'
+import { SidebarComponent } from './sidebar'
 
 function ContactsComponent() {
+  const { loading } = useAsyncV('contacts')
   return (
     <Page>
+      {loading && (
+        <LinearProgress
+          sx={{
+            position: 'fixed',
+            width: '100vw',
+          }}
+        />
+      )}
       <Box
         sx={{
           flex: 1,
@@ -24,6 +34,5 @@ function ContactsComponent() {
     </Page>
   )
 }
-
 
 export default ContactsComponent

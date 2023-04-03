@@ -7,7 +7,7 @@ import TransparentBox from '@/common/ui/transparentbox'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 function LoadingCover ({ authError }) {
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
 
   return (
     <Page>

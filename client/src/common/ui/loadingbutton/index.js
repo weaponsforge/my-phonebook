@@ -11,7 +11,7 @@ function LoadingButton ({
   sx={},
   handleClick
 }) {
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
 
   return (
     <Button sx={sx} variant={variant} disabled={isloading || disabled} onClick={handleClick}>

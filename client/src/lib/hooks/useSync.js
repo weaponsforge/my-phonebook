@@ -29,7 +29,7 @@ export const useSyncLocalStorage = (saveDirectory = 'global') => {
   }
 
   const getServerSnapshot = () => {
-    return undefined
+    return true
   }
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
