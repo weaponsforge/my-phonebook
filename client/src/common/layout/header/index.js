@@ -28,8 +28,6 @@ import Typography from '@mui/material/Typography'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { Avalon } from '@/lib/mui/theme'
-import { LinearProgress } from '@mui/material'
-import { useAsyncV } from 'use-sync-v'
 
 // VARIABLES
 const pages = ['about']
@@ -60,7 +58,6 @@ function Header() {
   const { authUser, authSignOut } = useAuth()
   const dispatch = useDispatch()
   const router = useRouter()
-  const { loading } = useAsyncV('contacts')
 
   class eventsHandler {
     static themeHandler = () => {
@@ -362,15 +359,6 @@ function Header() {
           </IconButton>
         </Toolbar>
       </Container>
-      {loading && (
-        <LinearProgress
-          sx={{
-            position: 'fixed',
-            bottom: '0px',
-            width: '100vw',
-          }}
-        />
-      )}
     </AppBar>
   )
 }
