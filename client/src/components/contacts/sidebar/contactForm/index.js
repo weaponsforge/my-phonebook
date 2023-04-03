@@ -7,7 +7,7 @@ export const ContactFormComponent = () => {
   const activeContact = useSyncV('ui.activeContact')
   const { editContact, createContact } = useSyncV('ui.phase')
   const [form, setForm] = useState(activeContact)
-  const [isFormChanged, setIsFormChanged] = useState(activeContact)
+  const [isFormChanged, setIsFormChanged] = useState(false)
 
   useEffect(()=>{
     setForm(activeContact)
