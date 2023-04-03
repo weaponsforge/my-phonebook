@@ -64,6 +64,7 @@ export const ProfileComponent = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          maxWidth:'100%'
         }}
       >
         <Paper
@@ -86,7 +87,7 @@ export const ProfileComponent = () => {
             sx={{
               aspectRatio: '1',
               gridColumn: '1/-1',
-              position: 'relative',
+              position: 'relative'
             }}
           >
             <Avatar
