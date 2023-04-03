@@ -20,7 +20,7 @@ const Background = () => {
           height: '100%',
           animation: `animate 90s linear infinite, ${
             activeTheme === 'dark' ? 'darkColorSwitcher' : 'lightColorSwitcher'
-          } 42s alternate infinite`,
+          } 42s linear infinite`,
         },
         '&:after': {
           left: '15vw',
@@ -35,18 +35,21 @@ const Background = () => {
             backgroundColor: 'hsla(0,40%,80%,80%)',
           },
           '50%': {
-            backgroundColor: 'hsla(255,50%,80%,80%)',
+            backgroundColor: 'hsla(180,50%,80%,80%)',
           },
           '100%': {
-            backgroundColor: 'hsla(0,40%,80%,80%)',
+            backgroundColor: 'hsla(360,40%,80%,80%)',
           },
         },
         '@keyframes darkColorSwitcher': {
           '0%': {
             backgroundColor: 'hsla(0,40%,80%,10%)',
           },
+          '50%': {
+            backgroundColor: 'hsla(180,50%,80%,10%)',
+          },
           '100%': {
-            backgroundColor: 'hsla(255,40%,80%,10%)',
+            backgroundColor: 'hsla(360,40%,80%,10%)',
           },
         },
         '@keyframes animate': {
@@ -63,9 +66,10 @@ const Background = () => {
 }
 
 function Page({ children }) {
+  const animate = useSyncLocalStorage('animate')
   return (
     <>
-      <Background />
+      {animate && <Background />}
       <Box
         sx={{
           width: '100%',

@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 // LIB
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -55,6 +56,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const activeTheme = useSyncLocalStorage('activeTheme')
+  const animate = useSyncLocalStorage('animate')
   const { authUser, authSignOut } = useAuth()
   const dispatch = useDispatch()
   const router = useRouter()
@@ -81,6 +83,9 @@ function Header() {
     static handleClickNavMenu = (route) => {
       router.push(route)
     }
+    static animateHandler = () => {
+      setSyncLocalStorage('animate', animate ? false : true)
+    }
   }
   const {
     themeHandler,
@@ -89,6 +94,7 @@ function Header() {
     handleCloseNavMenu,
     handleCloseUserMenu,
     handleClickNavMenu,
+    animateHandler
   } = eventsHandler
 
   return (
@@ -340,6 +346,26 @@ function Header() {
               </Link>
             </>
           )}
+          <IconButton
+            sx={{
+              color: 'black',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onClick={animateHandler}
+          >
+            {activeTheme === 'dark' ? (
+              <PlayArrowIcon
+                style={{
+                  filter:
+                    'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                }}
+              />
+            ) : (
+              <PlayArrowIcon />
+            )}
+          </IconButton>
           <IconButton
             sx={{
               color: 'black',
