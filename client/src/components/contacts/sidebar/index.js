@@ -1,6 +1,6 @@
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore.js'
 import { Button, Paper, Typography } from '@mui/material'
-import { createSyncV, debugSyncV, useSyncV } from 'use-sync-v'
+import { updateSyncV, debugSyncV, useSyncV } from 'use-sync-v'
 import { SearchFieldComponent } from './search/searchField.js'
 
 import { ContactFormComponent } from './contactForm/index.js'
@@ -9,9 +9,9 @@ export const SidebarComponent = () => {
   const doc_id = useSyncV('ui.activeContact.doc_id')
   const phase = useSyncV('ui.phase')
   const createContactHandler = () => {
-    createSyncV('ui.phase.editContact', false)
-    createSyncV('ui.phase.createContact', true)
-    createSyncV('ui.activeContact', {
+    updateSyncV('ui.phase.editContact', false)
+    updateSyncV('ui.phase.createContact', true)
+    updateSyncV('ui.activeContact', {
       doc_id:'',
       first_name:'',
       middle_name:'',
@@ -24,9 +24,8 @@ export const SidebarComponent = () => {
 
   const deleteContactHandler = () => {
     FirebaseFirestore.deleteDoc(`users/test/contacts/${doc_id}`)
-    createSyncV('ui.activeContact',null)
-    createSyncV('ui.phase',null)
-    debugSyncV('ui')
+    updateSyncV('ui.activeContact',null)
+    updateSyncV('ui.phase',null)
   }
 
   return (

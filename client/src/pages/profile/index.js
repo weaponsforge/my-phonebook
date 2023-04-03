@@ -1,18 +1,20 @@
-import { UserProfileComponent } from '@/components/userProfile'
+import { ProfileComponent } from '@/components/profile'
 import { useEffect, useRef, useState } from 'react'
 import ProtectedPage from '@/common/auth/protectedpage'
 
 const defaultState = {
   user:{
-    fullName: 'First Second Third',
-    emailAddress: 'test@test.com',
-    contactNo: '62812340018900',
-    profilePicture: '/vercel.svg'
+    first_name: '',
+    middle_name:'',
+    last_name:'',
+    email_address:'',
+    phone_number:'',
+    profile_picture_url:''
   },
   profileChanged:false,
 }
 
-const UserProfile = () => {
+const Profile = () => {
   const [state, setState] = useState(defaultState)
   const originalProfile = useRef(defaultState.user)
 
@@ -48,11 +50,11 @@ const UserProfile = () => {
     }))
   },[state.user, originalProfile])
   return (
-    <UserProfileComponent
+    <ProfileComponent
       state={state}
       eventsHandler={eventsHandler}
     />
   )
 }
 
-export default ProtectedPage(UserProfile)
+export default Profile

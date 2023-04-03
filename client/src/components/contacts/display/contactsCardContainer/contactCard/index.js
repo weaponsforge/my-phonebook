@@ -1,5 +1,5 @@
 import { Avatar, Paper, Typography, useTheme } from '@mui/material'
-import { createSyncV, debugSyncV, deleteSyncV } from 'use-sync-v'
+import { updateSyncV, deleteSyncV } from 'use-sync-v'
 
 const getInitial = (first, second, last) => {
   const firstInitial = (first.match(
@@ -38,9 +38,8 @@ export const ContactCard = ({ contact }) => {
   const contactClickHandler = (e) => {
     e.stopPropagation()
     deleteSyncV('ui.phase')
-    createSyncV('ui.phase.editContact', true)
-    createSyncV('ui.activeContact', contact)
-    debugSyncV('ui')
+    updateSyncV('ui.phase.editContact', true)
+    updateSyncV('ui.activeContact', contact)
   }
   return (
     <>

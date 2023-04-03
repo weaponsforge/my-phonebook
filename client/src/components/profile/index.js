@@ -3,7 +3,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Avatar, Box, Button, Paper, TextField, Typography, IconButton } from '@mui/material'
 import PropTypes from 'prop-types'
 
-export const UserProfileComponent = ({state, eventsHandler}) => {
+export const ProfileComponent = ({state, eventsHandler}) => {
   const {inputHandler, profilePictureHandler, updateUserHandler} = eventsHandler
   return (
     <Page>
@@ -107,7 +107,7 @@ export const UserProfileComponent = ({state, eventsHandler}) => {
   )
 }
 
-UserProfileComponent.propTypes = {
+ProfileComponent.propTypes = {
   state: PropTypes.object,
   eventsHandler: PropTypes.func
 }
