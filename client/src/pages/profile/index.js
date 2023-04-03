@@ -57,4 +57,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProtectedPage(Profile)
