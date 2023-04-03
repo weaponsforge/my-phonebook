@@ -11,12 +11,12 @@ function Contacts() {
   useEffect(() => {
     FirebaseFirestore.subscribeCol(
       `users/${user.authUser.uid}/contacts`,
-      async (querySnapshot) => {
+      (querySnapshot) => {
         const data = []
         querySnapshot.forEach((doc) => {
           data.push(doc.data())
         })
-        updateAsyncV('contacts', ()=>{
+        updateAsyncV('contacts', () => {
           return data
         })
       }
