@@ -1,6 +1,6 @@
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore.js'
 import { Button, Paper, Typography } from '@mui/material'
-import { updateSyncV, debugSyncV, useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 import { SearchFieldComponent } from './search/searchField.js'
 
 import { ContactFormComponent } from './contactForm/index.js'

@@ -21,7 +21,7 @@ function Contacts() {
         })
       }
     )
-  }, [])
+  }, [user.authUser.uid])
 
   const eventsHandler = () => {}
   return (
