@@ -34,7 +34,7 @@ const pages = ['about']
 const settings = [
   {
     name: 'Profile',
-    route: 'userProfile',
+    route: 'profile',
   },
   {
     name: 'Account',

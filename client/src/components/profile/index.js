@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 export const ProfileComponent = ({state, eventsHandler}) => {
   const {inputHandler, profilePictureHandler, updateUserHandler} = eventsHandler
+  
   return (
     <Page>
       <Box sx={{

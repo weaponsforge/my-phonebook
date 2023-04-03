@@ -1,6 +1,7 @@
 import { ProfileComponent } from '@/components/profile'
 import { useEffect, useRef, useState } from 'react'
 import ProtectedPage from '@/common/auth/protectedpage'
+import { useAuth } from '@/lib/hooks/useAuth'
 
 const defaultState = {
   user:{
@@ -15,6 +16,8 @@ const defaultState = {
 }
 
 const Profile = () => {
+  const user_uid = useAuth()?.userAuth?.uid
+
   const [state, setState] = useState(defaultState)
   const originalProfile = useRef(defaultState.user)
 
