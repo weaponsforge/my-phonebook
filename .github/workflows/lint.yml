@@ -38,6 +38,10 @@ jobs:
           cd client
           npm install
           npm run lint
+
+      - name: Dry-run NPM Export
+        run: |
+          cd client
           npm run export
 
   lint-server:
