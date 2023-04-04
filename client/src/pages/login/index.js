@@ -20,9 +20,7 @@ const defaultState = {
     value:'',
     color:'text'
   },
-  errorMessage:undefined,
-  joke:undefined,
-  loading:false
+  joke:undefined
 }
 
 function Login () {

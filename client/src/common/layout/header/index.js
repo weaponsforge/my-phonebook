@@ -42,8 +42,8 @@ const settings = [
     route: '/',
   },
   {
-    name: 'Dashboard',
-    route: 'dashboard',
+    name: 'Contacts',
+    route: 'contacts',
   },
   {
     name: 'Logout',
