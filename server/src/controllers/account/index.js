@@ -36,9 +36,9 @@ const manageAccount = async (req, res, next) => {
         const response = await AccountModule.sendEmailVerificationLink(email)
         return res.status(200).send(response)
       } catch (err) {
-        return next((err.constructor.name === ServerError.name)
-          ? err
-          : new ServerError(err.message))
+        return (err.constructor.name === ServerError.name)
+          ? next(err)
+          : next(new ServerError(err.message))
       }
     case ACCOUNT_ACTION.VERIFY_EMAIL:
       try {
@@ -46,9 +46,9 @@ const manageAccount = async (req, res, next) => {
         const response = await AccountModule.verifyEmail(actionCode)
         return res.status(200).send(response)
       } catch (err) {
-        return next((err.constructor.name === ServerError.name)
-          ? err
-          : new ServerError(err.message))
+        return (err.constructor.name === ServerError.name)
+          ? next(err)
+          : next(new ServerError(err.message))
       }
     case ACCOUNT_ACTION.SEND_RESET:
       try {
@@ -56,9 +56,9 @@ const manageAccount = async (req, res, next) => {
         const response = await AccountModule.sendResetPasswordLink(email)
         return res.status(200).send(response)
       } catch (err) {
-        return next((err.constructor.name === ServerError.name)
-          ? err
-          : new ServerError(err.message))
+        return (err.constructor.name === ServerError.name)
+          ? next(err)
+          : next(new ServerError(err.message))
       }
     case ACCOUNT_ACTION.RESET_PASSWORD:
       if (!password) {
@@ -75,9 +75,9 @@ const manageAccount = async (req, res, next) => {
 
         return res.status(200).send(response.data)
       } catch (err) {
-        return next((err.constructor.name === ServerError.name)
-          ? err
-          : new ServerError(err.message))
+        return (err.constructor.name === ServerError.name)
+          ? next(err)
+          : next(new ServerError(err.message))
       }
     default:
       return res.status(ServerError.httpErrorCodes._400)

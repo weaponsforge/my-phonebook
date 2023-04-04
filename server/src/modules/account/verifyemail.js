@@ -1,8 +1,11 @@
-const { getAuth } = require('../../utils/db')
 const axios = require('axios')
-const { ACCOUNT_TYPE } = require('../../utils/constants')
+
+const { getAuth } = require('../../utils/db')
+const { createUser } = require('../user')
 const ServerError = require('../../utils/error')
 const EmailUtils = require('../../utils/email')
+
+const { ACCOUNT_TYPE } = require('../../utils/constants')
 
 // Verifies the Firebase account of a user and inserts an "account_level" custom claims to the user auth record.
 const verifyEmail = async (actionCode) => {
@@ -40,6 +43,16 @@ const verifyEmail = async (actionCode) => {
       await getAuth().setCustomUserClaims(data.localId, claims)
     } catch (err) {
       throw new ServerError(err.msg, ServerError.httpErrorCodes._502)
+    }
+
+    try {
+      // Create the user profile document
+      await createUser(data.localId, {
+        email: data.email
+      })
+    } catch (err) {
+      console.log(err)
+      throw new ServerError(err.message, ServerError.httpErrorCodes._502)
     }
 
     try {
