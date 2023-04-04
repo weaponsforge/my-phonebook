@@ -15,6 +15,7 @@ import { USER_STATES } from '../store/constants'
  */
 
 export const authSignOut = async () => {
+  updateSyncV('auth', (p) => ({ ...p, authLoading: true }))
   return await signOut(auth)
 }
 
@@ -24,7 +25,7 @@ export default function useInitAuth () {
       if (firebaseUser) {
         // Check if user is emailVerified
         if (!firebaseUser?.emailVerified ?? false) {
-          await signOut(auth)
+          await authSignOut()
 
           updateSyncV('auth', {
             authUser: null,
@@ -57,7 +58,7 @@ export default function useInitAuth () {
             })
           } else {
             // User did not sign-up using the custom process
-            await signOut(auth)
+            await authSignOut()
 
             updateSyncV('auth', {
               authUser: null,
