@@ -27,6 +27,11 @@ jobs:
           npm install
           npm run lint
 
+      - name: Export dry-run
+        run: |
+          cd client
+          npm run export
+
   lint-server:
     name: Lint Server
     runs-on: ubuntu-latest
