@@ -96,7 +96,7 @@ function Login () {
       }))
 
       if (authUser) {
-        router.push('/dashboard')
+        router.push('/contacts')
       }
     }
   }, [authError, authLoading, authUser, router])
