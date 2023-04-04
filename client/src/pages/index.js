@@ -10,7 +10,7 @@ const defaultState = {
 
 function Index() {
   const [state, setState] = useState(defaultState)
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
 
   useEffect(()=>{
     (async()=>{

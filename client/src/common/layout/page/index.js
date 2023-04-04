@@ -3,95 +3,84 @@ import Box from '@mui/material/Box'
 import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
-import { useEffect } from 'react'
-import { useBgColor } from '@/lib/hooks/useBgColor'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 
 const Background = () => {
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
-  const [bgColor, animateBgColor] = useBgColor()
-
-  useEffect(()=>{
-    animateBgColor()
-  },[animateBgColor])
-
+  const activeTheme = useSyncLocalStorage('activeTheme')
   return (
-    <Box sx={{
-      animation: 'colorSwitcher 21s linear infinite',
-      '&:after,:before' : {
-        content: '""',
-        display: 'block',
-        position: 'fixed',
-        zIndex: '-1',
-        top: 0,
-        width: '100vw',
-        height: '100vh',
-        width: '100vmax',
-        height: '100vmax',
-        background: `hsla(${bgColor},40%,80%,${activeTheme === 'dark' ? '10%' : '80%'})`,
-        animation: 'animate 90s linear infinite',
-      },
-      '&:after':{
-        left: '15vw',
-      },
-      '&:before':{
-        right: '15vw',
-        animationDelay: '-30s',
-        animationDirection: 'reverse',
-      },
-      '@keyframes colorSwitcher': {
-        '0%': {
-          background: '#74C390',
+    <Box
+      sx={{
+        '&:after,:before': {
+          content: '""',
+          display: 'block',
+          position: 'fixed',
+          zIndex: '-1',
+          top: 0,
+          width: '100%',
+          height: '100%',
+          animation: `animate 90s linear infinite, ${
+            activeTheme === 'dark' ? 'darkColorSwitcher' : 'lightColorSwitcher'
+          } 42s linear infinite`,
         },
-        '16%': {
-          background: '#5DBDB6',
+        '&:after': {
+          left: '15vw',
         },
-        '33%': {
-          background: '#59D4E1',
+        '&:before': {
+          right: '15vw',
+          animationDelay: '-15s',
+          animationDirection: 'reverse',
         },
-        '50%': {
-          background: '#51BCE8',
+        '@keyframes lightColorSwitcher': {
+          '0%': {
+            backgroundColor: 'hsla(0,40%,80%,80%)',
+          },
+          '50%': {
+            backgroundColor: 'hsla(180,50%,80%,80%)',
+          },
+          '100%': {
+            backgroundColor: 'hsla(360,40%,80%,80%)',
+          },
         },
-        '66%': {
-          background: '#FA5374',
+        '@keyframes darkColorSwitcher': {
+          '0%': {
+            backgroundColor: 'hsla(0,40%,80%,10%)',
+          },
+          '50%': {
+            backgroundColor: 'hsla(180,50%,80%,10%)',
+          },
+          '100%': {
+            backgroundColor: 'hsla(360,40%,80%,10%)',
+          },
         },
-        '83%': {
-          background: '#E46653',
+        '@keyframes animate': {
+          from: {
+            transform: 'rotate(0deg)',
+          },
+          to: {
+            transform: 'rotate(360deg)',
+          },
         },
-        '100%': {
-          background: '#74C390',
-        }
-      },
-      '@keyframes animate': {
-        '0%': {
-          transform: 'rotate(0deg)',
-        },
-        '100%': {
-          transform: 'rotate(360deg)'
-        }
-      }
-    }}>
-    </Box>
+      }}
+    ></Box>
   )
 }
 
-function Page ({ children }) {
+function Page({ children }) {
+  const animate = useSyncLocalStorage('animate')
   return (
     <>
-      <Background/>
-      <Box sx={{
-        width: '100%',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-      }}>
+      {animate && <Background />}
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'grid',
+          gridTemplateRows: 'auto 1fr auto',
+        }}
+      >
         <Header />
 
-        <Section>
-          { children }
-        </Section>
+        <Section>{children}</Section>
 
         <Footer />
       </Box>

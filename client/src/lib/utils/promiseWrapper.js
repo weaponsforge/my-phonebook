@@ -1,6 +1,7 @@
 
 export default class PromiseWrapper {
   static STATUS = {
+    IDLE: 'idle',
     PENDING: 'pending',
     SUCCESS: 'success',
     ERROR: 'error',

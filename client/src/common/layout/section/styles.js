@@ -1,9 +1,10 @@
 const styles = {
   container: {
-    minHeight: '100%',
+    height: '100%',
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'auto'
   }
 }
 
