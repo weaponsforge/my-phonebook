@@ -1,6 +1,5 @@
 import Page from '@/common/layout/page'
 import { LoadingLinear } from '@/common/ui/loadingLinear'
-import { useAuth } from '@/lib/hooks/useAuth'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import {
@@ -14,10 +13,10 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import { updateAsyncV, useAsyncV } from 'use-sync-v'
+import { updateAsyncV, useAsyncV, useSyncV } from 'use-sync-v'
 
 export const ProfileComponent = () => {
-  const user_uid = useAuth()?.authUser?.uid
+  const user_uid = useSyncV('auth')?.authUser?.uid ?? ''
   const { data, loading } = useAsyncV('user')
   const [form, setForm] = useState()
   const [isProfileChanged, setIsProfileChanged] = useState(false)

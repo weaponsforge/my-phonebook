@@ -5,7 +5,7 @@ import LoginComponent from '@/components/login'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
-import { useAuth } from '@/lib/hooks/useAuth'
+import { useSyncV } from 'use-sync-v'
 
 const defaultState = {
   username:{
@@ -29,7 +29,7 @@ function Login () {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
   const router = useRouter()
-  const { authLoading, authUser, authError } = useAuth()
+  const { authUser, authError, authLoading } = useSyncV('auth')
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -86,7 +86,7 @@ function Login () {
   },[])
 
   useEffect(() => {
-    if (!authLoading) {
+    if (!authLoading && authUser) {
       setState(prev => ({
         ...prev,
         loading: false,
@@ -99,7 +99,7 @@ function Login () {
         router.push('/contacts')
       }
     }
-  }, [authError, authLoading, authUser, router])
+  }, [router, authUser, authError, authLoading])
 
   const resetError = () => {
     setState({ ...state, errorMessage: undefined })

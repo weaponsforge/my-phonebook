@@ -1,6 +1,5 @@
 // REACT
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 
 // NEXT
 import Link from 'next/link'
@@ -26,9 +25,10 @@ import Typography from '@mui/material/Typography'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 // LIB
-import { useAuth } from '@/lib/hooks/useAuth'
+import { authSignOut } from '@/lib/hooks/useInitAuth'
 import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { Avalon } from '@/lib/mui/theme'
+import { useSyncV } from 'use-sync-v'
 
 // VARIABLES
 const pages = ['about']
@@ -57,8 +57,7 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null)
   const activeTheme = useSyncLocalStorage('activeTheme')
   const animate = useSyncLocalStorage('animate')
-  const { authUser, authSignOut } = useAuth()
-  const dispatch = useDispatch()
+  const { authUser } = useSyncV('auth')
   const router = useRouter()
 
   class eventsHandler {
@@ -241,7 +240,7 @@ function Header() {
               >
                 {settings.map((setting, id) => {
                   return setting.name === 'Logout' ? (
-                    <MenuItem key={id} onClick={() => dispatch(authSignOut())}>
+                    <MenuItem key={id} onClick={() => authSignOut()}>
                       <Typography textAlign="center">{setting.name}</Typography>
                     </MenuItem>
                   ) : (
