@@ -4,9 +4,6 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider } from '@emotion/react'
 import '@/styles/globals.css'
-// Redux
-import { Provider } from 'react-redux'
-import { store } from '@/store/store'
 
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
@@ -34,9 +31,7 @@ export default function MyApp(props) {
       <ThemeProvider theme={activeTheme === 'light' ? lightTheme : darkTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
   )
