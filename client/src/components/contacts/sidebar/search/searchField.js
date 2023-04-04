@@ -1,12 +1,12 @@
 import { Box, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { createSyncV, updateSyncV, useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 
 export const SearchFieldComponent = () => {
-  const { searchKeyword } = useSyncV('ui.search')
+  const searchKeyword = useSyncV('ui.search.searchKeyword')
   const searchFieldHandler = (e) => {
     e.stopPropagation()
-    createSyncV('ui.search.searchKeyword', e.target.value)
+    updateSyncV('ui.search.searchKeyword', e.target.value)
     updateSyncV('ui.phase', (p) => ({
       ...p,
       createContact: false,
@@ -20,7 +20,7 @@ export const SearchFieldComponent = () => {
         search: false,
       }))
     } else {
-      createSyncV('ui.phase.search', true)
+      updateSyncV('ui.phase.search', true)
     }
   }
 

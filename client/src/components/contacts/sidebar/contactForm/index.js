@@ -1,17 +1,19 @@
+import { useAuth } from '@/lib/hooks/useAuth'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSyncV } from 'use-sync-v'
 
 export const ContactFormComponent = () => {
+  const user = useAuth()
   const activeContact = useSyncV('ui.activeContact')
   const { editContact, createContact } = useSyncV('ui.phase')
   const [form, setForm] = useState(activeContact)
-  const [isFormChanged, setIsFormChanged] = useState(activeContact)
+  const [isFormChanged, setIsFormChanged] = useState(false)
 
-  useEffect(()=>{
+  useEffect(() => {
     setForm(activeContact)
-  },[activeContact])
+  }, [activeContact])
 
   const editContactHandler = (e) => {
     const fieldID = e.target.id
@@ -29,6 +31,8 @@ export const ContactFormComponent = () => {
   }
 
   const saveHandler = () => {
+    const user_uid = user.authUser.uid
+
     switch (true) {
     case editContact: {
       const updatedContact = {
@@ -37,16 +41,22 @@ export const ContactFormComponent = () => {
         last_name: form?.last_name ?? '',
         phone_number: form?.phone_number ?? '',
         email_address: form?.email_address ?? '',
-        profile_picture_url: form?.profile_picture_url ?? ''
+        profile_picture_url: form?.profile_picture_url ?? '',
       }
       const doc_id = activeContact.doc_id
-      FirebaseFirestore.updateDoc(`users/test/contacts/${doc_id}`,updatedContact)
+      FirebaseFirestore.updateDoc(
+        `users/${user_uid}/contacts/${doc_id}`,
+        updatedContact
+      )
       setIsFormChanged(false)
       break
     }
     case createContact: {
       const createdContact = form
-      FirebaseFirestore.createDoc('users/test/contacts/',createdContact)
+      FirebaseFirestore.createDoc(
+        `users/${user_uid}/contacts/`,
+        createdContact
+      )
       setForm(activeContact)
       break
     }
@@ -84,7 +94,7 @@ export const ContactFormComponent = () => {
             gridColumn: '1/-1',
             border: '5px dashed gray',
             margin: '10px',
-            src:`${form?.profile_picture_url}`
+            src: `${form?.profile_picture_url}`,
           }}
         />
         <Box

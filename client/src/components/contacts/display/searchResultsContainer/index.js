@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { createSyncV, useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 import { SearchResultsGroup } from './searchResultsGroup'
 
 const { Box } = require('@mui/material')
@@ -20,10 +20,10 @@ const filterContacts = (searchText, contacts) => {
 }
 
 export const SearchResultsContainer = () => {
-  const search = useSyncV('ui.search')
+  const searchKeyword = useSyncV('ui.search.searchKeyword')
   const contacts = useSyncV('contacts.data')
 
-  const searchResults = filterContacts(search.searchKeyword, contacts)
+  const searchResults = filterContacts(searchKeyword, contacts)
 
   // remove doc_id, date_created, date_updated, profile_picture_url group
   delete searchResults.doc_id
@@ -37,8 +37,8 @@ export const SearchResultsContainer = () => {
 
     if (searchResultsArr.length === 1) {
       for (let [, value] of searchResultsArr) {
-        createSyncV('ui.activeContact', value[0])
-        createSyncV('ui.phase.editContact', true)
+        updateSyncV('ui.activeContact', value[0])
+        updateSyncV('ui.phase.editContact', true)
       }
     }
   }, [searchResultsArr])

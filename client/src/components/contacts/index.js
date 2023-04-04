@@ -1,5 +1,6 @@
 import Page from '@/common/layout/page'
-import { Box, LinearProgress } from '@mui/material'
+import { LoadingLinear } from '@/common/ui/loadingLinear'
+import { Box } from '@mui/material'
 import { useAsyncV } from 'use-sync-v'
 import { ContactListDisplay } from './display'
 import { SidebarComponent } from './sidebar'
@@ -8,14 +9,7 @@ function ContactsComponent() {
   const { loading } = useAsyncV('contacts')
   return (
     <Page>
-      {loading && (
-        <LinearProgress
-          sx={{
-            position: 'fixed',
-            width: '100vw',
-          }}
-        />
-      )}
+      {loading && <LoadingLinear />}
       <Box
         sx={{
           flex: 1,

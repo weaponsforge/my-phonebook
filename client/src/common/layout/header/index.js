@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 // LIB
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -34,7 +35,7 @@ const pages = ['about']
 const settings = [
   {
     name: 'Profile',
-    route: 'userProfile',
+    route: 'profile',
   },
   {
     name: 'Account',
@@ -55,6 +56,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const activeTheme = useSyncLocalStorage('activeTheme')
+  const animate = useSyncLocalStorage('animate')
   const { authUser, authSignOut } = useAuth()
   const dispatch = useDispatch()
   const router = useRouter()
@@ -81,6 +83,9 @@ function Header() {
     static handleClickNavMenu = (route) => {
       router.push(route)
     }
+    static animateHandler = () => {
+      setSyncLocalStorage('animate', animate ? false : true)
+    }
   }
   const {
     themeHandler,
@@ -89,6 +94,7 @@ function Header() {
     handleCloseNavMenu,
     handleCloseUserMenu,
     handleClickNavMenu,
+    animateHandler
   } = eventsHandler
 
   return (
@@ -250,93 +256,116 @@ function Header() {
               </Menu>
             </Box>
           ) : (
-            <Box
-              sx={{
-                display: 'flex',
-              }}
-            >
-              <Link href="/login" style={{ textDecoration: 'none' }}>
-                <Button
-                  sx={{
-                    my: 2,
-                    color: 'black',
-                    display: { xs: 'none', md: 'flex' },
-                  }}
-                >
-                  <Typography
-                    variant="h8"
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                }}
+              >
+                <Link href="/login" style={{ textDecoration: 'none' }}>
+                  <Button
                     sx={{
-                      fontWeight: 'bold',
-                      color: (theme) => theme.palette.text.primary,
+                      my: 2,
+                      color: 'black',
+                      display: { xs: 'none', md: 'flex' },
                     }}
                   >
-                    Login
-                  </Typography>
-                </Button>
+                    <Typography
+                      variant="h8"
+                      sx={{
+                        fontWeight: 'bold',
+                        color: (theme) => theme.palette.text.primary,
+                      }}
+                    >
+                      Login
+                    </Typography>
+                  </Button>
+                </Link>
+                <Link href="/register" style={{ textDecoration: 'none' }}>
+                  <Button
+                    sx={{
+                      my: 2,
+                      color: 'black',
+                      display: { xs: 'none', md: 'flex' },
+                    }}
+                  >
+                    <Typography
+                      variant="h8"
+                      sx={{
+                        fontWeight: 'bold',
+                        color: (theme) => theme.palette.text.primary,
+                      }}
+                    >
+                      Register
+                    </Typography>
+                  </Button>
+                </Link>
+              </Box>
+
+              <Link href="/login" style={{ textDecoration: 'none' }}>
+                <IconButton
+                  sx={{
+                    color: 'black',
+                    display: { xs: 'flex', md: 'none' },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  {activeTheme === 'dark' ? (
+                    <LoginIcon
+                      style={{
+                        filter:
+                          'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                      }}
+                    />
+                  ) : (
+                    <LoginIcon />
+                  )}
+                </IconButton>
               </Link>
               <Link href="/register" style={{ textDecoration: 'none' }}>
-                <Button
+                <IconButton
                   sx={{
-                    my: 2,
                     color: 'black',
-                    display: { xs: 'none', md: 'flex' },
+                    display: { xs: 'flex', md: 'none' },
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  <Typography
-                    variant="h8"
-                    sx={{
-                      fontWeight: 'bold',
-                      color: (theme) => theme.palette.text.primary,
-                    }}
-                  >
-                    Register
-                  </Typography>
-                </Button>
+                  {activeTheme === 'dark' ? (
+                    <HowToRegIcon
+                      style={{
+                        filter:
+                          'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                      }}
+                    />
+                  ) : (
+                    <HowToRegIcon />
+                  )}
+                </IconButton>
               </Link>
-            </Box>
+            </>
           )}
-          <Link href="/login" style={{ textDecoration: 'none' }}>
-            <IconButton
-              sx={{
-                color: 'black',
-                display: { xs: 'flex', md: 'none' },
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {activeTheme === 'dark' ? (
-                <LoginIcon
-                  style={{
-                    filter:
-                      'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
-                  }}
-                />
-              ) : (
-                <LoginIcon />
-              )}
-            </IconButton>
-          </Link>
-          <Link href="/register" style={{ textDecoration: 'none' }}>
-            <IconButton
-              sx={{
-                color: 'black',
-                display: { xs: 'flex', md: 'none' },
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {activeTheme === 'dark' ? (
-                <HowToRegIcon
-                  style={{
-                    filter:
-                      'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
-                  }}
-                />
-              ) : (
-                <HowToRegIcon />
-              )}
-            </IconButton>
-          </Link>
+          <IconButton
+            sx={{
+              color: 'black',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onClick={animateHandler}
+          >
+            {activeTheme === 'dark' ? (
+              <PlayArrowIcon
+                style={{
+                  filter:
+                    'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
+                }}
+              />
+            ) : (
+              <PlayArrowIcon />
+            )}
+          </IconButton>
           <IconButton
             sx={{
               color: 'black',
