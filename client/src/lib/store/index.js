@@ -1,4 +1,4 @@
-import { createSyncV } from 'use-sync-v'
+import { createSyncV, updateSyncV } from 'use-sync-v'
 import { USER_STATES } from '@/store/constants'
 
 createSyncV('ui',{
@@ -14,7 +14,7 @@ createSyncV('ui',{
   },
 })
 
-createSyncV('auth', {
+updateSyncV('auth', {
   authUser: null,
   authError: '',
   authStatus: USER_STATES.LOADING,

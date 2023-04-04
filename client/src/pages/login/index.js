@@ -5,7 +5,7 @@ import LoginComponent from '@/components/login'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
-import { useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 
 const defaultState = {
   username:{
@@ -29,7 +29,7 @@ function Login () {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
   const router = useRouter()
-  const { authUser, authError, authLoading } = useSyncV('auth')
+  const { authUser, authLoading } = useSyncV('auth')
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -63,14 +63,14 @@ function Login () {
     static loginHandler = () => {
       (async()=>{
         setState({ ...state, loading: true, errorMessage: undefined })
+        updateSyncV('auth', (p) => ({ ...p, authLoading: true, authError: '' }))
+
         const response = await AuthUtil.signIn(username.value, password.value)
         const errorMessage = response.errorMessage
 
-        setState(prev=>({
-          ...prev,
-          errorMessage,
-          loading: (errorMessage === undefined)
-        }))
+        if (errorMessage !== undefined) {
+          updateSyncV('auth', (p) => ({ ...p, authLoading: false, authError: errorMessage }))
+        }
       })()
     }
   }
@@ -87,22 +87,12 @@ function Login () {
 
   useEffect(() => {
     if (!authLoading && authUser) {
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        errorMessage: (authError !== '')
-          ? authError
-          : prev.errorMessage
-      }))
-
-      if (authUser) {
-        router.push('/contacts')
-      }
+      router.push('/contacts')
     }
-  }, [router, authUser, authError, authLoading])
+  }, [router, authUser, authLoading])
 
   const resetError = () => {
-    setState({ ...state, errorMessage: undefined })
+    updateSyncV('auth', (p) => ({ ...p, authError: '' }))
   }
 
   return (

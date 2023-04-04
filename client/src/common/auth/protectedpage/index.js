@@ -19,7 +19,7 @@ function ProtectedPage (Component) {
     const { authLoading, authUser, authError } = useSyncV('auth')
 
     useEffect(() => {
-      if (authLoading === false && authUser === null) {
+      if (!authLoading && authUser === null) {
         router.push('/login')
       }
     }, [authUser, authLoading, router])
