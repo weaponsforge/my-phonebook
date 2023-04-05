@@ -20,7 +20,7 @@ function HomeComponent({ state }) {
         justifyContent: 'center',
       }}>
         <Image
-          src="./myphonebook-low-resolution-logo-black-on-transparent-background.svg"
+          src="https://firebasestorage.googleapis.com/v0/b/myphonebook-app-dev.appspot.com/o/Icons%2Fmyphonebook-low-resolution-logo-black-on-transparent-background.svg?alt=media&token=09e85161-4a07-4ce2-9542-b2f52af19b80"
           alt="Phonebook Logo"
           width={200}
           height={200}

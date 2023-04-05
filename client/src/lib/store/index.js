@@ -1,24 +1,24 @@
-import { createSyncV, updateSyncV } from 'use-sync-v'
-import { USER_STATES } from '@/store/constants'
+import { USER_STATES } from "@/store/constants";
+import { updateSyncV } from "use-sync-v";
 
-createSyncV('ui',{
-  activeContact:null,
-  phase:{
-    createContact:false,
-    editContact:false,
-    search:false,
-    deleteContact:false
+updateSyncV("ui", {
+  activeContact: null,
+  phase: {
+    createContact: false,
+    editContact: false,
+    search: false,
+    deleteContact: false,
   },
-  search:{
-    searchKeyword:''
+  search: {
+    searchKeyword: "",
   },
-})
+});
 
-updateSyncV('auth', {
+updateSyncV("auth", {
   authUser: null,
-  authError: '',
+  authError: "",
   authStatus: USER_STATES.LOADING,
-  authLoading: true
-})
+  authLoading: true,
+});
 
-export const init = ()=>{}
+export const init = () => {};

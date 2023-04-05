@@ -7,32 +7,28 @@ import { useRouter } from "next/router";
 
 // MUI
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import LoginIcon from "@mui/icons-material/Login";
-import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
+import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
 
 // LIB
 import { authSignOut } from "@/lib/hooks/useInitAuth";
 import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
 import { Avalon } from "@/lib/mui/theme";
+import { AccountCircle } from "@mui/icons-material";
 import { useSyncV } from "use-sync-v";
+import { Button, Paper, useMediaQuery, useTheme } from "@mui/material";
+import Image from "next/image";
 
 // VARIABLES
-const settings = [
+const loggedInSettings = [
   {
     name: "Profile",
     route: "profile",
@@ -50,16 +46,31 @@ const settings = [
     route: "#",
   },
 ];
+const loggedOutSettings = [
+  {
+    name: "Register",
+    route: "register",
+  },
+  {
+    name: "Login",
+    route: "login",
+  },
+  {
+    name: "Recover Password",
+    route: "recoverPassword",
+  },
+];
 
 function Header() {
   // HOOKS
+  const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const activeTheme = useSyncLocalStorage("activeTheme");
   const animate = useSyncLocalStorage("animate");
   const { authUser } = useSyncV("auth");
   const router = useRouter();
-
+  const maxWidth900 = useMediaQuery("(max-width:900px)");
   class eventsHandler {
     static themeHandler = () => {
       setSyncLocalStorage(
@@ -88,262 +99,302 @@ function Header() {
   }
   const {
     themeHandler,
-    handleOpenNavMenu,
     handleOpenUserMenu,
-    handleCloseNavMenu,
     handleCloseUserMenu,
     handleClickNavMenu,
     animateHandler,
   } = eventsHandler;
+  const searchHandler = () => {
+
+  };
 
   return (
-    <AppBar
+    <Paper
       elevation={10}
       sx={{
         position: "relative",
         zIndex: 100,
         background: "inherit",
         backdropFilter: "blur(5px)",
+        padding: "20px",
+        pt: "10px",
+        pb: "10px",
+        display: "grid",
+        gridTemplateColumns: "1fr 3fr 1fr",
+        alignItems: "center",
       }}
-      id="appBar"
     >
-      <Container maxWidth="xxl">
-        <Toolbar disableGutters>
-          <Link href="/" style={{ textDecoration: "none", display: "flex" }}>
-            <Typography
-              className={Avalon.className}
-              variant="h6"
-              noWrap
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".1rem",
-                textDecoration: "none",
-                color: (theme) => theme.palette.text.primary,
-              }}
-            >
-              myPhonebook
-            </Typography>
-          </Link>
-          <Link
-            href="/"
-            style={{
+      <Link href="/" style={{ textDecoration: "none", display: "flex" }}>
+        {!maxWidth900 && (
+          <Typography
+            className={Avalon.className}
+            variant="h6"
+            noWrap
+            sx={{
+              display: "flex",
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".1rem",
               textDecoration: "none",
-              display: "flex",
-              flex: 1,
-              justifyContent: "start",
+              color: (theme) => theme.palette.text.primary,
             }}
           >
-            <Typography
-              className={Avalon.className}
-              variant="h5"
-              noWrap
+            myPhonebook
+          </Typography>
+        )}
+        {maxWidth900 && (
+          <Image
+            src="https://firebasestorage.googleapis.com/v0/b/myphonebook-app-dev.appspot.com/o/Icons%2Fmyphonebook-low-resolution-logo-black-on-transparent-background.svg?alt=media&token=09e85161-4a07-4ce2-9542-b2f52af19b80"
+            alt="Phonebook Logo"
+            width={36}
+            height={36}
+            style={
+              activeTheme === "dark" && {
+                filter:
+                  "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+              }
+            }
+            priority
+          />
+        )}
+      </Link>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-around",
+        }}
+      >
+        {maxWidth900 && (
+          <>
+            <Button
               sx={{
-                display: { xs: "flex", md: "none" },
-                fontWeight: 700,
-                letterSpacing: ".1rem",
-                textDecoration: "none",
-                marginTop: "5px",
-                color: (theme) => theme.palette.text.primary,
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flex: "1",
               }}
+              onClick={animateHandler}
             >
-              myPhonebook
-            </Typography>
-          </Link>
-          <IconButton
-            sx={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={animateHandler}
-          >
-            {activeTheme === "dark" ? (
-              <>
-                {!animate && (
-                  <PlayArrowIcon
-                    style={{
-                      filter:
-                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                    }}
-                  />
-                )}
-                {animate && (
-                  <PauseIcon
-                    style={{
-                      filter:
-                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                    }}
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                {!animate && <PlayArrowIcon />}
-                {animate && <PauseIcon />}
-              </>
-            )}
-          </IconButton>
-          <IconButton
-            sx={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={themeHandler}
-          >
-            {activeTheme === "dark" ? (
-              <LightModeIcon
-                style={{
-                  filter:
-                    "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                }}
-              />
-            ) : (
-              <DarkModeIcon />
-            )}
-          </IconButton>
-          {authUser !== null ? (
-            <Box sx={{ flex: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt="avatarPicture"
-                    src="/static/images/avatar/2.jpg"
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting, id) => {
-                  return setting.name === "Logout" ? (
-                    <MenuItem key={id} onClick={() => authSignOut()}>
-                      <Typography textAlign="center">{setting.name}</Typography>
-                    </MenuItem>
-                  ) : (
-                    <MenuItem
-                      key={id}
-                      onClick={() => handleClickNavMenu(setting.route)}
-                    >
-                      <Typography textAlign="center">{setting.name}</Typography>
-                    </MenuItem>
-                  );
-                })}
-              </Menu>
-            </Box>
-          ) : (
-            <>
-              <Box
+              {activeTheme === "dark" ? (
+                <>
+                  {!animate && (
+                    <PlayArrowIcon
+                      style={{
+                        filter:
+                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                      }}
+                    />
+                  )}
+                  {animate && (
+                    <PauseIcon
+                      style={{
+                        filter:
+                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                      }}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  {!animate && <PlayArrowIcon />}
+                  {animate && <PauseIcon />}
+                </>
+              )}
+            </Button>
+            <Button
+              sx={{
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flex: "1",
+              }}
+              onClick={themeHandler}
+            >
+              {activeTheme === "dark" ? (
+                <LightModeIcon
+                  style={{
+                    filter:
+                      "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                  }}
+                />
+              ) : (
+                <DarkModeIcon />
+              )}
+            </Button>
+            <Button
+              sx={{
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flex: "1",
+              }}
+              onClick={searchHandler}
+            >
+              {activeTheme === "dark" && (
+                <SearchIcon
+                  style={{
+                    filter:
+                      "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                  }}
+                />
+              )}
+              {activeTheme === "light" && <SearchIcon />}
+            </Button>
+          </>
+        )}
+        {!maxWidth900 && (
+          <>
+            <Button
+              sx={{
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flex: "1",
+              }}
+              onClick={animateHandler}
+            >
+              <Typography
                 sx={{
-                  display: "flex",
+                  color: theme.palette.text.primary,
+                  fontWeight: "bold",
                 }}
               >
-                <Link href="/login" style={{ textDecoration: "none" }}>
-                  <Button
-                    sx={{
-                      my: 2,
-                      color: "black",
-                      display: { xs: "none", md: "flex" },
+                Animation
+              </Typography>
+            </Button>
+            <Button
+              sx={{
+                color: "black",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flex: "1",
+              }}
+              onClick={themeHandler}
+            >
+              <Typography
+                sx={{
+                  color: theme.palette.text.primary,
+                  fontWeight: "bold",
+                }}
+              >
+                Theme
+              </Typography>
+            </Button>
+            {authUser && (
+              <Button
+                sx={{
+                  color: "black",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: "1",
+                }}
+                onClick={searchHandler}
+              >
+                {activeTheme === "dark" && (
+                  <SearchIcon
+                    style={{
+                      filter:
+                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
                     }}
+                  />
+                )}
+                {activeTheme === "light" && <SearchIcon />}
+              </Button>
+            )}
+          </>
+        )}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "right",
+        }}
+      >
+        {authUser && (
+          <>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu}>
+                <AccountCircle />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {loggedInSettings.map((setting, id) => {
+                return setting.name === "Logout" ? (
+                  <MenuItem key={id} onClick={() => authSignOut()}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                ) : (
+                  <MenuItem
+                    key={id}
+                    onClick={() => handleClickNavMenu(setting.route)}
                   >
-                    <Typography
-                      variant="h8"
-                      sx={{
-                        fontWeight: "bold",
-                        color: (theme) => theme.palette.text.primary,
-                      }}
-                    >
-                      Login
-                    </Typography>
-                  </Button>
-                </Link>
-                <Link href="/register" style={{ textDecoration: "none" }}>
-                  <Button
-                    sx={{
-                      my: 2,
-                      color: "black",
-                      display: { xs: "none", md: "flex" },
-                    }}
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                );
+              })}
+            </Menu>
+          </>
+        )}
+        {!authUser && (
+          <>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu}>
+                <AccountCircle />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {loggedOutSettings.map((setting, id) => {
+                return (
+                  <MenuItem
+                    key={id}
+                    onClick={() => handleClickNavMenu(setting.route)}
                   >
-                    <Typography
-                      variant="h8"
-                      sx={{
-                        fontWeight: "bold",
-                        color: (theme) => theme.palette.text.primary,
-                      }}
-                    >
-                      Register
-                    </Typography>
-                  </Button>
-                </Link>
-              </Box>
-
-              <Link href="/login" style={{ textDecoration: "none" }}>
-                <IconButton
-                  sx={{
-                    color: "black",
-                    display: { xs: "flex", md: "none" },
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {activeTheme === "dark" ? (
-                    <LoginIcon
-                      style={{
-                        filter:
-                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                      }}
-                    />
-                  ) : (
-                    <LoginIcon />
-                  )}
-                </IconButton>
-              </Link>
-              <Link href="/register" style={{ textDecoration: "none" }}>
-                <IconButton
-                  sx={{
-                    color: "black",
-                    display: { xs: "flex", md: "none" },
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {activeTheme === "dark" ? (
-                    <HowToRegIcon
-                      style={{
-                        filter:
-                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                      }}
-                    />
-                  ) : (
-                    <HowToRegIcon />
-                  )}
-                </IconButton>
-              </Link>
-            </>
-          )}
-          
-        </Toolbar>
-      </Container>
-    </AppBar>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                );
+              })}
+            </Menu>
+          </>
+        )}
+      </Box>
+    </Paper>
   );
 }
 export default Header;
