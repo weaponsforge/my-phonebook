@@ -49,18 +49,18 @@ export const SidebarComponent = () => {
         },
       }}
     >
-      <SearchFieldComponent />
+      {/* <SearchFieldComponent /> */}
       {(phase?.editContact || phase?.createContact) && (
         <ContactFormComponent/>
       )}
-      {!phase?.createContact && (
+      {/* {!phase?.createContact && (
         <Button variant="contained" onClick={createContactHandler}>
           <Typography>Create Contact</Typography>
         </Button>
       )}
       <Button variant="contained" onClick={deleteContactHandler}>
         <Typography>Delete Contact</Typography>
-      </Button>
+      </Button> */}
     </Paper>
   )
 }

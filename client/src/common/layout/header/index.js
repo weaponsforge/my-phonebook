@@ -17,15 +17,25 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 // LIB
 import { authSignOut } from "@/lib/hooks/useInitAuth";
 import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
 import { Avalon } from "@/lib/mui/theme";
 import { AccountCircle } from "@mui/icons-material";
-import { useSyncV } from "use-sync-v";
-import { Button, Paper, useMediaQuery, useTheme } from "@mui/material";
+import { updateSyncV, useSyncV } from "use-sync-v";
+import {
+  Button,
+  Paper,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Image from "next/image";
+import { SearchFieldComponent } from "./searchField";
+import { FirebaseFirestore } from "@/lib/utils/firebase/firestore";
 
 // VARIABLES
 const loggedInSettings = [
@@ -64,13 +74,17 @@ const loggedOutSettings = [
 function Header() {
   // HOOKS
   const theme = useTheme();
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const activeTheme = useSyncLocalStorage("activeTheme");
   const animate = useSyncLocalStorage("animate");
   const { authUser } = useSyncV("auth");
-  const router = useRouter();
   const maxWidth900 = useMediaQuery("(max-width:900px)");
+  const [showSearch, setShowSearch] = useState(false);
+  const doc_id = useSyncV("ui.activeContact.doc_id");
+  const phase = useSyncV("ui.phase");
+
   class eventsHandler {
     static themeHandler = () => {
       setSyncLocalStorage(
@@ -104,10 +118,41 @@ function Header() {
     handleClickNavMenu,
     animateHandler,
   } = eventsHandler;
-  const searchHandler = () => {
 
+  const showSearchHandler = () => {
+    setShowSearch((p) => !p);
+    // clear search textField
+    updateSyncV("ui.search.searchKeyword", "");
+    updateSyncV('ui.phase', (p) => ({
+      ...p,
+      createContact: false,
+      editContact: false,
+      search: !showSearch,
+    }))
   };
 
+  const createContactHandler = () => {
+    updateSyncV("ui.phase.editContact", false);
+    updateSyncV("ui.phase.createContact", true);
+    updateSyncV("ui.activeContact", {
+      doc_id: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      phone_number: "",
+      email_address: "",
+      profile_picture_url: "",
+    });
+  };
+
+  const deleteContactHandler = () => {
+    // enable batch delete, when this button clicked, jiggle all contacts card, and show trashcan on each of them
+    // clicked contact card will have different card color / mark //probably opacity
+    // show delete button
+    // FirebaseFirestore.deleteDoc(`users/test/contacts/${doc_id}`);
+    // updateSyncV("ui.activeContact", null);
+    // updateSyncV("ui.phase", null);
+  };
   return (
     <Paper
       elevation={10}
@@ -165,74 +210,21 @@ function Header() {
           justifyContent: "space-around",
         }}
       >
-        {maxWidth900 && (
-          <>
-            <Button
+        {showSearch && (
+          <Box
+            sx={{
+              flex: "1",
+              display: "flex",
+            }}
+          >
+            <IconButton
               sx={{
                 color: "black",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                flex: "1",
               }}
-              onClick={animateHandler}
-            >
-              {activeTheme === "dark" ? (
-                <>
-                  {!animate && (
-                    <PlayArrowIcon
-                      style={{
-                        filter:
-                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                      }}
-                    />
-                  )}
-                  {animate && (
-                    <PauseIcon
-                      style={{
-                        filter:
-                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                      }}
-                    />
-                  )}
-                </>
-              ) : (
-                <>
-                  {!animate && <PlayArrowIcon />}
-                  {animate && <PauseIcon />}
-                </>
-              )}
-            </Button>
-            <Button
-              sx={{
-                color: "black",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flex: "1",
-              }}
-              onClick={themeHandler}
-            >
-              {activeTheme === "dark" ? (
-                <LightModeIcon
-                  style={{
-                    filter:
-                      "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                  }}
-                />
-              ) : (
-                <DarkModeIcon />
-              )}
-            </Button>
-            <Button
-              sx={{
-                color: "black",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flex: "1",
-              }}
-              onClick={searchHandler}
+              onClick={showSearchHandler}
             >
               {activeTheme === "dark" && (
                 <SearchIcon
@@ -243,70 +235,178 @@ function Header() {
                 />
               )}
               {activeTheme === "light" && <SearchIcon />}
-            </Button>
-          </>
+            </IconButton>
+            <SearchFieldComponent />
+          </Box>
         )}
-        {!maxWidth900 && (
+        {!showSearch && (
           <>
-            <Button
-              sx={{
-                color: "black",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flex: "1",
-              }}
-              onClick={animateHandler}
-            >
-              <Typography
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: "bold",
-                }}
-              >
-                Animation
-              </Typography>
-            </Button>
-            <Button
-              sx={{
-                color: "black",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flex: "1",
-              }}
-              onClick={themeHandler}
-            >
-              <Typography
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: "bold",
-                }}
-              >
-                Theme
-              </Typography>
-            </Button>
-            {authUser && (
-              <Button
-                sx={{
-                  color: "black",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flex: "1",
-                }}
-                onClick={searchHandler}
-              >
-                {activeTheme === "dark" && (
-                  <SearchIcon
-                    style={{
-                      filter:
-                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+            {maxWidth900 && (
+              <>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={animateHandler}
+                >
+                  {activeTheme === "dark" ? (
+                    <>
+                      {!animate && (
+                        <PlayArrowIcon
+                          style={{
+                            filter:
+                              "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                          }}
+                        />
+                      )}
+                      {animate && (
+                        <PauseIcon
+                          style={{
+                            filter:
+                              "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                          }}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {!animate && <PlayArrowIcon />}
+                      {animate && <PauseIcon />}
+                    </>
+                  )}
+                </Button>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={themeHandler}
+                >
+                  {activeTheme === "dark" ? (
+                    <LightModeIcon
+                      style={{
+                        filter:
+                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                      }}
+                    />
+                  ) : (
+                    <DarkModeIcon />
+                  )}
+                </Button>
+              </>
+            )}
+            {!maxWidth900 && (
+              <>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={animateHandler}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.text.primary,
+                      fontWeight: "bold",
                     }}
-                  />
-                )}
-                {activeTheme === "light" && <SearchIcon />}
-              </Button>
+                  >
+                    Animation
+                  </Typography>
+                </Button>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={themeHandler}
+                >
+                  <Typography
+                    sx={{
+                      color: theme.palette.text.primary,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Theme
+                  </Typography>
+                </Button>
+              </>
+            )}
+            {authUser && router.route === "/contacts" && (
+              <>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={createContactHandler}
+                >
+                  {activeTheme === "dark" && (
+                    <PersonAddIcon
+                      style={{
+                        filter:
+                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                      }}
+                    />
+                  )}
+                  {activeTheme === "light" && <PersonAddIcon />}
+                </Button>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={deleteContactHandler}
+                >
+                  {activeTheme === "dark" && (
+                    <PersonRemoveIcon
+                      style={{
+                        filter:
+                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                      }}
+                    />
+                  )}
+                  {activeTheme === "light" && <PersonRemoveIcon />}
+                </Button>
+                <Button
+                  sx={{
+                    color: "black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: "1",
+                  }}
+                  onClick={showSearchHandler}
+                >
+                  {activeTheme === "dark" && (
+                    <SearchIcon
+                      style={{
+                        filter:
+                          "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                      }}
+                    />
+                  )}
+                  {activeTheme === "light" && <SearchIcon />}
+                </Button>
+              </>
             )}
           </>
         )}
