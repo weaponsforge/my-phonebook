@@ -1,7 +1,7 @@
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 
 export const ContactFormComponent = () => {
   const activeContact = useSyncV('ui.activeContact')
@@ -9,6 +9,7 @@ export const ContactFormComponent = () => {
   const [form, setForm] = useState(activeContact)
   const [isFormChanged, setIsFormChanged] = useState(false)
   const user = useSyncV('auth')
+  const doc_id = useSyncV('ui.activeContact.doc_id')
 
   useEffect(() => {
     setForm(activeContact)
@@ -61,6 +62,13 @@ export const ContactFormComponent = () => {
     }
     }
   }
+
+  const deleteContactHandler = () => {
+    FirebaseFirestore.deleteDoc(`users/test/contacts/${doc_id}`)
+    updateSyncV('ui.activeContact', null)
+    updateSyncV('ui.phase', null)
+  }
+
   return (
     <Box
       sx={{
@@ -194,6 +202,11 @@ export const ContactFormComponent = () => {
         >
           Save
         </Button>
+        {editContact && (
+          <Button variant="contained" fullWidth onClick={deleteContactHandler}>
+            Delete
+          </Button>
+        )}
       </Box>
     </Box>
   )

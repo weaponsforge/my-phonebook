@@ -1,6 +1,7 @@
 import ProtectedPage from '@/common/auth/protectedpage'
 import ContactsComponent from '@/components/contacts'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import { orderBy } from 'firebase/firestore'
 import { useEffect } from 'react'
 import { updateAsyncV, useSyncV } from 'use-sync-v'
 
@@ -18,7 +19,8 @@ function Contacts() {
         updateAsyncV('contacts', () => {
           return data
         })
-      }
+      },
+      orderBy('first_name')
     )
   }, [user.authUser.uid])
 
