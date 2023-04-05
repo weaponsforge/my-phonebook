@@ -72,10 +72,13 @@ function Page({ children }) {
       {animate && <Background />}
       <Box
         sx={{
-          width: '100%',
-          height: '100%',
-          display: 'grid',
-          gridTemplateRows: 'auto 1fr auto',
+          position:'fixed',
+          top:'0',
+          left:'0',
+          bottom:'0',
+          right:'0',
+          display:'flex',
+          flexDirection:'column',
         }}
       >
         <Header />
