@@ -1,12 +1,11 @@
 import ProtectedPage from '@/common/auth/protectedpage'
 import ContactsComponent from '@/components/contacts'
-import { useAuth } from '@/lib/hooks/useAuth'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { useEffect } from 'react'
-import { updateAsyncV } from 'use-sync-v'
+import { updateAsyncV, useSyncV } from 'use-sync-v'
 
 function Contacts() {
-  const user = useAuth()
+  const user = useSyncV('auth')
 
   useEffect(() => {
     FirebaseFirestore.subscribeCol(
