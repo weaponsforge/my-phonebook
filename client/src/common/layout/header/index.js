@@ -32,7 +32,6 @@ import { Avalon } from "@/lib/mui/theme";
 import { useSyncV } from "use-sync-v";
 
 // VARIABLES
-const pages = ["about"];
 const settings = [
   {
     name: "Profile",
@@ -128,50 +127,13 @@ function Header() {
               myPhonebook
             </Typography>
           </Link>
-
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
           <Link
             href="/"
             style={{
               textDecoration: "none",
               display: "flex",
               flex: 1,
-              justifyContent: "center",
+              justifyContent: "start",
             }}
           >
             <Typography
@@ -190,33 +152,65 @@ function Header() {
               myPhonebook
             </Typography>
           </Link>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Link
-                key={page}
-                href={`/${page}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: (theme) => theme.palette.text.primary,
-                    display: "block",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {page}
-                </Button>
-              </Link>
-            ))}
-          </Box>
-
+          <IconButton
+            sx={{
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={animateHandler}
+          >
+            {activeTheme === "dark" ? (
+              <>
+                {!animate && (
+                  <PlayArrowIcon
+                    style={{
+                      filter:
+                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                    }}
+                  />
+                )}
+                {animate && (
+                  <PauseIcon
+                    style={{
+                      filter:
+                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                    }}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                {!animate && <PlayArrowIcon />}
+                {animate && <PauseIcon />}
+              </>
+            )}
+          </IconButton>
+          <IconButton
+            sx={{
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={themeHandler}
+          >
+            {activeTheme === "dark" ? (
+              <LightModeIcon
+                style={{
+                  filter:
+                    "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                }}
+              />
+            ) : (
+              <DarkModeIcon />
+            )}
+          </IconButton>
           {authUser !== null ? (
             <Box sx={{ flex: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {/* will use google profile picture from firebase ? */}
                   <Avatar
                     alt="avatarPicture"
                     src="/static/images/avatar/2.jpg"
@@ -346,61 +340,7 @@ function Header() {
               </Link>
             </>
           )}
-          <IconButton
-            sx={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={animateHandler}
-          >
-            {activeTheme === "dark" ? (
-              <>
-                {animate && (
-                  <PlayArrowIcon
-                    style={{
-                      filter:
-                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                    }}
-                  />
-                )}
-                {animate && (
-                  <PauseIcon
-                    style={{
-                      filter:
-                        "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                    }}
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                {!animate && <PlayArrowIcon />}
-                {animate && <PauseIcon />}
-              </>
-            )}
-          </IconButton>
-          <IconButton
-            sx={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={themeHandler}
-          >
-            {activeTheme === "dark" ? (
-              <LightModeIcon
-                style={{
-                  filter:
-                    "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-                }}
-              />
-            ) : (
-              <DarkModeIcon />
-            )}
-          </IconButton>
+          
         </Toolbar>
       </Container>
     </AppBar>
