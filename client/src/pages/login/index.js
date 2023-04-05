@@ -5,7 +5,7 @@ import LoginComponent from '@/components/login'
 import { getRandomJoke } from '@/lib/services/random'
 import { Validate } from '@/lib/utils/textValidation'
 import AuthUtil from '@/lib/utils/firebase/authUtil'
-import { useAuth } from '@/lib/hooks/useAuth'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 
 const defaultState = {
   username:{
@@ -20,16 +20,14 @@ const defaultState = {
     value:'',
     color:'text'
   },
-  errorMessage:undefined,
-  joke:undefined,
-  loading:false
+  joke:undefined
 }
 
 function Login () {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
   const router = useRouter()
-  const { authLoading, authUser, authError } = useAuth()
+  const { authUser, authLoading } = useSyncV('auth')
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -63,14 +61,14 @@ function Login () {
     static loginHandler = () => {
       (async()=>{
         setState({ ...state, loading: true, errorMessage: undefined })
+        updateSyncV('auth', (p) => ({ ...p, authLoading: true, authError: '' }))
+
         const response = await AuthUtil.signIn(username.value, password.value)
         const errorMessage = response.errorMessage
 
-        setState(prev=>({
-          ...prev,
-          errorMessage,
-          loading: (errorMessage === undefined)
-        }))
+        if (errorMessage !== undefined) {
+          updateSyncV('auth', (p) => ({ ...p, authLoading: false, authError: errorMessage }))
+        }
       })()
     }
   }
@@ -86,23 +84,13 @@ function Login () {
   },[])
 
   useEffect(() => {
-    if (!authLoading) {
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        errorMessage: (authError !== '')
-          ? authError
-          : prev.errorMessage
-      }))
-
-      if (authUser) {
-        router.push('/dashboard')
-      }
+    if (!authLoading && authUser) {
+      router.push('/contacts')
     }
-  }, [authError, authLoading, authUser, router])
+  }, [router, authUser, authLoading])
 
   const resetError = () => {
-    setState({ ...state, errorMessage: undefined })
+    updateSyncV('auth', (p) => ({ ...p, authError: '' }))
   }
 
   return (

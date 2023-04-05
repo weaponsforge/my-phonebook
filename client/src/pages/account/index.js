@@ -74,13 +74,13 @@ function Account () {
           break
         default:
           setState(prev => ({ ...prev,
-            loading: false, error: 'Invalid request' }))
+            loading: false, error: 'Invalid request', locked: true }))
           break
         }
       } else {
         if (mode !== ACCOUNT_ACTION.RESEND_EMAIL_VERIFICATION) {
           setState(prev => ({ ...prev,
-            loading: false, error: 'Invalid request' }))
+            loading: false, error: 'Invalid request', locked: true }))
         }
       }
     }
@@ -112,10 +112,14 @@ function Account () {
       state={{
         ...state,
         loading,
-        locked: (status === RequestStatus.ERROR && state.mode === ACCOUNT_ACTION.RESET_PASSWORD),
-        error: (asyncError && asyncError !== 'Network Error')
-          ? messages.find(item => item.mode === state.mode)?.error ?? asyncError
-          : asyncError,
+        locked: (state.mode === ACCOUNT_ACTION.RESET_PASSWORD)
+          ? (status === RequestStatus.ERROR) || state.locked
+          : state.locked,
+        error: (asyncError)
+          ? (asyncError !== 'Network Error')
+            ? messages.find(item => item.mode === state.mode)?.error ?? asyncError
+            : asyncError
+          : state.error,
         success: (status === RequestStatus.SUCCESS && !state.checkCode) ?
           messages.find(item => item.mode === name)?.success : '',
       }}

@@ -13,11 +13,13 @@ import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import TransparentTextfield from '@/common/ui/transparentfield'
 import LoadingButton from '@/common/ui/loadingbutton'
 import { useTheme } from '@emotion/react'
+import { useAsyncV } from 'use-sync-v'
 
 function LoginComponent ({ state, eventsHandler, resetError }) {
   const theme = useTheme()
-  const { username, password, errorMessage, joke, loading } = state
+  const { username, password, joke } = state
   const { usernameHandler, passwordHandler, loginHandler } = eventsHandler
+  const { authLoading, authError } = useAsyncV('auth')
 
   return (
     <Page>
@@ -61,7 +63,7 @@ function LoginComponent ({ state, eventsHandler, resetError }) {
             size="small"
             type="text"
             fullwidth="true"
-            disabled={loading}
+            disabled={authLoading}
             required={true}
             color={username.color}
             helperText={username.helperText}
@@ -79,7 +81,7 @@ function LoginComponent ({ state, eventsHandler, resetError }) {
             size="small"
             type="password"
             fullwidth="true"
-            disabled={loading}
+            disabled={authLoading}
             required={true}
             value={password.value}
             error={password.error}
@@ -111,8 +113,8 @@ function LoginComponent ({ state, eventsHandler, resetError }) {
               <LoadingButton
                 variant="contained"
                 id="login"
-                disabled={loading}
-                isloading={loading}
+                disabled={authLoading}
+                isloading={authLoading}
                 sx={{
                   fontWeight:'bold',
                   color: theme.palette.primary.contrastText,
@@ -135,8 +137,8 @@ function LoginComponent ({ state, eventsHandler, resetError }) {
               Forgot your password ?
             </Typography>
           </Link>
-          {errorMessage &&
-            <SimpleSnackbar message={errorMessage} closeHandler={resetError} />
+          {(authError) &&
+            <SimpleSnackbar message={authError} closeHandler={resetError} />
           }
         </Paper>
       </Paper>

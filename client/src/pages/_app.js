@@ -4,17 +4,13 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider } from '@emotion/react'
 import '@/styles/globals.css'
-// Redux
-import { Provider } from 'react-redux'
-import { store } from '@/store/store'
-import { AuthProvider } from '@/lib/hooks/useAuth'
 
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 import { lightTheme, darkTheme } from '@/lib/mui/theme'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { init } from '@/lib/store'
-
+import useInitAuth from '@/hooks/useInitAuth'
 
 init()
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
@@ -25,6 +21,7 @@ const clientSideEmotionCache = createEmotionCache()
 export default function MyApp(props) {
   const activeTheme = useSyncLocalStorage('activeTheme')
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  useInitAuth()
 
   return (
     <CacheProvider value={emotionCache}>
@@ -34,11 +31,7 @@ export default function MyApp(props) {
       <ThemeProvider theme={activeTheme === 'light' ? lightTheme : darkTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Provider store={store}>
-          <AuthProvider>
-            <Component {...pageProps} />
-          </AuthProvider>
-        </Provider>
+        <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
   )

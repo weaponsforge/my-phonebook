@@ -1,15 +1,14 @@
-import { useAuth } from '@/lib/hooks/useAuth'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSyncV } from 'use-sync-v'
 
 export const ContactFormComponent = () => {
-  const user = useAuth()
   const activeContact = useSyncV('ui.activeContact')
   const { editContact, createContact } = useSyncV('ui.phase')
   const [form, setForm] = useState(activeContact)
   const [isFormChanged, setIsFormChanged] = useState(false)
+  const user = useSyncV('auth')
 
   useEffect(() => {
     setForm(activeContact)
@@ -31,7 +30,7 @@ export const ContactFormComponent = () => {
   }
 
   const saveHandler = () => {
-    const user_uid = user.authUser.uid
+    const user_uid = user?.authUser?.uid ?? ''
 
     switch (true) {
     case editContact: {

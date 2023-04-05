@@ -12,6 +12,18 @@ jobs:
   lint-client:
     name: Lint Client
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_PATH: ''
+      NEXT_PUBLIC_BASE_API_URL: ${{ secrets.NEXT_PUBLIC_BASE_API_URL_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_AUTHDOMAIN: ${{ secrets.FIREBASE_WEB_AUTHDOMAIN_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_PROJECT_ID: ${{ secrets.FIREBASE_WEB_PROJECT_ID_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_STORAGE_BUCKET: ${{ secrets.FIREBASE_WEB_STORAGE_BUCKET_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_WEB_MESSAGING_SENDER_ID_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_APP_ID: ${{ secrets.FIREBASE_WEB_APP_ID_DEV }}
+      NEXT_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID: ${{ secrets.FIREBASE_WEB_MEASUREMENT_ID_DEV }}
+      NEXT_PUBLIC_MEDIA_BG1: ${{ secrets.NEXT_PUBLIC_MEDIA_BG1 }}
+      NEXT_PUBLIC_RANDOM_JOKE_API: ${{ secrets.NEXT_PUBLIC_RANDOM_JOKE_API }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
@@ -26,6 +38,11 @@ jobs:
           cd client
           npm install
           npm run lint
+
+      - name: Dry-run NPM Export
+        run: |
+          cd client
+          npm run export
 
   lint-server:
     name: Lint Server

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useAuth } from '@/lib/hooks/useAuth'
+import { useSyncV } from 'use-sync-v'
 
 import LoadingCover from '@/common/layout/loadingcover'
 
@@ -16,15 +16,15 @@ import LoadingCover from '@/common/layout/loadingcover'
 function ProtectedPage (Component) {
   function AuthListener (props) {
     const router = useRouter()
-    const { authLoading, authError, authUser } = useAuth()
+    const { authLoading, authUser, authError } = useSyncV('auth')
 
     useEffect(() => {
-      if (!authLoading && !authUser) {
+      if (!authLoading && authUser === null) {
         router.push('/login')
       }
     }, [authUser, authLoading, router])
 
-    const ItemComponent = () => {
+    return ((() => {
       if (authLoading) {
         return <LoadingCover />
       } else if (authUser) {
@@ -32,9 +32,7 @@ function ProtectedPage (Component) {
       } else {
         return <LoadingCover authError={authError} />
       }
-    }
-
-    return (<ItemComponent />)
+    })())
   }
 
   return AuthListener

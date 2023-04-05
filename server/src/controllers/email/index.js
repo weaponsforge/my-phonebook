@@ -14,8 +14,8 @@ module.exports.sendEmail = async (req, res, next) => {
     const response = await sendEmail({ to, from, subject, text })
     return res.status(200).send(response)
   } catch (err) {
-    return next((err.constructor.name === ServerError.name)
-      ? err
-      : new ServerError(err.message))
+    return (err.constructor.name === ServerError.name)
+      ? next(err)
+      : next(new ServerError(err.message))
   }
 }
