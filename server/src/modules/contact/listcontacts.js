@@ -1,4 +1,4 @@
-const { getCollection } = require('../../utils/firestore')
+const { getCollection, groupByTens } = require('../../utils/firestore')
 const ServerError = require('../../utils/error')
 
 /**
@@ -9,10 +9,20 @@ const ServerError = require('../../utils/error')
  */
 const listContacts = async (userId, docIds) => {
   try {
-    return await getCollection({
-      collectionPath: `users/${userId}/contacts`,
-      whereQueries: [{ field: 'doc_id', op: 'in', value: docIds }]
+    // Batch IDs by 10's
+    const groupIds = groupByTens(docIds)
+    const maxArrayQueries = []
+
+    // Batch where-in-array queries by groups of 10
+    groupIds.forEach(group => {
+      maxArrayQueries.push(getCollection({
+        collectionPath: `users/${userId}/contacts`,
+        whereQueries: [{ field: 'doc_id', op: 'in', value: group }]
+      }))
     })
+
+    const contacts = await Promise.all(maxArrayQueries)
+    return contacts.flat(1)
   } catch (err) {
     const errorMsg = err?.response?.data ?? err.message
     throw new ServerError(errorMsg, ServerError.httpErrorCodes._502)
