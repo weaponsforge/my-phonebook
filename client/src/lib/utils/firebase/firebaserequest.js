@@ -45,10 +45,6 @@ const createRequestObject = async ({ body, params, responseType }) => {
     obj.params = params
   }
 
-  if (responseType) {
-    obj.responseType = responseType
-  }
-
   return await setAuthHeaders(obj)
 }
 

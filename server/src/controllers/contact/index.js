@@ -1,6 +1,6 @@
 const ServerError = require('../../utils/error')
 const { listContacts } = require('../../modules/contact')
-const { exportCSV } = require('../../modules/contact')
+const { exportCSV, exportPDF } = require('../../modules/contact')
 const { MAX_CONTACTS } = require('../../utils/constants')
 
 const EXPORT_TYPE = {
@@ -38,8 +38,7 @@ const exportContact = async (req, res, next) => {
     if (type === EXPORT_TYPE.CSV) {
       return exportCSV(contacts, res)
     } else if (type === EXPORT_TYPE.PDF) {
-      // TO-DO: Export contacts to PDF
-      return res.status(200).send('OK')
+      return exportPDF(contacts, res)
     }
   } catch (err) {
     return (err.constructor.name === ServerError.name)

@@ -28,10 +28,10 @@ export const deleteContact = async(user_uid) => {
   return response
 }
 
-export const exportContacts = async (type = 'csv', ids = undefined) => {
+export const exportContacts = async ({ responseType = 'arraybuffer', type = 'csv', ids = undefined }) => {
   const CONTACTS_API_URL = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/contacts/export`
   const body = { type, ids }
 
   const obj = await createRequestObject({ body })
-  return await axios({ ...obj, url: CONTACTS_API_URL, method: 'POST' })
+  return await axios({ ...obj, url: CONTACTS_API_URL, method: 'POST', responseType })
 }
