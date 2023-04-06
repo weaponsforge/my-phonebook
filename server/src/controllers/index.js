@@ -181,12 +181,12 @@ router.post('/account/action', Account.manageAccount)
  * @api {post} /contact/export Export Contacts PDF
  * @apiName exportContactPDF
  * @apiGroup Contact
- * @apiDescription Export Contact(s) documents to a PDF file.
+ * @apiDescription Export the Contact(s) documents of a signed-in user to a PDF file.
  *
  * @apiHeader {String} Authorization Bearer authorization value - signed-in user's firebase ID token.
  *
  * @apiSampleRequest off
- * @apiBody {String[]} ids Array of Firestore Contact document IDs (`doc_id`).
+ * @apiBody {String[]} [ids] Array of Firestore Contact document IDs (`doc_id`). If omitted, will export all Contacts to PDF.
  * @apiBody {String='pdf'} type Export type
  *
  * @apiSuccess {application/pdf} file PDF file created from the requested parameters if `type=pdf`.
@@ -224,12 +224,12 @@ router.post('/account/action', Account.manageAccount)
  * @api {post} /contact/export Export Contacts CSV
  * @apiName exportContactCSV
  * @apiGroup Contact
- * @apiDescription Export Contact(s) documents to a CSV file.
+ * @apiDescription Export the Contact(s) documents of a signed-in user to a CSV file.
  *
  * @apiHeader {String} Authorization Bearer authorization value - signed-in user's firebase ID token.
  *
  * @apiSampleRequest off
- * @apiBody {String[]} ids Array of Firestore Contact document IDs (`doc_id`).
+ * @apiBody {String[]} [ids] Array of Firestore Contact document IDs (`doc_id`). If omitted, will export all Contacts to CSV.
  * @apiBody {String='csv'} type Export type
  *
  * @apiSuccess {text/csv} file CSV file created from the requested parameters if `type=csv`.
