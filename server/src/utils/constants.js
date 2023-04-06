@@ -11,6 +11,8 @@ const ACCOUNT_TYPE = {
   ADMIN: 'admin'
 }
 
+const MAX_CONTACTS = 500
+
 const CONTACT_FIELDS = {
   DOC_ID: 'doc_id',
   EMAIL_ADDRESS: 'email_address',
@@ -26,5 +28,6 @@ const CONTACT_FIELDS = {
 module.exports = {
   ACCOUNT_ACTION,
   ACCOUNT_TYPE,
-  CONTACT_FIELDS
+  CONTACT_FIELDS,
+  MAX_CONTACTS
 }

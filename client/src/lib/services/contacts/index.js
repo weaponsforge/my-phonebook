@@ -28,7 +28,7 @@ export const deleteContact = async(user_uid) => {
   return response
 }
 
-export const exportContacts = async (type = 'csv', ids = []) => {
+export const exportContacts = async (type = 'csv', ids = undefined) => {
   const CONTACTS_API_URL = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/contacts/export`
   const body = { type, ids }
 
