@@ -22,8 +22,19 @@ const listContacts = async (userId, docIds = []) => {
         }))
       })
 
-      const contacts = await Promise.all(maxArrayQueries)
-      return contacts.flat(1)
+      // Merge results
+      const contacts = (await Promise.all(maxArrayQueries)).flat(1)
+
+      // Re-order documents in the order of docIds
+      return docIds.reduce((list, docId) => {
+        const contactsIndex = contacts.findIndex(contact => contact.doc_id === docId)
+
+        if (contactsIndex !== -1) {
+          list.push(contacts[contactsIndex])
+        }
+
+        return list
+      }, [])
     } catch (err) {
       const errorMsg = err?.response?.data ?? err.message
       throw new ServerError(errorMsg, ServerError.httpErrorCodes._502)
