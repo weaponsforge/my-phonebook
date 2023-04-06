@@ -1,4 +1,6 @@
+import axios from 'axios'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import createRequestObject from '@/lib/utils/firebase/firebaserequest'
 import { orderBy } from 'firebase/firestore'
 
 export const createContact = async(user_uid, newContact) => {
@@ -24,4 +26,12 @@ export const updateContact = async(user_uid, contact_id, newContact) => {
 export const deleteContact = async(user_uid) => {
   const response = await FirebaseFirestore.deleteDoc(`users/${user_uid}`)
   return response
+}
+
+export const exportContacts = async (type = 'csv', ids = []) => {
+  const CONTACTS_API_URL = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/contacts/export`
+  const body = { type, ids }
+
+  const obj = await createRequestObject({ body })
+  return await axios({ ...obj, url: CONTACTS_API_URL, method: 'POST' })
 }
