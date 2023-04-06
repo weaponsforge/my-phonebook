@@ -11,7 +11,20 @@ const ACCOUNT_TYPE = {
   ADMIN: 'admin'
 }
 
+const CONTACT_FIELDS = {
+  DOC_ID: 'doc_id',
+  EMAIL_ADDRESS: 'email_address',
+  FIRST_NAME: 'first_name',
+  MIDDLE_NAME: 'middle_name',
+  LAST_NAME: 'last_name',
+  PHONE_NUMBER: 'phone_number',
+  PROFILE_PICTURE_URL: 'profile_picture_url',
+  DATE_CREATED: 'date_created',
+  DATE_UPDATED: 'date_updated'
+}
+
 module.exports = {
   ACCOUNT_ACTION,
-  ACCOUNT_TYPE
+  ACCOUNT_TYPE,
+  CONTACT_FIELDS
 }
