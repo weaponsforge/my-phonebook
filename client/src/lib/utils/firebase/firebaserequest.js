@@ -29,10 +29,9 @@ const setAuthHeaders = async (obj) => {
  * @typedef {Object} param - Input parameters
  * @param {Object} param.body - Object input to place in an HTTP request body.
  * @param {Object} param.params - Object input to place in an HTTP request params.
- * @param {String} responseType - HTTP response type.
  * @returns {Object} The original request body (or params) with attached Firebase accessToken in the Authorization header.
  */
-const createRequestObject = async ({ body, params, responseType }) => {
+const createRequestObject = async ({ body, params }) => {
   const obj = {
     headers: {}
   }

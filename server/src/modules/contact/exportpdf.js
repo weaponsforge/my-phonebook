@@ -43,7 +43,7 @@ const exportPDF = (contacts = [], res) => {
 
           table: {
             headerRows: 1,
-            widths: [ '35%', '25%', '18%', 'auto', 'auto' ],
+            widths: ['35%', '25%', '18%', 'auto', 'auto'],
 
             body: [
               // Table headers
@@ -51,17 +51,17 @@ const exportPDF = (contacts = [], res) => {
 
               // Table rows
               ...contacts.reduce((rows, contact) => {
-                  contact[CONTACT_FIELDS.DATE_CREATED] = dayjs(timestampToDateString(contact[CONTACT_FIELDS.DATE_CREATED])).format('YYYY-MM-DD h:mm:ss')
-                  contact[CONTACT_FIELDS.DATE_UPDATED] = dayjs(timestampToDateString(contact[CONTACT_FIELDS.DATE_UPDATED])).format('YYYY-MM-DD h:mm:ss')
+                contact[CONTACT_FIELDS.DATE_CREATED] = dayjs(timestampToDateString(contact[CONTACT_FIELDS.DATE_CREATED])).format('YYYY-MM-DD h:mm:ss')
+                contact[CONTACT_FIELDS.DATE_UPDATED] = dayjs(timestampToDateString(contact[CONTACT_FIELDS.DATE_UPDATED])).format('YYYY-MM-DD h:mm:ss')
 
-                  // Extract row values by CONTACT_FIELDS_LABELS order
-                  rows.push(Object.keys(CONTACT_FIELDS_LABELS).reduce((docValues, key) => {
-                    return (key === 'FULL_NAME')
-                      ? docValues.concat(`${contact[CONTACT_FIELDS.FIRST_NAME]} ${contact[CONTACT_FIELDS.MIDDLE_NAME]} ${contact[CONTACT_FIELDS.LAST_NAME]}`)
-                      : docValues.concat(contact[key])
-                  }, []))
-                  return rows
-                }, [])
+                // Extract row values by CONTACT_FIELDS_LABELS order
+                rows.push(Object.keys(CONTACT_FIELDS_LABELS).reduce((docValues, key) => {
+                  return (key === 'FULL_NAME')
+                    ? docValues.concat(`${contact[CONTACT_FIELDS.FIRST_NAME]} ${contact[CONTACT_FIELDS.MIDDLE_NAME]} ${contact[CONTACT_FIELDS.LAST_NAME]}`)
+                    : docValues.concat(contact[key])
+                }, []))
+                return rows
+              }, [])
             ]
           }
         }
