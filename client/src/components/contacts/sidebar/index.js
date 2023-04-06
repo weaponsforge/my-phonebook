@@ -7,7 +7,6 @@ export const SidebarComponent = () => {
 
   return (
     <>
-      {(phase?.editContact || phase?.createContact) && (
         <Paper
           elevation={0}
           sx={{
@@ -29,7 +28,6 @@ export const SidebarComponent = () => {
             <ContactFormComponent />
           )}
         </Paper>
-      )}
     </>
   )
 }

@@ -9,6 +9,7 @@ export const ContactFormComponent = () => {
   const [form, setForm] = useState(activeContact)
   const [isFormChanged, setIsFormChanged] = useState(false)
   const user = useSyncV('auth')
+  const user_uid = user?.authUser?.uid ?? ''
   const doc_id = useSyncV('ui.activeContact.doc_id')
 
   useEffect(() => {
@@ -31,8 +32,6 @@ export const ContactFormComponent = () => {
   }
 
   const saveHandler = () => {
-    const user_uid = user?.authUser?.uid ?? ''
-
     switch (true) {
     case editContact: {
       const updatedContact = {
@@ -64,7 +63,7 @@ export const ContactFormComponent = () => {
   }
 
   const deleteContactHandler = () => {
-    FirebaseFirestore.deleteDoc(`users/test/contacts/${doc_id}`)
+    FirebaseFirestore.deleteDoc(`users/${user_uid}/contacts/${doc_id}`)
     updateSyncV('ui.activeContact', null)
     updateSyncV('ui.phase', null)
   }

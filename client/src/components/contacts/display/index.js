@@ -11,11 +11,9 @@ export const ContactListDisplay = () => {
       <Box
         sx={{
           flex: 6.8,
-          maxHeight: '100%',
-          maxWidth:'1000px',
+          maxWidth:'1600px',
           justifyContent:'center',
           width: '100%',
-          height: '100%',
           overflowY: 'scroll',
           userSelect: 'none',
         }}

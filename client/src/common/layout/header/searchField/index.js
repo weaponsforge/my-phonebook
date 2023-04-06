@@ -20,8 +20,9 @@ export const SearchFieldComponent = () => {
 
   return (
     <Box sx={{
+      flex:1,
       display:'flex',
-      width:'100%'
+      width:'100%',
     }}>
       <TextField fullWidth autoFocus={true} size="small" value={searchKeyword} onChange={searchFieldHandler}/>
     </Box>
