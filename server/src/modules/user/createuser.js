@@ -3,7 +3,7 @@ const { createDocument } = require('../../utils/firestore')
 const ServerError = require('../../utils/error')
 
 /**
- *
+ * Create a new User profile Firestore document.
  * @param {String} userId - Firebase Auth ID
  * @typedef {Object} params - User profile document key-value pairs
  * @param {String} params.first_name - First name
