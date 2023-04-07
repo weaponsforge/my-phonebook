@@ -6,8 +6,14 @@ const { validToken } = require('../middleware/validtoken')
 
 // Controllers
 const Email = require('./email')
-
 const Account = require('./account')
+const Contact = require('./contact')
+
+/**
+ * ---------------------------------------------------------------
+ *  EMAIL
+ * ---------------------------------------------------------------
+ */
 
 /**
  * @api {post} /email Send email
@@ -41,6 +47,12 @@ const Account = require('./account')
  * const result = await axios({ ...obj, url: 'http://localhost:3001/api/email', method: 'POST' })
  */
 router.post('/email', validToken, Email.sendEmail)
+
+/**
+ * ---------------------------------------------------------------
+ *  ACCOUNT
+ * ---------------------------------------------------------------
+ */
 
 /**
  * @api {post} /account/action Send Email Verification
@@ -158,5 +170,99 @@ router.post('/email', validToken, Email.sendEmail)
  */
 
 router.post('/account/action', Account.manageAccount)
+
+/**
+ * ---------------------------------------------------------------
+ *  CONTACTS
+ * ---------------------------------------------------------------
+ */
+
+/**
+ * @api {post} /contact/export Export Contacts PDF
+ * @apiName exportContactPDF
+ * @apiGroup Contact
+ * @apiDescription Export the Contact(s) documents of a signed-in user to a PDF file.
+ *
+ * @apiHeader {String} Authorization Bearer authorization value - signed-in user's firebase ID token.
+ *
+ * @apiSampleRequest off
+ * @apiBody {String[]} [ids] Array of Firestore Contact document IDs (`doc_id`). If omitted, will export all Contacts to PDF.
+ * @apiBody {String='pdf'} type Export type
+ *
+ * @apiSuccess {application/pdf} file PDF file created from the requested parameters if `type=pdf`.
+ *
+ * @apiExample {js} Example usage (pdf):
+ * const obj = {
+ *   data: {
+ *     type: 'pdf',
+ *     ids: ['eppi4m18i5Sc13SpiPcu', 'SkJ1ASZUZLqb19uHEro3', 'OG67oT3f8lrJernezcN1']
+ *   },
+ *   headers: {
+ *     Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjZhNGY4N2Z....'
+ *   }
+ * }
+ *
+ * // Download the PDF file as Blob from web browser
+ * const response = await axios({
+ *   ...obj,
+ *   method: 'POST',
+ *   url: 'http://localhost:3001/api/contacts/export',
+ *   responseType: 'arraybuffer'
+ * })
+ *
+ * const blob = new Blob([response.data], { type: 'application/pdf' })
+ * const link = document.createElement('a')
+ * link.href = URL.createObjectURL(blob)
+ * link.setAttribute('download', decodeURI('contacts'))
+ *
+ * document.body.appendChild(link)
+ * link.click()
+ * document.body.removeChild(link)
+ */
+
+/**
+ * @api {post} /contact/export Export Contacts CSV
+ * @apiName exportContactCSV
+ * @apiGroup Contact
+ * @apiDescription Export the Contact(s) documents of a signed-in user to a CSV file.
+ *
+ * @apiHeader {String} Authorization Bearer authorization value - signed-in user's firebase ID token.
+ *
+ * @apiSampleRequest off
+ * @apiBody {String[]} [ids] Array of Firestore Contact document IDs (`doc_id`). If omitted, will export all Contacts to CSV.
+ * @apiBody {String='csv'} type Export type
+ *
+ * @apiSuccess {text/csv} file CSV file created from the requested parameters if `type=csv`.
+ *
+ * @apiExample {js} Example usage (csv):
+ * const obj = {
+ *   data: {
+ *     type: 'csv',
+ *     ids: ['eppi4m18i5Sc13SpiPcu', 'SkJ1ASZUZLqb19uHEro3', 'OG67oT3f8lrJernezcN1']
+ *   },
+ *   headers: {
+ *     Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjZhNGY4N2Z....'
+ *   }
+ * }
+ *
+ * // Download the CSV file as Blob from web browser
+ * const response = await axios({
+ *   ...obj,
+ *   method: 'POST',
+ *   url: 'http://localhost:3001/api/contacts/export',
+ *   responseType: 'arraybuffer'
+ * })
+ *
+ * const blob = new Blob([response.data], { type: 'text/csv' })
+ * const link = document.createElement('a')
+ * link.href = URL.createObjectURL(blob)
+ * link.setAttribute('download', decodeURI('contacts'))
+ *
+ * document.body.appendChild(link)
+ * link.click()
+ * document.body.removeChild(link)
+ */
+
+router.post('/contacts/export', validToken, Contact.exportContact)
 
 module.exports = router
