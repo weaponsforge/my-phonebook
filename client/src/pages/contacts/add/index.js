@@ -1,23 +1,27 @@
 import ProtectedPage from "@/common/auth/protectedpage";
 import Page from "@/common/layout/page";
+import useInitAuth from "@/lib/hooks/useInitAuth";
 import { FirebaseFirestore } from "@/lib/utils/firebase/firestore";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { updateSyncV, useSyncV } from "use-sync-v";
 
+const initialState = {
+  sorting:"",
+  first_name: "",
+  middle_name: "",
+  last_name: "",
+  phone_number: "",
+  email_address: "",
+  profile_picture_url: "",
+};
+
 const Add = () => {
-  const activeContact = useSyncV("ui.activeContact");
-  const { editContact, createContact } = useSyncV("ui.phase");
-  const [form, setForm] = useState({
-    first_name:'',
-    middle_name:'',
-    last_name:'',
-    phone_number:'',
-    email_address:'',
-    profile_picture_url:''
-  });
+  const {authUser} = useSyncV('auth')
+  console.log(authUser)
+
+  const [form, setForm] = useState(initialState);
   const [isFormChanged, setIsFormChanged] = useState(false);
-  const user = useSyncV("auth");
 
   const editContactHandler = (e) => {
     const fieldID = e.target.id;
@@ -27,7 +31,7 @@ const Add = () => {
       [fieldID]: fieldValue,
     };
     setForm(updatedValue);
-    if (JSON.stringify(updatedValue) === JSON.stringify(activeContact)) {
+    if (JSON.stringify(updatedValue) === JSON.stringify(initialState)) {
       setIsFormChanged(false);
     } else {
       setIsFormChanged(true);
@@ -35,51 +39,22 @@ const Add = () => {
   };
 
   const saveHandler = () => {
-    switch (true) {
-      case editContact: {
-        const updatedContact = {
-          first_name: form?.first_name ?? "",
-          middle_name: form?.middle_name ?? "",
-          last_name: form?.last_name ?? "",
-          phone_number: form?.phone_number ?? "",
-          email_address: form?.email_address ?? "",
-          profile_picture_url: form?.profile_picture_url ?? "",
-        };
-        const doc_id = activeContact.doc_id;
-        FirebaseFirestore.updateDoc(
-          `users/${user_uid}/contacts/${doc_id}`,
-          updatedContact
-        );
-        setIsFormChanged(false);
-        break;
-      }
-      case createContact: {
-        const createdContact = form;
-        FirebaseFirestore.createDoc(
-          `users/${user_uid}/contacts/`,
-          createdContact
-        );
-        setForm(activeContact);
-        break;
-      }
+    const createdContact = {
+      ...form,
+      sorting:`${createdContact.first_name}${createdContact.middle_name}${createdContact.last_name}`.toUpperCase()
     }
+    FirebaseFirestore.createDoc(`users/${authUser.uid}/contacts/`, createdContact);
   };
 
-  const deleteContactHandler = () => {
-    FirebaseFirestore.deleteDoc(`users/${user_uid}/contacts/${doc_id}`);
-    updateSyncV("ui.activeContact", null);
-    updateSyncV("ui.phase", null);
-  };
   return (
     <Page>
       <Box
         sx={{
           display: "flex",
-          justifyContent:'center',
+          justifyContent: "center",
           gap: "10px",
-          width:'100%',
+          width: "100%",
           height: "100%",
-          border:'1px solid red'
         }}
       >
         <Box
@@ -91,9 +66,21 @@ const Add = () => {
           }}
         >
           <Typography variant="h4" sx={{ alignSelf: "start" }}>
-            {editContact && "Edit Contact"}
-            {createContact && "Create Contact"}
+            Add Contact
           </Typography>
+          <Avatar
+          sx={{
+            width: '50vw',
+            maxWidth: '200px',
+            maxHeight: '200px',
+            height: '50vw',
+            justifySelf: 'center',
+            gridColumn: '1/-1',
+            border: '5px dashed gray',
+            margin: '10px',
+            src: `${form?.profile_picture_url}`,
+          }}
+        />
           <Box
             sx={{
               display: "flex",
@@ -192,15 +179,6 @@ const Add = () => {
           >
             Save
           </Button>
-          {editContact && (
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={deleteContactHandler}
-            >
-              Delete
-            </Button>
-          )}
         </Box>
       </Box>
     </Page>
