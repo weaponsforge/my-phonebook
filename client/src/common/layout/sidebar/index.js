@@ -9,7 +9,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PrintIcon from "@mui/icons-material/Print";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
 import { Avalon } from "@/lib/mui/theme";
 import {
@@ -116,7 +116,7 @@ export const Sidebar = () => {
             <ListItem disablePadding>
               <ListItemButton onClick={addContactHandler}>
                 <ListItemIcon>
-                  <PersonIcon />
+                  <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Add Contact" />
               </ListItemButton>

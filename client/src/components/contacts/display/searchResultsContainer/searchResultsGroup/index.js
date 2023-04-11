@@ -1,6 +1,6 @@
 
 import {  Box, Typography } from '@mui/material'
-import { ContactCard } from '../../contactsCardContainer/contactCard'
+import { ContactCard } from '../../contactsCardContainer/contactCardGroup/contactCard'
 
 const groupNameMapping = {
   first_name: 'Matching First Name',

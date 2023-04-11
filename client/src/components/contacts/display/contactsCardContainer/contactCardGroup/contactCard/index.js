@@ -1,5 +1,6 @@
 import { Avatar, Paper, Typography, useTheme } from '@mui/material'
-import { updateSyncV, deleteSyncV } from 'use-sync-v'
+import { useRouter } from 'next/router'
+import { updateSyncV, deleteSyncV, useSyncV } from 'use-sync-v'
 
 const getInitial = (first, second, last) => {
   const firstInitial = (first.match(
@@ -24,9 +25,9 @@ const backgroundColorGenerator = (name) => {
 }
 
 export const ContactCard = ({ contact }) => {
-
+  const router = useRouter()
   const theme = useTheme()
-
+  
   const initial = getInitial(
     contact.first_name,
     contact.middle_name,
@@ -37,9 +38,8 @@ export const ContactCard = ({ contact }) => {
 
   const contactClickHandler = (e) => {
     e.stopPropagation()
-    deleteSyncV('ui.phase')
-    updateSyncV('ui.phase.editContact', true)
-    updateSyncV('ui.activeContact', contact)
+    router.push(`/contacts/edit/${contact.doc_id}`)
+    updateSyncV("show.sidebar", false)
   }
   return (
     <>

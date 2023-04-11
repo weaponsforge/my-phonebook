@@ -15,7 +15,6 @@ import { updateAsyncV, useSyncV } from 'use-sync-v'
 
 function Contacts() {
   const user = useSyncV('auth')
-
   useEffect(() => {
     FirebaseFirestore.subscribeCol(
       `users/${user.authUser.uid}/contacts`,
@@ -28,7 +27,7 @@ function Contacts() {
           return data
         })
       },
-      orderBy('first_name')
+      orderBy('sorting')
     )
   }, [user.authUser.uid])
 
