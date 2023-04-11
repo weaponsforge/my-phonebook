@@ -100,8 +100,6 @@ function Header() {
         background: 'inherit',
         backdropFilter: 'blur(5px)',
         padding: '10px',
-        pt: '10px',
-        pb: '10px',
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
