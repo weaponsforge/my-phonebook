@@ -71,7 +71,8 @@ const EditContact = () => {
           justifyContent: 'center',
           gap: '10px',
           width: '100%',
-          height: '100%',
+          height: 'auto',
+          padding:'20px'
         }}
       >
         <Box
