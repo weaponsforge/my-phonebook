@@ -91,7 +91,6 @@ function Page({ children }) {
           sx={{
             display: "flex",
             flexDirection: "column",
-            border: "1px solid red",
             width:`${isMobile ? '100%' : 'calc(100vw - 200px)'}`
           }}
         >
