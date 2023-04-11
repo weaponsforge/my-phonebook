@@ -12,6 +12,9 @@ export const SidebarItems = () => {
   const router = useRouter();
   const contacts = useAsyncV("contacts");
 
+  const contactsHandler = () => {
+    router.push('contacts')
+  }
   return (
       <List
         sx={{
@@ -19,7 +22,7 @@ export const SidebarItems = () => {
         }}
       >
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={contactsHandler}>
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>

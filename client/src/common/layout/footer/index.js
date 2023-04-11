@@ -1,13 +1,7 @@
 // MUI
 import Paper from "@mui/material/Paper";
-import ContactPageIcon from "@mui/icons-material/ContactPage";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import SettingsIcon from "@mui/icons-material/Settings";
 // CSS
-import styles from "./styles";
-import { Box, Button, IconButton, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { useRouter } from "next/router";
 
@@ -32,7 +26,7 @@ function Footer() {
           sx={{
             width: "100%",
             minHeight: (theme) => theme.spacing(4),
-            padding: (theme) => theme.spacing(2),
+            padding: '10px',
             textAlign: "center",
             marginTop: "auto",
             zIndex: 100,

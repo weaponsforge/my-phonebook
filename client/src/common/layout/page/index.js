@@ -87,12 +87,12 @@ function Page({ children }) {
           overflowX: "hidden",
         }}
       >
-        {showSidebar ||  !isMobile && <Sidebar />}
+        {(showSidebar || !isMobile) && <Sidebar />}
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            width:'100vw'
+            width: "100vw",
           }}
         >
           <Header />

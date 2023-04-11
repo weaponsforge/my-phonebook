@@ -23,7 +23,7 @@ import {
   Slide,
   useMediaQuery,
 } from "@mui/material";
-import { useAsyncV } from "use-sync-v";
+import { updateSyncV, useAsyncV } from "use-sync-v";
 
 export const Sidebar = () => {
   const contacts = useAsyncV("contacts");
@@ -35,6 +35,7 @@ export const Sidebar = () => {
 
   const animateHandler = () => {
     setSyncLocalStorage("animate", animate ? false : true);
+    updateSyncV('show.sidebar', false)
   };
 
   const themeHandler = () => {
@@ -42,7 +43,23 @@ export const Sidebar = () => {
       "activeTheme",
       activeTheme === "dark" ? "light" : "dark"
     );
+    updateSyncV('show.sidebar', false)
   };
+
+  const contactsHandler = () => {
+    router.push('/contacts')
+    updateSyncV('show.sidebar', false)
+  }
+
+  const addContactHandler = () => {
+    router.push('/contacts/add')
+    updateSyncV('show.sidebar', false)
+  }
+
+  const homePageHandler = () => {
+    router.push('/')
+    updateSyncV('show.sidebar', false)
+  }
   return (
     <Box>
       <Slide
@@ -64,7 +81,7 @@ export const Sidebar = () => {
         >
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={homePageHandler}>
                 <ListItemText
                   primary="myPhonebook"
                   className={Avalon.className}
@@ -85,17 +102,28 @@ export const Sidebar = () => {
                 />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
+            <Divider/>
+            <ListItem disablePadding sx={{
+              mt:'20px'
+            }}>
+              <ListItemButton onClick={contactsHandler}>
                 <ListItemIcon>
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Contacts" />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={addContactHandler}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add Contact" />
+              </ListItemButton>
+            </ListItem>
             <Divider />
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton disabled>
                 <ListItemIcon>
                   <CloudUploadIcon />
                 </ListItemIcon>
@@ -103,7 +131,7 @@ export const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton disabled>
                 <ListItemIcon>
                   <CloudDownloadIcon />
                 </ListItemIcon>
@@ -111,7 +139,7 @@ export const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton disabled>
                 <ListItemIcon>
                   <PrintIcon />
                 </ListItemIcon>

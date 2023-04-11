@@ -143,7 +143,7 @@ function Header() {
         zIndex: 100,
         background: "inherit",
         backdropFilter: "blur(5px)",
-        padding: "20px",
+        padding: "10px",
         pt: "10px",
         pb: "10px",
         display: "flex",
