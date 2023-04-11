@@ -1,17 +1,14 @@
-import { useTheme } from "@emotion/react";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import PauseIcon from "@mui/icons-material/Pause";
-import PersonIcon from "@mui/icons-material/Person";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PrintIcon from "@mui/icons-material/Print";
-import Box from "@mui/material/Box";
-import { useRouter } from "next/router";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
-import { Avalon } from "@/lib/mui/theme";
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { Avalon } from '@/lib/mui/theme'
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import PauseIcon from '@mui/icons-material/Pause'
+import PersonIcon from '@mui/icons-material/Person'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PrintIcon from '@mui/icons-material/Print'
 import {
   Divider,
   List,
@@ -20,31 +17,29 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
-  Slide,
-  useMediaQuery,
-} from "@mui/material";
-import { updateSyncV, useAsyncV } from "use-sync-v";
+  Slide
+} from '@mui/material'
+import Box from '@mui/material/Box'
+import { useRouter } from 'next/router'
+import { updateSyncV } from 'use-sync-v'
 
 export const Sidebar = () => {
-  const contacts = useAsyncV("contacts");
-  const theme = useTheme();
-  const maxWidth1000px = useMediaQuery("(max-width:1000px)");
-  const router = useRouter();
-  const activeTheme = useSyncLocalStorage("activeTheme");
-  const animate = useSyncLocalStorage("animate");
+  const router = useRouter()
+  const activeTheme = useSyncLocalStorage('activeTheme')
+  const animate = useSyncLocalStorage('animate')
 
   const animateHandler = () => {
-    setSyncLocalStorage("animate", animate ? false : true);
+    setSyncLocalStorage('animate', animate ? false : true)
     updateSyncV('show.sidebar', false)
-  };
+  }
 
   const themeHandler = () => {
     setSyncLocalStorage(
-      "activeTheme",
-      activeTheme === "dark" ? "light" : "dark"
-    );
+      'activeTheme',
+      activeTheme === 'dark' ? 'light' : 'dark'
+    )
     updateSyncV('show.sidebar', false)
-  };
+  }
 
   const contactsHandler = () => {
     router.push('/contacts')
@@ -72,11 +67,11 @@ export const Sidebar = () => {
         <Paper
           elevation={1}
           sx={{
-            width: "200px",
+            width: '200px',
             zIndex: 300,
-            height: "100%",
-            background: "inherit",
-            backdropFilter: "blur(5px)",
+            height: '100%',
+            background: 'inherit',
+            backdropFilter: 'blur(5px)',
           }}
         >
           <List>
@@ -87,17 +82,17 @@ export const Sidebar = () => {
                   className={Avalon.className}
                   primaryTypographyProps={{
                     fontSize: 20,
-                    fontWeight: "bolder",
+                    fontWeight: 'bolder',
                   }}
                   sx={{
-                    display: "flex",
-                    fontFamily: "monospace",
+                    display: 'flex',
+                    fontFamily: 'monospace',
                     fontWeight: 700,
-                    letterSpacing: ".1rem",
-                    textDecoration: "none",
-                    width: "270px",
+                    letterSpacing: '.1rem',
+                    textDecoration: 'none',
+                    width: '270px',
                     color: (theme) => theme.palette.text.primary,
-                    userSelect: "none",
+                    userSelect: 'none',
                   }}
                 />
               </ListItemButton>
@@ -159,7 +154,7 @@ export const Sidebar = () => {
             <ListItem disablePadding>
               <ListItemButton onClick={themeHandler}>
                 <ListItemIcon>
-                  {activeTheme === "dark" ? (
+                  {activeTheme === 'dark' ? (
                     <LightModeIcon />
                   ) : (
                     <DarkModeIcon />
@@ -172,5 +167,5 @@ export const Sidebar = () => {
         </Paper>
       </Slide>
     </Box>
-  );
-};
+  )
+}

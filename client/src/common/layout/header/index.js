@@ -1,154 +1,114 @@
-// REACT
-import { useEffect, useState } from "react";
 
-// NEXT
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { authSignOut } from '@/lib/hooks/useInitAuth'
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { AccountCircle } from '@mui/icons-material'
+import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import { Paper, useMediaQuery } from '@mui/material'
+import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { updateSyncV, useSyncV } from 'use-sync-v'
+import { SearchFieldComponent } from './searchField'
 
-// MUI
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import PauseIcon from "@mui/icons-material/Pause";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SearchIcon from "@mui/icons-material/Search";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import MenuIcon from "@mui/icons-material/Menu";
-import SettingsIcon from "@mui/icons-material/Settings";
-
-// LIB
-import { authSignOut } from "@/lib/hooks/useInitAuth";
-import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
-import { Avalon } from "@/lib/mui/theme";
-import { AccountCircle } from "@mui/icons-material";
-import { updateSyncV, useQueryV, useSyncV } from "use-sync-v";
-import { Avatar, Button, Paper, useMediaQuery, useTheme } from "@mui/material";
-import Image from "next/image";
-import { SearchFieldComponent } from "./searchField";
-import { getAuth } from "firebase/auth";
-
-// VARIABLES
 const loggedInSettings = [
   {
-    name: "Profile",
-    route: "profile",
+    name: 'Profile',
+    route: 'profile',
   },
   {
-    name: "Account",
-    route: "/",
+    name: 'Account',
+    route: '/',
   },
   {
-    name: "Contacts",
-    route: "contacts",
+    name: 'Contacts',
+    route: 'contacts',
   },
   {
-    name: "Logout",
-    route: "#",
+    name: 'Logout',
+    route: '#',
   },
-];
+]
 const loggedOutSettings = [
   {
-    name: "Register",
-    route: "register",
+    name: 'Register',
+    route: 'register',
   },
   {
-    name: "Login",
-    route: "login",
+    name: 'Login',
+    route: 'login',
   },
   {
-    name: "Recover Password",
-    route: "recoverPassword",
+    name: 'Recover Password',
+    route: 'recoverPassword',
   },
-];
+]
 
 function Header() {
-  // HOOKS
-  const theme = useTheme();
-  const router = useRouter();
-  const [setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const activeTheme = useSyncLocalStorage("activeTheme");
-  const animate = useSyncLocalStorage("animate");
-  const { authUser } = useSyncV("auth");
-  const isMobile = useMediaQuery("(max-width:900px)");
-  const [showSearch, setShowSearch] = useState(false);
-  const showSidebar = useSyncV("show.sidebar");
+  const router = useRouter()
+  const [setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
+  const activeTheme = useSyncLocalStorage('activeTheme')
+  const { authUser } = useSyncV('auth')
+  const isMobile = useMediaQuery('(max-width:900px)')
+  const [showSearch, setShowSearch] = useState(false)
+
   class eventsHandler {
     static themeHandler = () => {
       setSyncLocalStorage(
-        "activeTheme",
-        activeTheme === "dark" ? "light" : "dark"
-      );
-    };
+        'activeTheme',
+        activeTheme === 'dark' ? 'light' : 'dark'
+      )
+    }
     static handleOpenNavMenu = (e) => {
-      setAnchorElNav(e.currentTarget);
-    };
+      setAnchorElNav(e.currentTarget)
+    }
     static handleOpenUserMenu = (e) => {
-      setAnchorElUser(e.currentTarget);
-    };
+      setAnchorElUser(e.currentTarget)
+    }
     static handleCloseNavMenu = () => {
-      setAnchorElNav(null);
-    };
+      setAnchorElNav(null)
+    }
     static handleCloseUserMenu = () => {
-      setAnchorElUser(null);
-    };
+      setAnchorElUser(null)
+    }
     static handleClickNavMenu = (route) => {
-      router.push(route);
-    };
-    static animateHandler = () => {
-      setSyncLocalStorage("animate", animate ? false : true);
-    };
+      router.push(route)
+    }
   }
   const {
-    themeHandler,
     handleOpenUserMenu,
     handleCloseUserMenu,
     handleClickNavMenu,
-    animateHandler,
-  } = eventsHandler;
+  } = eventsHandler
 
   const showSearchHandler = () => {
-    setShowSearch((p) => !p);
-  };
-
-  const createContactHandler = () => {
-    updateSyncV("ui.phase.editContact", false);
-    updateSyncV("ui.phase.createContact", (p) => !p);
-    updateSyncV("ui.activeContact", {
-      doc_id: "",
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-      phone_number: "",
-      email_address: "",
-      profile_picture_url: "",
-    });
-  };
-  const showSettingsHandler = () => {};
+    setShowSearch((p) => !p)
+  }
 
   const toggleSidebar = () => {
-    updateSyncV("show.sidebar", (p) => !p);
-  };
+    updateSyncV('show.sidebar', (p) => !p)
+  }
 
   return (
     <Paper
       elevation={1}
       sx={{
-        position: "relative",
+        position: 'relative',
         zIndex: 100,
-        background: "inherit",
-        backdropFilter: "blur(5px)",
-        padding: "10px",
-        pt: "10px",
-        pb: "10px",
-        display: "flex",
-        alignItems: "center",
-        gap: "10px",
+        background: 'inherit',
+        backdropFilter: 'blur(5px)',
+        padding: '10px',
+        pt: '10px',
+        pb: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
         borderRadius:0
       }}
     >
@@ -159,33 +119,33 @@ function Header() {
       )}
       <Box
         sx={{
-          display: "flex",
-          flex: "1",
-          justifyContent: "right",
+          display: 'flex',
+          flex: '1',
+          justifyContent: 'right',
         }}
       >
-        {!showSearch && router.route === "/contacts" && (
+        {!showSearch && router.route === '/contacts' && (
           <SearchFieldComponent />
         )}
-        {router.route === "/contacts" && (
+        {router.route === '/contacts' && (
           <IconButton
             sx={{
-              color: "black",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              color: 'black',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
             onClick={showSearchHandler}
           >
-            {activeTheme === "dark" && (
+            {activeTheme === 'dark' && (
               <SearchIcon
                 style={{
                   filter:
-                    "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
+                    'invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)',
                 }}
               />
             )}
-            {activeTheme === "light" && <SearchIcon />}
+            {activeTheme === 'light' && <SearchIcon />}
           </IconButton>
         )}
       </Box>
@@ -197,23 +157,23 @@ function Header() {
             </IconButton>
           </Tooltip>
           <Menu
-            sx={{ mt: "45px" }}
+            sx={{ mt: '45px' }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             keepMounted
             transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
             {loggedInSettings.map((setting, id) => {
-              return setting.name === "Logout" ? (
+              return setting.name === 'Logout' ? (
                 <MenuItem key={id} onClick={() => authSignOut()}>
                   <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
@@ -224,7 +184,7 @@ function Header() {
                 >
                   <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
-              );
+              )
             })}
           </Menu>
         </>
@@ -237,17 +197,17 @@ function Header() {
             </IconButton>
           </Tooltip>
           <Menu
-            sx={{ mt: "45px" }}
+            sx={{ mt: '45px' }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             keepMounted
             transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
@@ -260,7 +220,7 @@ function Header() {
                 >
                   <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
-              );
+              )
             })}
           </Menu>
         </>
@@ -591,6 +551,6 @@ function Header() {
         )}
       </Box> */}
     </Paper>
-  );
+  )
 }
-export default Header;
+export default Header

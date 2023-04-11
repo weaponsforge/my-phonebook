@@ -1,10 +1,10 @@
-import ProtectedPage from "@/common/auth/protectedpage"
+import ProtectedPage from '@/common/auth/protectedpage'
 
 const SearchContact = () => {
-    return (
-        <>
-        </>
-    )
+  return (
+    <>
+    </>
+  )
 }
 
 export default ProtectedPage(SearchContact)

@@ -1,22 +1,8 @@
-// MUI
-import Paper from "@mui/material/Paper";
-// CSS
-import { useMediaQuery } from "@mui/material";
-import { useTheme } from "@emotion/react";
-import { useRouter } from "next/router";
+import { useMediaQuery } from '@mui/material'
+import Paper from '@mui/material/Paper'
 
 function Footer() {
-  const mobile = useMediaQuery("(max-width:500px)");
-  const theme = useTheme();
-  const router = useRouter();
-  
-  const showContactHandler = () => {};
-
-  const addContactHandler = () => {};
-
-  const searchContactHandler = () => {};
-
-  const fixAndManageHandler = () => {};
+  const mobile = useMediaQuery('(max-width:500px)')
 
   return (
     <>
@@ -24,15 +10,15 @@ function Footer() {
         <Paper
           elevation={1}
           sx={{
-            width: "100%",
+            width: '100%',
             minHeight: (theme) => theme.spacing(4),
             padding: '10px',
-            textAlign: "center",
-            marginTop: "auto",
+            textAlign: 'center',
+            marginTop: 'auto',
             zIndex: 100,
-            background: "inherit",
-            backdropFilter: "blur(5px)",
-            fontWeight: "bold",
+            background: 'inherit',
+            backdropFilter: 'blur(5px)',
+            fontWeight: 'bold',
           }}
           component="footer"
         >
@@ -40,7 +26,7 @@ function Footer() {
         </Paper>
       )}
     </>
-  );
+  )
 }
 
-export default Footer;
+export default Footer
