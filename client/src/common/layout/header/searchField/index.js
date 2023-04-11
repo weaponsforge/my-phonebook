@@ -1,5 +1,4 @@
 import { Box, TextField } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
 import { updateSyncV, useSyncV } from 'use-sync-v'
 
 export const SearchFieldComponent = () => {
@@ -13,29 +12,19 @@ export const SearchFieldComponent = () => {
       editContact: false,
     }))
     if (e.target.value === '') {
-      updateSyncV('ui.phase', (p) => ({
-        ...p,
-        createContact: false,
-        editContact: false,
-        search: false,
-      }))
+      updateSyncV('ui.phase.search', false)
     } else {
       updateSyncV('ui.phase.search', true)
     }
   }
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <SearchIcon fontSize="large" sx={{ aspectRatio: 1 }} />
-
-      <TextField
-        fullWidth
-        size="small"
-        variant="outlined"
-        value={searchKeyword ?? ''}
-        onChange={searchFieldHandler}
-        id="searchField"
-      />
+    <Box sx={{
+      flex:1,
+      display:'flex',
+      width:'100%',
+    }}>
+      <TextField fullWidth autoFocus={true} size="small" value={searchKeyword} onChange={searchFieldHandler}/>
     </Box>
   )
 }

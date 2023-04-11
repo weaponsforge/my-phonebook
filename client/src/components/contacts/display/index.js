@@ -11,15 +11,11 @@ export const ContactListDisplay = () => {
       <Box
         sx={{
           flex: 6.8,
-          minWidth: '500px',
-          maxHeight: '100%',
+          maxWidth:'1600px',
+          justifyContent:'center',
           width: '100%',
-          height: '100%',
           overflowY: 'scroll',
           userSelect: 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
         }}
       >
         {phase?.search ? <SearchResultsContainer /> : <ContactCardsContainer />}

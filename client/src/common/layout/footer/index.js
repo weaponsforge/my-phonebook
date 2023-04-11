@@ -1,14 +1,31 @@
-// MUI
+import { useMediaQuery } from '@mui/material'
 import Paper from '@mui/material/Paper'
 
-// CSS
-import styles from './styles'
+function Footer() {
+  const mobile = useMediaQuery('(max-width:500px)')
 
-function Footer () {
   return (
-    <Paper elevation={10} sx={styles.footer} component='footer'>
-      myPhonebook @2023
-    </Paper>
+    <>
+      {!mobile && (
+        <Paper
+          elevation={1}
+          sx={{
+            width: '100%',
+            minHeight: (theme) => theme.spacing(4),
+            padding: '10px',
+            textAlign: 'center',
+            marginTop: 'auto',
+            zIndex: 100,
+            background: 'inherit',
+            backdropFilter: 'blur(5px)',
+            fontWeight: 'bold',
+          }}
+          component="footer"
+        >
+          myPhonebook @2023
+        </Paper>
+      )}
+    </>
   )
 }
 

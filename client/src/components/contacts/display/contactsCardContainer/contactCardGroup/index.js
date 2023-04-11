@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import { ContactCard } from '../contactCard'
+import { ContactCard } from './contactCard'
 
 
 export const ContactCardsGroup = ({ content }) => {
