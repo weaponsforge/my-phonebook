@@ -6,6 +6,7 @@ import Section from "@/common/layout/section";
 import { useSyncLocalStorage } from "@/lib/hooks/useSync";
 import { Sidebar } from "../sidebar";
 import { useSyncV } from "use-sync-v";
+import { useMediaQuery } from "@mui/material";
 
 const Background = () => {
   const activeTheme = useSyncLocalStorage("activeTheme");
@@ -70,6 +71,7 @@ const Background = () => {
 function Page({ children }) {
   const animate = useSyncLocalStorage("animate");
   const showSidebar = useSyncV("show.sidebar");
+  const isMobile = useMediaQuery("(max-width:900px)");
 
   return (
     <>
@@ -82,21 +84,22 @@ function Page({ children }) {
           bottom: "0",
           right: "0",
           display: "flex",
-          flexDirection: "column",
+          overflowX: "hidden",
         }}
       >
-        <Header />
+        {showSidebar ||  !isMobile && <Sidebar />}
         <Box
           sx={{
-            flex: "1",
             display: "flex",
+            flexDirection: "column",
+            width:'100vw'
           }}
         >
-          {showSidebar && <Sidebar />}
-          <Section>{children}</Section>
-        </Box>
+          <Header />
 
-        <Footer />
+          <Section>{children}</Section>
+          <Footer />
+        </Box>
       </Box>
     </>
   );

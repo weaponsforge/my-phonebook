@@ -28,7 +28,7 @@ function Footer() {
     <>
       {!mobile && (
         <Paper
-          elevation={10}
+          elevation={1}
           sx={{
             width: "100%",
             minHeight: (theme) => theme.spacing(4),
@@ -44,92 +44,6 @@ function Footer() {
         >
           myPhonebook @2023
         </Paper>
-      )}
-      {mobile && router.route === "/contacts" && (
-        <>
-          <Paper
-            elevation={10}
-            sx={{
-              width: "100%",
-              minHeight: (theme) => theme.spacing(4),
-              textAlign: "center",
-              marginTop: "auto",
-              zIndex: 100,
-              background: "inherit",
-              backdropFilter: "blur(5px)",
-              fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                padding: "20px",
-                transition: "all 0.3s",
-                "&:hover": {
-                  boxShadow: "rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;",
-                  color: theme.palette.secondary.main,
-                },
-              }}
-              onClick={showContactHandler}
-            >
-              <ContactPageIcon sx={{ fontSize: "2rem" }} />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                padding: "20px",
-                transition: "all 0.3s",
-                "&:hover": {
-                  boxShadow: "rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;",
-                  color: theme.palette.secondary.main,
-                },
-              }}
-              onClick={addContactHandler}
-            >
-              <PersonAddIcon sx={{ fontSize: "2rem" }} />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                padding: "20px",
-                transition: "all 0.3s",
-                "&:hover": {
-                  boxShadow: "rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;",
-                  color: theme.palette.secondary.main,
-                },
-              }}
-              onClick={searchContactHandler}
-            >
-              <PersonSearchIcon sx={{ fontSize: "2rem" }} />
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                padding: "20px",
-                color: theme.palette.primary.primary,
-                transition: "all 0.3s",
-                "&:hover": {
-                  boxShadow: "rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;",
-                  color: theme.palette.secondary.main,
-                },
-              }}
-              onClick={fixAndManageHandler}
-            >
-              <SettingsIcon sx={{ fontSize: "2rem" }} />
-            </Box>
-          </Paper>
-        </>
       )}
     </>
   );

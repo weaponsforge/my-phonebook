@@ -75,9 +75,9 @@ function Header() {
   const activeTheme = useSyncLocalStorage("activeTheme");
   const animate = useSyncLocalStorage("animate");
   const { authUser } = useSyncV("auth");
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery("(max-width:900px)");
   const [showSearch, setShowSearch] = useState(false);
-
+  const showSidebar = useSyncV("show.sidebar");
   class eventsHandler {
     static themeHandler = () => {
       setSyncLocalStorage(
@@ -134,9 +134,10 @@ function Header() {
   const toggleSidebar = () => {
     updateSyncV("show.sidebar", (p) => !p);
   };
+
   return (
     <Paper
-      elevation={10}
+      elevation={1}
       sx={{
         position: "relative",
         zIndex: 100,
@@ -148,28 +149,14 @@ function Header() {
         display: "flex",
         alignItems: "center",
         gap: "10px",
+        borderRadius:0
       }}
     >
-      <IconButton>
-        <MenuIcon onClick={toggleSidebar} />
-      </IconButton>
-      <Typography
-        className={Avalon.className}
-        variant="h6"
-        noWrap
-        sx={{
-          display: "flex",
-          fontFamily: "monospace",
-          fontWeight: 700,
-          letterSpacing: ".1rem",
-          textDecoration: "none",
-          width: "250px",
-          color: (theme) => theme.palette.text.primary,
-          userSelect: "none",
-        }}
-      >
-        myPhonebook
-      </Typography>
+      {authUser && isMobile && (
+        <IconButton onClick={toggleSidebar}>
+          <MenuIcon />
+        </IconButton>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -202,25 +189,6 @@ function Header() {
           </IconButton>
         )}
       </Box>
-      <IconButton
-        sx={{
-          color: "black",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        onClick={showSettingsHandler}
-      >
-        {activeTheme === "dark" && (
-          <SettingsIcon
-            style={{
-              filter:
-                "invert(100%) sepia(0%) saturate(7440%) hue-rotate(111deg) brightness(126%) contrast(112%)",
-            }}
-          />
-        )}
-        {activeTheme === "light" && <SettingsIcon />}
-      </IconButton>
       {authUser && (
         <>
           <Tooltip title="Open settings">
