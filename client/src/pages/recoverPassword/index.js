@@ -2,7 +2,6 @@ import RecoverPasswordComponent from '@/components/recoverPassword'
 import { getRandomJoke } from '@/lib/services/random'
 import { useEffect, useState } from 'react'
 import { Validate } from '@/lib/utils/textValidation'
-
 import { sendPasswordResetEmail } from '@/lib/services/account'
 import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
 

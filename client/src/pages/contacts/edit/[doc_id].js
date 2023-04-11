@@ -21,15 +21,14 @@ const EditContact = () => {
   const { doc_id } = router.query
   const { authUser } = useSyncV('auth')
   const contacts = useAsyncV('contacts')
-  const editedContact = contacts.data.filter((el) => el.doc_id === doc_id)
+  const editedContact = contacts.data.filter((el) => el.doc_id === doc_id)[0]
+  const [form, setForm] = useState(editedContact ?? initialState)
+
+  const [isFormChanged, setIsFormChanged] = useState(false)
 
   useEffect(()=>{
-    if (!editedContact[0]) return
-    setForm(editedContact[0])
+    setForm(editedContact)
   },[editedContact])
-
-  const [form, setForm] = useState(initialState)
-  const [isFormChanged, setIsFormChanged] = useState(false)
 
   const editContactHandler = (e) => {
     const fieldID = e.target.id
