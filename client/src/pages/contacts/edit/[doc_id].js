@@ -68,7 +68,7 @@ const EditContact = () => {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           gap: '10px',
           width: '100%',
           height: 'auto',

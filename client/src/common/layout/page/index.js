@@ -70,11 +70,12 @@ const Background = () => {
 }
 
 function Page({ children }) {
+  const auth = useSyncV("auth")
   const router = useRouter()
   const animate = useSyncLocalStorage('animate')
   const showSidebar = useSyncV('show.sidebar')
   const isMobile = useMediaQuery('(max-width:900px)')
-
+  console.log(auth)
   return (
     <>
       {animate && <Background />}
@@ -88,7 +89,7 @@ function Page({ children }) {
           display: 'flex',
         }}
       >
-        {(showSidebar || !isMobile) && router.route == '/contacts' &&<Sidebar />}
+        {(showSidebar || !isMobile) && auth.authStatus === "signedIn" &&<Sidebar />}
         <Box
           sx={{
             flex:1,
