@@ -1,5 +1,6 @@
 import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { Avalon } from '@/lib/mui/theme'
+import { useTheme } from '@emotion/react'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
@@ -66,42 +67,17 @@ export const Sidebar = () => {
         in={true}
       >
         <Paper
-          elevation={1}
+          elevation={0}
           sx={{
             width: '200px',
-            zIndex: 300,
+            zIndex: 50,
             height: '100%',
             background: 'inherit',
             backdropFilter: 'blur(5px)',
           }}
         >
           <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={homePageHandler}>
-                <ListItemText
-                  primary="myPhonebook"
-                  className={Avalon.className}
-                  primaryTypographyProps={{
-                    fontSize: 20,
-                    fontWeight: 'bolder',
-                  }}
-                  sx={{
-                    display: 'flex',
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.1rem',
-                    textDecoration: 'none',
-                    width: '270px',
-                    color: (theme) => theme.palette.text.primary,
-                    userSelect: 'none',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider/>
-            <ListItem disablePadding sx={{
-              mt:'20px'
-            }}>
+            <ListItem disablePadding >
               <ListItemButton onClick={contactsHandler}>
                 <ListItemIcon>
                   <PersonIcon />
@@ -117,7 +93,6 @@ export const Sidebar = () => {
                 <ListItemText primary="Add Contact" />
               </ListItemButton>
             </ListItem>
-            <Divider />
             <ListItem disablePadding>
               <ListItemButton disabled>
                 <ListItemIcon>
@@ -142,7 +117,6 @@ export const Sidebar = () => {
                 <ListItemText primary="Print" />
               </ListItemButton>
             </ListItem>
-            <Divider />
             <ListItem disablePadding>
               <ListItemButton onClick={animateHandler}>
                 <ListItemIcon>
@@ -164,7 +138,6 @@ export const Sidebar = () => {
                 <ListItemText primary="Theme" />
               </ListItemButton>
             </ListItem>
-            <Divider />
             <ListItem disablePadding>
               <ListItemButton disabled>
                 <ListItemIcon>

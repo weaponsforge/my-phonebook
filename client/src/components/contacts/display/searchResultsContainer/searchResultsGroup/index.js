@@ -22,7 +22,6 @@ export const SearchResultsGroup = ({ content }) => {
         gridTemplateColumns: '1fr',
         padding: '20px',
         borderBottom: '1px dashed grey',
-
       }}
     >
       <Typography variant="h5"
