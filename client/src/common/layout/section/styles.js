@@ -4,7 +4,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     overflow:'scroll',
-    width:'100vw'
+    width:'100%'
   }
 }
 

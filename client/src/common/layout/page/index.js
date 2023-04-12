@@ -7,6 +7,7 @@ import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { Sidebar } from '../sidebar'
 import { useSyncV } from 'use-sync-v'
 import { useMediaQuery } from '@mui/material'
+import { useRouter } from 'next/router'
 
 const Background = () => {
   const activeTheme = useSyncLocalStorage('activeTheme')
@@ -69,6 +70,7 @@ const Background = () => {
 }
 
 function Page({ children }) {
+  const router = useRouter()
   const animate = useSyncLocalStorage('animate')
   const showSidebar = useSyncV('show.sidebar')
   const isMobile = useMediaQuery('(max-width:900px)')
@@ -86,12 +88,12 @@ function Page({ children }) {
           display: 'flex',
         }}
       >
-        {(showSidebar || !isMobile) && <Sidebar />}
+        {(showSidebar || !isMobile) && router.route == '/contacts' &&<Sidebar />}
         <Box
           sx={{
+            flex:1,
             display: 'flex',
             flexDirection: 'column',
-            width:`${isMobile ? '100%' : 'calc(100vw - 200px)'}`
           }}
         >
           <Header />
