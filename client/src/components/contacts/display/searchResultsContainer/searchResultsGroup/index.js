@@ -6,8 +6,8 @@ const groupNameMapping = {
   first_name: 'Matching First Name',
   middle_name: 'Matching Middle Name',
   last_name: 'Matching Last Name',
-  contact_no: 'Matching Contact Number',
-  contact_email: 'Matching Contact Email'
+  phone_number: 'Matching Contact Number',
+  email_address: 'Matching Contact Email'
 }
 
 export const SearchResultsGroup = ({ content }) => {

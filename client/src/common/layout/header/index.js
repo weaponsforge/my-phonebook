@@ -22,7 +22,7 @@ const loggedInSettings = [
   },
   {
     name: "Account",
-    route: "/",
+    route: "/account",
   },
   {
     name: "Logout",
@@ -32,15 +32,15 @@ const loggedInSettings = [
 const loggedOutSettings = [
   {
     name: "Register",
-    route: "register",
+    route: "/register",
   },
   {
     name: "Login",
-    route: "login",
+    route: "/login",
   },
   {
     name: "Recover Password",
-    route: "recoverPassword",
+    route: "/recoverPassword",
   },
 ];
 
