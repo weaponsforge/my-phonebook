@@ -9,6 +9,7 @@ import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PrintIcon from '@mui/icons-material/Print'
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Divider,
   List,
@@ -161,6 +162,15 @@ export const Sidebar = () => {
                   )}
                 </ListItemIcon>
                 <ListItemText primary="Theme" />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem disablePadding>
+              <ListItemButton disabled>
+                <ListItemIcon>
+                  <SettingsIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
               </ListItemButton>
             </ListItem>
           </List>
