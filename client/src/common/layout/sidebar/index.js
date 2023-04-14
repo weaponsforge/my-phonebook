@@ -1,16 +1,16 @@
-import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
-import { Avalon } from '@/lib/mui/theme'
-import { useTheme } from '@emotion/react'
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
-import LightModeIcon from '@mui/icons-material/LightMode'
-import PauseIcon from '@mui/icons-material/Pause'
-import PersonIcon from '@mui/icons-material/Person'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import PrintIcon from '@mui/icons-material/Print'
-import SettingsIcon from '@mui/icons-material/Settings';
+import { setSyncLocalStorage, useSyncLocalStorage } from "@/lib/hooks/useSync";
+import { Avalon } from "@/lib/mui/theme";
+import { useTheme } from "@emotion/react";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import PauseIcon from "@mui/icons-material/Pause";
+import PersonIcon from "@mui/icons-material/Person";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PrintIcon from "@mui/icons-material/Print";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Divider,
   List,
@@ -19,44 +19,44 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
-  Slide
-} from '@mui/material'
-import Box from '@mui/material/Box'
-import { useRouter } from 'next/router'
-import { updateSyncV } from 'use-sync-v'
+  Slide,
+} from "@mui/material";
+import Box from "@mui/material/Box";
+import { useRouter } from "next/router";
+import { updateSyncV } from "use-sync-v";
 
 export const Sidebar = () => {
-  const router = useRouter()
-  const activeTheme = useSyncLocalStorage('activeTheme')
-  const animate = useSyncLocalStorage('animate')
+  const router = useRouter();
+  const activeTheme = useSyncLocalStorage("activeTheme");
+  const animate = useSyncLocalStorage("animate");
 
   const animateHandler = () => {
-    setSyncLocalStorage('animate', animate ? false : true)
-    updateSyncV('show.sidebar', false)
-  }
+    setSyncLocalStorage("animate", animate ? false : true);
+    updateSyncV("show.sidebar", false);
+  };
 
   const themeHandler = () => {
     setSyncLocalStorage(
-      'activeTheme',
-      activeTheme === 'dark' ? 'light' : 'dark'
-    )
-    updateSyncV('show.sidebar', false)
-  }
+      "activeTheme",
+      activeTheme === "dark" ? "light" : "dark"
+    );
+    updateSyncV("show.sidebar", false);
+  };
 
   const contactsHandler = () => {
-    router.push('/contacts')
-    updateSyncV('show.sidebar', false)
-  }
+    router.push("/contacts");
+    updateSyncV("show.sidebar", false);
+  };
 
   const addContactHandler = () => {
-    router.push('/contacts/add')
-    updateSyncV('show.sidebar', false)
-  }
+    router.push("/contacts/add");
+    updateSyncV("show.sidebar", false);
+  };
 
   const homePageHandler = () => {
-    router.push('/')
-    updateSyncV('show.sidebar', false)
-  }
+    router.push("/");
+    updateSyncV("show.sidebar", false);
+  };
   return (
     <Box>
       <Slide
@@ -69,15 +69,23 @@ export const Sidebar = () => {
         <Paper
           elevation={0}
           sx={{
-            width: '200px',
+            width: "200px",
             zIndex: 50,
-            height: '100%',
-            background: 'inherit',
-            backdropFilter: 'blur(5px)',
+            height: "100%",
+            background: "inherit",
+            backdropFilter: "blur(5px)",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <List>
-            <ListItem disablePadding >
+          <List
+            sx={{
+              flex: "1",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <ListItem disablePadding>
               <ListItemButton onClick={contactsHandler}>
                 <ListItemIcon>
                   <PersonIcon />
@@ -129,7 +137,7 @@ export const Sidebar = () => {
             <ListItem disablePadding>
               <ListItemButton onClick={themeHandler}>
                 <ListItemIcon>
-                  {activeTheme === 'dark' ? (
+                  {activeTheme === "dark" ? (
                     <LightModeIcon />
                   ) : (
                     <DarkModeIcon />
@@ -141,14 +149,22 @@ export const Sidebar = () => {
             <ListItem disablePadding>
               <ListItemButton disabled>
                 <ListItemIcon>
-                  <SettingsIcon/>
+                  <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
               </ListItemButton>
+            </ListItem>
+            <ListItem
+              sx={{
+                flex: "1",
+              }}
+            ></ListItem>
+            <ListItem>
+              <ListItemText primary="myPhonebook@2023" />
             </ListItem>
           </List>
         </Paper>
       </Slide>
     </Box>
-  )
-}
+  );
+};

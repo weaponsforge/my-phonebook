@@ -109,7 +109,7 @@ function Page({ children }) {
           
           <Section>{children}</Section>
         </Box>
-        <Footer />
+        {/* <Footer /> */}
       </Box>
     </>
   );
