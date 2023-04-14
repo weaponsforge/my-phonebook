@@ -4,7 +4,7 @@ import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useAsyncV, useSyncV } from 'use-sync-v'
+import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
 
 const initialState = {
   sorting:'',
@@ -38,20 +38,20 @@ const EditContact = () => {
       [fieldID]: fieldValue,
     }
     setForm(updatedValue)
-    if (JSON.stringify(updatedValue) === JSON.stringify(editedContact[0])) {
+    if (JSON.stringify(updatedValue) === JSON.stringify(editedContact)) {
       setIsFormChanged(false)
     } else {
       setIsFormChanged(true)
     }
   }
-
+  updateSyncV("contacts.loading", true)
   const saveHandler = () => {
     const createdContact = {
       ...form,
       sorting:
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
-    FirebaseFirestore.updateDoc(
+    const resp = FirebaseFirestore.updateDoc(
       `users/${authUser.uid}/contacts/${doc_id}`,
       createdContact
     )

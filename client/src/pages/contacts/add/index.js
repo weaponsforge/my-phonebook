@@ -17,7 +17,6 @@ const initialState = {
 
 const Add = () => {
   const {authUser} = useSyncV('auth')
-
   const [form, setForm] = useState(initialState)
   const [isFormChanged, setIsFormChanged] = useState(false)
 
