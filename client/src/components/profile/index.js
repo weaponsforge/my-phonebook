@@ -67,7 +67,6 @@ export const ProfileComponent = () => {
         }}
       >
         <Paper
-          elevation={6}
           sx={{
             display: 'grid',
             gridTemplateColumns: '1fr auto',
