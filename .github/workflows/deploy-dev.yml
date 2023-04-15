@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - dev
+      - feature/weaponsforge-50
 
 jobs:
   lint-export-client:
