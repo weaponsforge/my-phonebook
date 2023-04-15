@@ -18,13 +18,62 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // Check for valid Contact field types
+    function validContactFieldType (requestData) {
+    	return
+      	(!('doc_id' in requestData.keys()) || requestData.doc_id is string) &&
+      	(!('email_address' in requestData.keys()) || requestData.email_address is string) &&
+        (!('first_name' in requestData.keys()) || requestData.first_name is string) &&
+        (!('last_name' in requestData.keys()) || requestData.last_name is string) &&
+        (!('middle_name' in requestData.keys()) || requestData.middle_name is string) &&
+        (!('phone_number' in requestData.keys()) || requestData.phone_number is string) &&
+        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url is string) &&
+        (!('date_created' in requestData.keys()) || requestData.date_created is timestamp) &&
+        (!('date_updated' in requestData.keys()) || requestData.date_updated is timestamp);
+    }
+
+    // Check for Contact fields required character length
+    function validContactFieldLength (requestData) {
+    	return
+      	(!('email_address' in requestData.keys()) || requestData.email_address.size() < 50) &&
+        (!('first_name' in requestData.keys()) || requestData.first_name.size() < 50) &&
+        (!('last_name' in requestData.keys()) || requestData.last_name.size() < 50) &&
+        (!('middle_name' in requestData.keys()) || requestData.middle_name.size() < 50) &&
+        (!('phone_number' in requestData.keys()) || requestData.phone_number.size() < 20) &&
+        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url.size() < 600);
+    }
+
     // New Contact documents should contain only the specified keys
     function validNewContact () {
-     	return request.resource.data.keys().hasOnly(['doc_id', 'name', 'location', 'city', 'address', 'hours', 'cuisine', 'date_created', 'date_updated']);
+    	let fields = [
+      	'doc_id',
+        'email_address',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone_number',
+        'profile_picture_url',
+        'date_created',
+        'date_updated'
+      ];
+
+    	return
+      	(request.resource.data.keys().hasAll(fields)) &&
+       	(request.resource.data.keys().hasOnly(fields));
     }
 
     // Contact for update should only contain all (or any) of the specified keys
     function isValidUpdateContactFields () {
+      let fields = [
+        'email_address',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone_number',
+        'profile_picture_url',
+        'date_updated'
+      ];
+
     	return
       	// Contains required field
         (request.resource.data.diff(resource.data).affectedKeys().hasAll(
@@ -33,8 +82,7 @@ service cloud.firestore {
       	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
           ['doc_id', 'date_created'])) &&
         // Only allows updates for the following fields
-      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(
-        	['name', 'location', 'city', 'address', 'hours', 'cuisine', 'date_updated']))
+      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields))
     }
 
     // Block read/write access on all paths from the root level
@@ -61,8 +109,13 @@ service cloud.firestore {
 		// Only authenticated users can read, create and update documents under the
 		// users/{userId}/posts subcollection
     match /users/{userId}/contacts/{contactId} {
-    	allow create: if isValidUser() && isAccountOwner(userId) && validNewContact();
-      allow update: if isValidUser() && isAccountOwner(userId) && isValidUpdateContactFields();
+    	allow create: if isValidUser() && isAccountOwner(userId) &&
+      	validNewContact() &&
+        validContactFieldType(request.resource.data);
+      allow update: if isValidUser() && isAccountOwner(userId) &&
+      	isValidUpdateContactFields() &&
+        validContactFieldType(request.resource.data) &&
+        validContactFieldLength(request.resource.data);
       allow delete: if isValidUser() && isAccountOwner(userId);
       allow get: if isValidUser() && isAccountOwner(userId);
       allow list: if isValidUser() && isAccountOwner(userId);
