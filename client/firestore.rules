@@ -18,6 +18,25 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // New Contact documents should contain only the specified keys
+    function validNewContact () {
+     	return request.resource.data.keys().hasOnly(['doc_id', 'name', 'location', 'city', 'address', 'hours', 'cuisine', 'date_created', 'date_updated']);
+    }
+
+    // Contact for update should only contain all (or any) of the specified keys
+    function isValidUpdateContactFields () {
+    	return
+      	// Contains required field
+        (request.resource.data.diff(resource.data).affectedKeys().hasAll(
+        	['date_updated'])) &&
+        // Does not allow updating the following fields
+      	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
+          ['doc_id', 'date_created'])) &&
+        // Only allows updates for the following fields
+      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+        	['name', 'location', 'city', 'address', 'hours', 'cuisine', 'date_updated']))
+    }
+
     // Block read/write access on all paths from the root level
     match /{document=**} {
     	allow read, write: if false;
@@ -40,9 +59,11 @@ service cloud.firestore {
     }
 
 		// Only authenticated users can read, create and update documents under the
-		// users/{userId}/cards subcollection
+		// users/{userId}/posts subcollection
     match /users/{userId}/contacts/{contactId} {
-      allow write: if isValidUser() && isAccountOwner(userId);
+    	allow create: if isValidUser() && isAccountOwner(userId) && validNewContact();
+      allow update: if isValidUser() && isAccountOwner(userId) && isValidUpdateContactFields();
+      allow delete: if isValidUser() && isAccountOwner(userId);
       allow get: if isValidUser() && isAccountOwner(userId);
       allow list: if isValidUser() && isAccountOwner(userId);
     }
