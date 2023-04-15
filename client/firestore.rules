@@ -2,6 +2,8 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+  	// AUTH --------------------------------------------------------
+
     // Is the user signed-in using basic authentication?
     function isSignedIn() {
       return request.auth != null;
@@ -18,6 +20,8 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // CONTACTS --------------------------------------------------------
+
     // Check for valid Contact field types
     function validContactFieldType (requestData) {
     	return
@@ -28,6 +32,7 @@ service cloud.firestore {
         (!('middle_name' in requestData.keys()) || requestData.middle_name is string) &&
         (!('phone_number' in requestData.keys()) || requestData.phone_number is string) &&
         (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url is string) &&
+        (!('sorting' in requestData.keys()) || requestData.sorting is string) &&
         (!('date_created' in requestData.keys()) || requestData.date_created is timestamp) &&
         (!('date_updated' in requestData.keys()) || requestData.date_updated is timestamp);
     }
@@ -40,11 +45,18 @@ service cloud.firestore {
         (!('last_name' in requestData.keys()) || requestData.last_name.size() < 50) &&
         (!('middle_name' in requestData.keys()) || requestData.middle_name.size() < 50) &&
         (!('phone_number' in requestData.keys()) || requestData.phone_number.size() < 20) &&
-        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url.size() < 600);
+        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url.size() < 600) &&
+        (!('sorting' in requestData.keys()) || requestData.phone_number.size() < 200);
+    }
+
+    // Check if Contact fields satisfies other requirements
+    function validContactField (requestData) {
+    	return
+      	(!('email_address' in requestData.keys()) || requestData.email_address.matches('.*@.*[.].*'))
     }
 
     // New Contact documents should contain only the specified keys
-    function validNewContact () {
+    function isValidNewContact () {
     	let fields = [
       	'doc_id',
         'email_address',
@@ -53,6 +65,7 @@ service cloud.firestore {
         'middle_name',
         'phone_number',
         'profile_picture_url',
+        'sorting',
         'date_created',
         'date_updated'
       ];
@@ -62,7 +75,7 @@ service cloud.firestore {
        	(request.resource.data.keys().hasOnly(fields));
     }
 
-    // Contact for update should only contain all (or any) of the specified keys
+    // Contact documents for updating should contain only the specified keys
     function isValidUpdateContactFields () {
       let fields = [
         'email_address',
@@ -71,6 +84,7 @@ service cloud.firestore {
         'middle_name',
         'phone_number',
         'profile_picture_url',
+        'sorting',
         'date_updated'
       ];
 
@@ -85,6 +99,31 @@ service cloud.firestore {
       	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields))
     }
 
+    // USER PROFILE --------------------------------------------------------
+
+    // User profile for update should only contain all (or any) of the specified keys
+    function isValidUpdateUserFields () {
+      let fields = [
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone_number',
+        'date_updated'
+      ];
+
+    	return
+      	// Contains required field
+        (request.resource.data.diff(resource.data).affectedKeys().hasAll(
+        	['date_updated'])) &&
+        // Does not allow updating the following fields
+      	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
+          ['doc_id', 'date_created', 'email_address'])) &&
+        // Only allows updates for the following fields
+      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields))
+    }
+
+    // DOCUMENTS matching rules  --------------------------------------------------------
+
     // Block read/write access on all paths from the root level
     match /{document=**} {
     	allow read, write: if false;
@@ -93,8 +132,12 @@ service cloud.firestore {
 		// Authenticated users can read, create and update only their own user document
     // under the /users root-collection only
     match /users/{userId}  {
+    	// New user documents are created from the backend after email verification
     	allow create, delete: if false;
-      allow update: if isValidUser() && isAccountOwner(userId);
+      allow update: if isValidUser() && isAccountOwner(userId) &&
+      	isValidUpdateUserFields() &&
+        validContactFieldType(request.resource.data) &&
+        validContactFieldLength(request.resource.data);
       allow get: if isValidUser() && isAccountOwner(userId);
       allow list: if false;
     }
@@ -110,12 +153,15 @@ service cloud.firestore {
 		// users/{userId}/posts subcollection
     match /users/{userId}/contacts/{contactId} {
     	allow create: if isValidUser() && isAccountOwner(userId) &&
-      	validNewContact() &&
-        validContactFieldType(request.resource.data);
+      	isValidNewContact() &&
+        validContactFieldType(request.resource.data) &&
+        validContactFieldLength(request.resource.data) &&
+        validContactField(request.resource.data);
       allow update: if isValidUser() && isAccountOwner(userId) &&
       	isValidUpdateContactFields() &&
         validContactFieldType(request.resource.data) &&
-        validContactFieldLength(request.resource.data);
+        validContactFieldLength(request.resource.data) &&
+        validContactField(request.resource.data);
       allow delete: if isValidUser() && isAccountOwner(userId);
       allow get: if isValidUser() && isAccountOwner(userId);
       allow list: if isValidUser() && isAccountOwner(userId);
