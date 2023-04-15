@@ -107,6 +107,7 @@ service cloud.firestore {
         'first_name',
         'last_name',
         'middle_name',
+        'email_address',
         'phone_number',
         'date_updated'
       ];
@@ -117,7 +118,7 @@ service cloud.firestore {
         	['date_updated'])) &&
         // Does not allow updating the following fields
       	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
-          ['doc_id', 'date_created', 'email_address'])) &&
+          ['doc_id', 'date_created'])) &&
         // Only allows updates for the following fields
       	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields))
     }
@@ -137,7 +138,8 @@ service cloud.firestore {
       allow update: if isValidUser() && isAccountOwner(userId) &&
       	isValidUpdateUserFields() &&
         validContactFieldType(request.resource.data) &&
-        validContactFieldLength(request.resource.data);
+        validContactFieldLength(request.resource.data) &&
+        validContactField(request.resource.data);
       allow get: if isValidUser() && isAccountOwner(userId);
       allow list: if false;
     }
