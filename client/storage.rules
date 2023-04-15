@@ -12,11 +12,6 @@ service firebase.storage {
       return isSignedIn() && request.auth.token.account_level != null
     }
 
-    // Does the signed-in user's auth uid match the requested userId?
-    function isAccountOwner(userId) {
-      return request.auth.uid == userId;
-    }
-
     match /{allPaths=**} {
       allow read;
       allow write: if isValidUser();
