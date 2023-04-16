@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-  	// AUTH --------------------------------------------------------
+    // AUTH --------------------------------------------------------
 
     // Is the user signed-in using basic authentication?
     function isSignedIn() {
@@ -91,7 +91,7 @@ service cloud.firestore {
     	return
       	// Contains required field
         (request.resource.data.diff(resource.data).affectedKeys().hasAll(
-        	['date_updated'])) &&
+          ['date_updated'])) &&
         // Does not allow updating the following fields
       	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
           ['doc_id', 'date_created'])) &&
@@ -115,7 +115,7 @@ service cloud.firestore {
     	return
       	// Contains required field
         (request.resource.data.diff(resource.data).affectedKeys().hasAll(
-        	['date_updated'])) &&
+          ['date_updated'])) &&
         // Does not allow updating the following fields
       	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
           ['doc_id', 'date_created'])) &&
@@ -127,14 +127,14 @@ service cloud.firestore {
 
     // Block read/write access on all paths from the root level
     match /{document=**} {
-    	allow read, write: if false;
+      allow read, write: if false;
     }
 
-		// Authenticated users can read, create and update only their own user document
+    // Authenticated users can read, create and update only their own user document
     // under the /users root-collection only
     match /users/{userId}  {
-    	// New user documents are created from the backend after email verification
-    	allow create, delete: if false;
+      // New user documents are created from the backend after email verification
+      allow create, delete: if false;
       allow update: if isValidUser() && isAccountOwner(userId) &&
       	isValidUpdateUserFields() &&
         validContactFieldType(request.resource.data) &&
@@ -144,15 +144,15 @@ service cloud.firestore {
       allow list: if false;
     }
 
-		// Authenticated users can read only their own subcollections under /users/{userId}
+    // Authenticated users can read only their own subcollections under /users/{userId}
     // Unauthenticated users cannot write in any subcollections under /users/{userId}
     match /users/{userId}/{document=**} {
       allow write: if false;
       allow list: if isValidUser() && isAccountOwner(userId);
     }
 
-		// Only authenticated users can read, create and update documents under the
-		// users/{userId}/posts subcollection
+    // Only authenticated users can read, create and update documents under the
+    // users/{userId}/posts subcollection
     match /users/{userId}/contacts/{contactId} {
     	allow create: if isValidUser() && isAccountOwner(userId) &&
       	isValidNewContact() &&
