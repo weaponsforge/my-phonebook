@@ -3,10 +3,10 @@ import { LoadingLinear } from '@/common/ui/loadingLinear'
 import { Box } from '@mui/material'
 import { useAsyncV } from 'use-sync-v'
 import { ContactListDisplay } from './display'
-import { SidebarComponent } from './sidebar'
 
 function ContactsComponent() {
   const { loading } = useAsyncV('contacts')
+
   return (
     <Page>
       {loading && <LoadingLinear />}
@@ -17,12 +17,9 @@ function ContactsComponent() {
           flexWrap: 'wrap',
           overflowY: 'scroll',
           userSelect: 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
+          justifyContent: 'center',
         }}
       >
-        <SidebarComponent />
         <ContactListDisplay />
       </Box>
     </Page>

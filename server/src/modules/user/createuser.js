@@ -3,7 +3,7 @@ const { createDocument } = require('../../utils/firestore')
 const ServerError = require('../../utils/error')
 
 /**
- *
+ * Create a new User profile Firestore document.
  * @param {String} userId - Firebase Auth ID
  * @typedef {Object} params - User profile document key-value pairs
  * @param {String} params.first_name - First name
@@ -23,7 +23,7 @@ const createUser = async (userId, params) => {
         first_name: params?.first_name ?? '',
         middle_name: params?.middle_name ?? '',
         last_name: params?.last_name ?? '',
-        email: params?.email ?? '',
+        email_address: params?.email ?? '',
         phone_number: params?.phone_number ?? '',
         date_created: admin.firestore.Timestamp.now(),
         date_updated: admin.firestore.Timestamp.now()
