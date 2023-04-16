@@ -1,0 +1,172 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // AUTH --------------------------------------------------------
+
+    // Is the user signed-in using basic authentication?
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Is the signed-in user a valid App user?
+    // Has a custom claims "account_level" value: 1=admin, 2=user
+    function isValidUser() {
+      return isSignedIn() && request.auth.token.account_level != null
+    }
+
+    // Does the signed-in user's auth uid match the requested userId?
+    function isAccountOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // CONTACTS --------------------------------------------------------
+
+    // Check for valid Contact field types
+    function validContactFieldType (requestData) {
+    	return
+      	(!('doc_id' in requestData.keys()) || requestData.doc_id is string) &&
+      	(!('email_address' in requestData.keys()) || requestData.email_address is string) &&
+        (!('first_name' in requestData.keys()) || requestData.first_name is string) &&
+        (!('last_name' in requestData.keys()) || requestData.last_name is string) &&
+        (!('middle_name' in requestData.keys()) || requestData.middle_name is string) &&
+        (!('phone_number' in requestData.keys()) || requestData.phone_number is string) &&
+        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url is string) &&
+        (!('sorting' in requestData.keys()) || requestData.sorting is string) &&
+        (!('date_created' in requestData.keys()) || requestData.date_created is timestamp) &&
+        (!('date_updated' in requestData.keys()) || requestData.date_updated is timestamp);
+    }
+
+    // Check for Contact fields required character length
+    function validContactFieldLength (requestData) {
+    	return
+      	(!('email_address' in requestData.keys()) || requestData.email_address.size() < 50) &&
+        (!('first_name' in requestData.keys()) || requestData.first_name.size() < 50) &&
+        (!('last_name' in requestData.keys()) || requestData.last_name.size() < 50) &&
+        (!('middle_name' in requestData.keys()) || requestData.middle_name.size() < 50) &&
+        (!('phone_number' in requestData.keys()) || requestData.phone_number.size() < 20) &&
+        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url.size() < 600) &&
+        (!('sorting' in requestData.keys()) || requestData.phone_number.size() < 200);
+    }
+
+    // Check if Contact fields satisfies other requirements
+    function validContactField (requestData) {
+    	return
+      	(!('email_address' in requestData.keys()) || requestData.email_address.matches('.*@.*[.].*'))
+    }
+
+    // New Contact documents should contain only the specified keys
+    function isValidNewContact () {
+    	let fields = [
+      	'doc_id',
+        'email_address',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone_number',
+        'profile_picture_url',
+        'sorting',
+        'date_created',
+        'date_updated'
+      ];
+
+    	return
+      	(request.resource.data.keys().hasAll(fields)) &&
+       	(request.resource.data.keys().hasOnly(fields));
+    }
+
+    // Contact documents for updating should contain only the specified keys
+    function isValidUpdateContactFields () {
+      let fields = [
+        'email_address',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone_number',
+        'profile_picture_url',
+        'sorting',
+        'date_updated'
+      ];
+
+    	return
+      	// Contains required field
+        (request.resource.data.diff(resource.data).affectedKeys().hasAll(
+          ['date_updated'])) &&
+        // Does not allow updating the following fields
+      	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
+          ['doc_id', 'date_created'])) &&
+        // Only allows updates for the following fields
+      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields))
+    }
+
+    // USER PROFILE --------------------------------------------------------
+
+    // User profile for update should only contain all (or any) of the specified keys
+    function isValidUpdateUserFields () {
+      let fields = [
+        'first_name',
+        'last_name',
+        'middle_name',
+        'email_address',
+        'phone_number',
+        'date_updated'
+      ];
+
+    	return
+      	// Contains required field
+        (request.resource.data.diff(resource.data).affectedKeys().hasAll(
+          ['date_updated'])) &&
+        // Does not allow updating the following fields
+      	(!request.resource.data.diff(resource.data).affectedKeys().hasAny(
+          ['doc_id', 'date_created'])) &&
+        // Only allows updates for the following fields
+      	(request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields))
+    }
+
+    // DOCUMENTS matching rules  --------------------------------------------------------
+
+    // Block read/write access on all paths from the root level
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Authenticated users can read, create and update only their own user document
+    // under the /users root-collection only
+    match /users/{userId}  {
+      // New user documents are created from the backend after email verification
+      allow create, delete: if false;
+      allow update: if isValidUser() && isAccountOwner(userId) &&
+      	isValidUpdateUserFields() &&
+        validContactFieldType(request.resource.data) &&
+        validContactFieldLength(request.resource.data) &&
+        validContactField(request.resource.data);
+      allow get: if isValidUser() && isAccountOwner(userId);
+      allow list: if false;
+    }
+
+    // Authenticated users can read only their own subcollections under /users/{userId}
+    // Unauthenticated users cannot write in any subcollections under /users/{userId}
+    match /users/{userId}/{document=**} {
+      allow write: if false;
+      allow list: if isValidUser() && isAccountOwner(userId);
+    }
+
+    // Only authenticated users can read, create and update documents under the
+    // users/{userId}/posts subcollection
+    match /users/{userId}/contacts/{contactId} {
+    	allow create: if isValidUser() && isAccountOwner(userId) &&
+      	isValidNewContact() &&
+        validContactFieldType(request.resource.data) &&
+        validContactFieldLength(request.resource.data) &&
+        validContactField(request.resource.data);
+      allow update: if isValidUser() && isAccountOwner(userId) &&
+      	isValidUpdateContactFields() &&
+        validContactFieldType(request.resource.data) &&
+        validContactFieldLength(request.resource.data) &&
+        validContactField(request.resource.data);
+      allow delete: if isValidUser() && isAccountOwner(userId);
+      allow get: if isValidUser() && isAccountOwner(userId);
+      allow list: if isValidUser() && isAccountOwner(userId);
+    }
+  }
+}

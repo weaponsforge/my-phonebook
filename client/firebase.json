@@ -1,4 +1,11 @@
 {
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules",
+    "target": "dev"
+  },
   "hosting": [{
     "target": "dev",
     "public": "out",

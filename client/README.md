@@ -53,6 +53,12 @@ The following dependecies are used for this project. Feel free to experiment usi
    | NEXT_PUBLIC_MEDIA_BG1                        | Firebase storage download URL of the hi-resolution asset file "loginBgResized.jpg"                                                                                                                                                                                                                                                                       |
    | NEXT_PUBLIC_RANDOM_JOKE_API                  | Access URL to the JokeAPI, a REST API that serves uniformly and well formatted jokes.                                                                                                                                                                                                                                                                    |
 
+4. Deploy the Firestore Security Rules defined in the "firestore.rules" file using the Firebase CLI.<br>
+`firebase deploy --only firestore:rules`
+
+5. Deploy the Firebase Storage Security Rules defined in the "storage.rules" file using the Firebase CLI.<br>
+`firebase deploy --only storage:dev`
+
 ## Usage
 
 1. Run the project in development mode:<br>
