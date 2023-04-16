@@ -8,6 +8,11 @@
         "dev": [
           "myphonebook-app-dev"
         ]
+      },
+      "storage": {
+        "dev": [
+          "myphonebook-app-dev.appspot.com"
+        ]
       }
     }
   },
