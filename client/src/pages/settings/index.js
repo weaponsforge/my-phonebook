@@ -142,30 +142,30 @@ const Settings = () => {
           user.email,
           state.form.old_password.value
         );
-        console.log(authCredential)
-        const response = await reauthenticateWithCredential(
+        await reauthenticateWithCredential(
           user,
           authCredential
         );
-        console.log(response);
-        const response2 = await updatePassword(
+        await updatePassword(
           user,
           state.form.new_password.value
         );
-        console.log({ response2 });
         setState((p) => ({
-          ...p,
+          ...initialState,
           show: {
             ...p.show,
             snackbar: true,
+            changePassword:false
           },
           message: {
             ...p.message,
             snackbar: "Password Changed !",
           },
         }));
+        setTimeout(() => {
+          setState(initialState);
+        }, 6000);
       } catch (err) {
-        console.log(err);
         setState((p) => ({
           ...p,
           show: {
@@ -174,17 +174,16 @@ const Settings = () => {
           },
           message: {
             ...p.message,
-            snackbar: "Failed to change password !",
+            snackbar: `${err.message}`,
           },
         }));
-      } finally {
         setTimeout(() => {
-          setState((p) => ({
+          setState(p=>({
             ...p,
-            show: {
+            show:{
               ...p.show,
-              snackbar: false,
-            },
+              snackbar:false
+            }
           }));
         }, 6000);
       }
