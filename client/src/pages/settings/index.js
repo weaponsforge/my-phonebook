@@ -1,46 +1,36 @@
-import Page from "@/common/layout/page";
-import ProtectedPage from "@/common/auth/protectedpage";
-import { FirebaseFirestore } from "@/lib/utils/firebase/firestore";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import Page from '@/common/layout/page'
 import {
-  Avatar,
   Box,
   Button,
-  IconButton,
   Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSyncV } from "use-sync-v";
+} from '@mui/material'
+import { useEffect, useState } from 'react'
 import {
-  AuthCredential,
-  EmailAuthCredential,
   EmailAuthProvider,
   getAuth,
   reauthenticateWithCredential,
   updatePassword,
-} from "firebase/auth";
-import SimpleSnackbar from "@/common/snackbars/simpleSnackbar";
-import TransparentTextfield from "@/common/ui/transparentfield";
-import { Validate } from "@/lib/utils/textValidation";
+} from 'firebase/auth'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import TransparentTextfield from '@/common/ui/transparentfield'
+import { Validate } from '@/lib/utils/textValidation'
 
 const initialState = {
   form: {
     old_password: {
       error: true,
-      value: "",
-      helperText: "",
+      value: '',
+      helperText: '',
     },
     new_password: {
       error: true,
-      value: "",
-      helperText: "",
+      value: '',
+      helperText: '',
     },
     password_confirmation: {
       error: true,
-      value: "",
-      helperText: "",
+      value: '',
+      helperText: '',
     },
   },
   show: {
@@ -49,13 +39,12 @@ const initialState = {
     save: false,
   },
   message: {
-    snackbar: "",
+    snackbar: '',
   },
-};
+}
 
 const Settings = () => {
-  const auth = useSyncV("auth");
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(initialState)
 
   useEffect(() => {
     if (
@@ -69,87 +58,87 @@ const Settings = () => {
           ...p.show,
           save: true,
         },
-      }));
+      }))
     }
-  }, [state.form.password_confirmation.error]);
+  }, [state.form.new_password.error, state.form.old_password.error ,state.form.password_confirmation.error])
 
   const formHandler = (e) => {
-    const key = e.target.id;
-    const value = e.target.value;
+    const key = e.target.id
+    const value = e.target.value
     switch (key) {
-      case "old_password": {
-        const { error, helperText, color } = Validate.password(value);
-        setState((p) => ({
-          ...p,
-          form: {
-            ...p.form,
-            [key]: {
-              ...p.form[key],
-              value: value,
-              error: error,
-              color: color,
-              helperText: helperText,
-            },
+    case 'old_password': {
+      const { error, helperText, color } = Validate.password(value)
+      setState((p) => ({
+        ...p,
+        form: {
+          ...p.form,
+          [key]: {
+            ...p.form[key],
+            value: value,
+            error: error,
+            color: color,
+            helperText: helperText,
           },
-        }));
-        break;
-      }
-      case "new_password": {
-        const { error, helperText, color } = Validate.password(value);
-        setState((p) => ({
-          ...p,
-          form: {
-            ...p.form,
-            [key]: {
-              ...p.form[key],
-              value: value,
-              error: error,
-              color: color,
-              helperText: helperText,
-            },
-          },
-        }));
-        break;
-      }
-      case "password_confirmation": {
-        const { error, helperText, color } = Validate.passwordConfirmation(
-          state.form.new_password,
-          value
-        );
-        setState((p) => ({
-          ...p,
-          form: {
-            ...p.form,
-            [key]: {
-              ...p.form[key],
-              value: value,
-              error: error,
-              color: color,
-              helperText: helperText,
-            },
-          },
-        }));
-        break;
-      }
+        },
+      }))
+      break
     }
-  };
+    case 'new_password': {
+      const { error, helperText, color } = Validate.password(value)
+      setState((p) => ({
+        ...p,
+        form: {
+          ...p.form,
+          [key]: {
+            ...p.form[key],
+            value: value,
+            error: error,
+            color: color,
+            helperText: helperText,
+          },
+        },
+      }))
+      break
+    }
+    case 'password_confirmation': {
+      const { error, helperText, color } = Validate.passwordConfirmation(
+        state.form.new_password,
+        value
+      )
+      setState((p) => ({
+        ...p,
+        form: {
+          ...p.form,
+          [key]: {
+            ...p.form[key],
+            value: value,
+            error: error,
+            color: color,
+            helperText: helperText,
+          },
+        },
+      }))
+      break
+    }
+    }
+  }
 
   const saveHandler = () => {
-    const user = getAuth().currentUser;
+    const user = getAuth().currentUser
     const reAuth = async () => {
       try {
         const authCredential = EmailAuthProvider.credential(
           user.email,
           state.form.old_password.value
-        );
+        )
         await reauthenticateWithCredential(
           user,
           authCredential
-        );
+        )
         await updatePassword(
           user,
           state.form.new_password.value
-        );
+        )
         setState((p) => ({
           ...initialState,
           show: {
@@ -159,12 +148,12 @@ const Settings = () => {
           },
           message: {
             ...p.message,
-            snackbar: "Password Changed !",
+            snackbar: 'Password Changed !',
           },
-        }));
+        }))
         setTimeout(() => {
-          setState(initialState);
-        }, 6000);
+          setState(initialState)
+        }, 6000)
       } catch (err) {
         setState((p) => ({
           ...p,
@@ -176,7 +165,7 @@ const Settings = () => {
             ...p.message,
             snackbar: `${err.message}`,
           },
-        }));
+        }))
         setTimeout(() => {
           setState(p=>({
             ...p,
@@ -184,12 +173,12 @@ const Settings = () => {
               ...p.show,
               snackbar:false
             }
-          }));
-        }, 6000);
+          }))
+        }, 6000)
       }
-    };
+    }
     reAuth()
-  };
+  }
 
   const showChangePasswordHandler = () => {
     setState((p) => ({
@@ -198,8 +187,8 @@ const Settings = () => {
         ...p.show,
         changePassword: true,
       },
-    }));
-  };
+    }))
+  }
 
   return (
     <Page>
@@ -208,25 +197,25 @@ const Settings = () => {
       )}
       <Box
         sx={{
-          flex: "1",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          maxWidth: "100%",
+          flex: '1',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          maxWidth: '100%',
         }}
       >
         <Paper
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            alignItems: "center",
-            padding: "30px",
-            borderRadius: "20px",
-            backgroundColor: "inherit",
-            backdropFilter: "contrast(120%)",
-            maxWidth: "300px",
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            alignItems: 'center',
+            padding: '30px',
+            borderRadius: '20px',
+            backgroundColor: 'inherit',
+            backdropFilter: 'contrast(120%)',
+            maxWidth: '300px',
           }}
         >
           {!state.show.changePassword && (
@@ -237,10 +226,10 @@ const Settings = () => {
           {state.show.changePassword && (
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                alignItems: 'center',
               }}
             >
               <TransparentTextfield
@@ -292,7 +281,7 @@ const Settings = () => {
         </Paper>
       </Box>
     </Page>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

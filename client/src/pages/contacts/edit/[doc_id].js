@@ -44,14 +44,14 @@ const EditContact = () => {
       setIsFormChanged(true)
     }
   }
-  updateSyncV("contacts.loading", true)
+  updateSyncV('contacts.loading', true)
   const saveHandler = () => {
     const createdContact = {
       ...form,
       sorting:
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
-    const resp = FirebaseFirestore.updateDoc(
+    FirebaseFirestore.updateDoc(
       `users/${authUser.uid}/contacts/${doc_id}`,
       createdContact
     )
@@ -67,7 +67,7 @@ const EditContact = () => {
   }
   return (
     <Page>
-       <Box
+      <Box
         sx={{
           flex: '1',
           display: 'flex',
@@ -200,7 +200,7 @@ const EditContact = () => {
               SAVE CHANGE
             </Button>
           )}
-                    <Button
+          <Button
             variant="contained"
             fullWidth
             onClick={deleteHandler}
