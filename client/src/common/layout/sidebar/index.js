@@ -57,6 +57,11 @@ export const Sidebar = () => {
     router.push("/");
     updateSyncV("show.sidebar", false);
   };
+
+  const settingsHandler = () => {
+    router.push("/settings")
+    updateSyncV("show.sidebar", false);
+  }
   return (
     <Box>
       <Slide
@@ -147,7 +152,7 @@ export const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton disabled>
+              <ListItemButton onClick={settingsHandler}>
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
