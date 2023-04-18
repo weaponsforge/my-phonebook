@@ -14,6 +14,7 @@ import {
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import TransparentTextfield from '@/common/ui/transparentfield'
 import { Validate } from '@/lib/utils/textValidation'
+import ProtectedPage from '@/common/auth/protectedpage'
 
 const initialState = {
   form: {
@@ -284,4 +285,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default ProtectedPage(Settings)
