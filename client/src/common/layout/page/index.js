@@ -1,12 +1,11 @@
 import Box from '@mui/material/Box'
-
-import Footer from '@/common/layout/footer'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
 import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { Sidebar } from '../sidebar'
-import { useSyncV } from 'use-sync-v'
-import { useMediaQuery } from '@mui/material'
+import { updateSyncV, useSyncV } from 'use-sync-v'
+import { Divider, useMediaQuery } from '@mui/material'
+import { useEffect } from 'react'
 
 const Background = () => {
   const activeTheme = useSyncLocalStorage('activeTheme')
@@ -69,10 +68,17 @@ const Background = () => {
 }
 
 function Page({ children }) {
+  const auth = useSyncV('auth')
   const animate = useSyncLocalStorage('animate')
   const showSidebar = useSyncV('show.sidebar')
   const isMobile = useMediaQuery('(max-width:900px)')
-
+  useEffect(() => {
+    if (isMobile) {
+      updateSyncV('show.sidebar', false)
+    } else {
+      updateSyncV('show.sidebar', true)
+    }
+  }, [isMobile])
   return (
     <>
       {animate && <Background />}
@@ -84,19 +90,21 @@ function Page({ children }) {
           bottom: '0',
           right: '0',
           display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {(showSidebar || !isMobile) && <Sidebar />}
+        <Header />
         <Box
           sx={{
+            flex: 1,
             display: 'flex',
-            flexDirection: 'column',
-            width:`${isMobile ? '100%' : 'calc(100vw - 200px)'}`
+            overflowY:'scroll'
           }}
         >
-          <Header />
+          {showSidebar && auth.authStatus === 'signedIn' && <Sidebar />}
+          <Divider orientation="vertical" variant="middle" flexItem />
+
           <Section>{children}</Section>
-          <Footer />
         </Box>
       </Box>
     </>
