@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useTheme } from '@emotion/react'
 import {
   Box,
@@ -10,30 +11,33 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
-import { readSyncV, updateSyncV } from 'use-sync-v'
+import { readSyncV, updateSyncV, updateAsyncV, useAsyncV } from 'use-sync-v'
 import { exportContacts } from '@/lib/services/contacts'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export const ExportPopup = () => {
   const theme = useTheme()
-  const [status, setStatus] = useState({ loading: false, error: '' })
+  const [loading, setLoading] = useState(false)
   const [exportAs, setExportAs] = useState('csv')
   const [exportSource, setExportSource] = useState('all_contacts')
+  const { data: response, error } = useAsyncV('exportfile')
 
-  const exportContactsHandler = async () => {
-    const params = { type: exportAs }
-    const fileType = (exportAs === 'csv')
-      ? 'text/csv'
-      : 'application/pdf'
-
-    if (exportSource === 'search_results') {
-      params.ids = readSyncV('data.searchResults')?.sorting?.map(item => item.doc_id) ?? []
+  useEffect(() => {
+    if (typeof error === 'object' && loading) {
+      setLoading(false)
     }
+  }, [error, loading])
 
-    try {
-      setStatus({ ...status, error: '', loading: true })
-      const response = await exportContacts(params)
-      setStatus({ ...status, loading: false })
+  useEffect(() => {
+    if (response && loading) {
+      if (loading) {
+        setLoading(false)
+      }
+
+      const fileType = (exportAs === 'csv')
+        ? 'text/csv'
+        : 'application/pdf'
 
       const blob = new Blob([response.data], { type: fileType })
       const link = document.createElement('a')
@@ -43,14 +47,27 @@ export const ExportPopup = () => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-    } catch (err) {
-      setStatus({ ...status, loading: false, error: err?.response?.data ?? err.message })
+    }
+  }, [response, loading, exportAs])
+
+  const exportContactsHandler = async () => {
+    const params = { type: exportAs }
+
+    if (exportSource === 'search_results') {
+      params.ids = readSyncV('data.searchResults')?.sorting?.map(item => item.doc_id) ?? []
     }
 
+    setLoading(true)
+    updateAsyncV('exportfile', async () => exportContacts(params))
   }
 
   const cancelExportHandler = () => {
     updateSyncV('show.exportPopup', false)
+    updateSyncV('exportfile')
+
+    if (loading) {
+      setLoading(false)
+    }
   }
 
   const handleExportAsChange = (e) => {
@@ -94,7 +111,7 @@ export const ExportPopup = () => {
         }}
       >
         <Typography>Export contacts</Typography>
-        <FormControl disabled={status.loading} >
+        <FormControl disabled={loading} >
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="google_csv"
@@ -114,7 +131,7 @@ export const ExportPopup = () => {
             />
           </RadioGroup>
         </FormControl>
-        <FormControl disabled={status.loading}>
+        <FormControl disabled={loading}>
           <Typography>Export as</Typography>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
@@ -143,6 +160,7 @@ export const ExportPopup = () => {
         >
           <Button
             variant="text"
+            disabled={loading}
             sx={{
               color: theme.palette.primary.dark,
               fontWeight: 'bold',
@@ -153,21 +171,24 @@ export const ExportPopup = () => {
           </Button>
           <Button
             variant="text"
+            disabled={loading}
             sx={{
               color: theme.palette.primary.dark,
               fontWeight: 'bold',
             }}
             onClick={exportContactsHandler}
           >
-            Export
+            {(loading)
+              ? <CircularProgress size={24} />
+              : <span>Export</span>
+            }
           </Button>
         </Box>
       </Paper>
 
-      {(status.error !== '') &&
+      {(response === null && typeof error !== 'boolean' && error?.message !== '') &&
         <SimpleSnackbar
-          message={status.error}
-          closeHandler={() => setStatus({ loading: false, error: '' })}
+          message={error?.message}
         />
       }
     </Box>
