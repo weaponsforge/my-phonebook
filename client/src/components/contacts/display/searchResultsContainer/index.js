@@ -25,11 +25,15 @@ export const SearchResultsContainer = () => {
 
   const searchResults = filterContacts(searchKeyword, contacts)
 
+
   // remove doc_id, date_created, date_updated, profile_picture_url group
   delete searchResults.doc_id
   delete searchResults.profile_picture_url
   delete searchResults.date_updated
   delete searchResults.date_created
+
+  // store search results for export purpose
+  updateSyncV('data.searchResults', searchResults)
 
   const searchResultsArr = Object.entries(searchResults)
 
