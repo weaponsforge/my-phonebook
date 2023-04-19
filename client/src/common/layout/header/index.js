@@ -22,7 +22,7 @@ const loggedInSettings = [
   },
   {
     name: 'Account',
-    route: '/account',
+    route: '/settings',
   },
   {
     name: 'Logout',

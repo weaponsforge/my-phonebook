@@ -11,25 +11,42 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { readSyncV, updateSyncV } from 'use-sync-v'
+import { exportContacts } from '@/lib/services/contacts'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 
 export const ExportPopup = () => {
   const theme = useTheme()
+  const [status, setStatus] = useState({ loading: false, error: '' })
   const [exportAs, setExportAs] = useState('csv')
   const [exportSource, setExportSource] = useState('all_contacts')
 
-  const exportContactsHandler = () => {
-    const exportPreferences = {
-      exportAs,
-      exportData: (() => {
-        switch (exportSource) {
-        case 'all_contacts':
-          return readSyncV('contacts.data')
-        case 'search_results':
-          return readSyncV('data.searchResults')
-        }
-      })(),
+  const exportContactsHandler = async () => {
+    const params = { type: exportAs }
+    const fileType = (exportAs === 'csv')
+      ? 'text/csv'
+      : 'application/pdf'
+
+    if (exportSource === 'search_results') {
+      params.ids = readSyncV('data.searchResults')?.sorting?.map(item => item.doc_id) ?? []
     }
-    exportPreferences.exportAs
+
+    try {
+      setStatus({ ...status, error: '', loading: true })
+      const response = await exportContacts(params)
+      setStatus({ ...status, loading: false })
+
+      const blob = new Blob([response.data], { type: fileType })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.setAttribute('download', decodeURI('contacts'))
+
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (err) {
+      setStatus({ ...status, loading: false, error: err?.response?.data ?? err.message })
+    }
+
   }
 
   const cancelExportHandler = () => {
@@ -77,7 +94,7 @@ export const ExportPopup = () => {
         }}
       >
         <Typography>Export contacts</Typography>
-        <FormControl>
+        <FormControl disabled={status.loading} >
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="google_csv"
@@ -97,7 +114,7 @@ export const ExportPopup = () => {
             />
           </RadioGroup>
         </FormControl>
-        <FormControl>
+        <FormControl disabled={status.loading}>
           <Typography>Export as</Typography>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
@@ -146,6 +163,13 @@ export const ExportPopup = () => {
           </Button>
         </Box>
       </Paper>
+
+      {(status.error !== '') &&
+        <SimpleSnackbar
+          message={status.error}
+          closeHandler={() => setStatus({ loading: false, error: '' })}
+        />
+      }
     </Box>
   )
 }

@@ -35,6 +35,11 @@ const exportContact = async (req, res, next) => {
   try {
     const contacts = await listContacts(req.user.uid, (ids) || [])
 
+    if (contacts.length === 0) {
+      return res.status(ServerError.httpErrorCodes._502)
+        .send('No contacts to export')
+    }
+
     if (type === EXPORT_TYPE.CSV) {
       return exportCSV(contacts, res)
     } else if (type === EXPORT_TYPE.PDF) {
