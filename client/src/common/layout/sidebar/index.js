@@ -54,6 +54,11 @@ export const Sidebar = () => {
     router.push('/settings')
     updateSyncV('show.sidebar', false)
   }
+
+  const showExportPopup = () => {
+    updateSyncV('show.sidebar', false)
+    updateSyncV('show.exportPopup', true)
+  }
   return (
     <Box>
       <Slide
@@ -107,7 +112,7 @@ export const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton disabled>
+              <ListItemButton onClick={showExportPopup}>
                 <ListItemIcon>
                   <CloudDownloadIcon />
                 </ListItemIcon>
