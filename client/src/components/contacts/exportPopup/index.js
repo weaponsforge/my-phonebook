@@ -4,16 +4,17 @@ import {
   Button,
   FormControl,
   FormControlLabel,
+  Paper,
   Radio,
   RadioGroup,
-  Typography
+  Typography,
 } from '@mui/material'
 import { useState } from 'react'
 import { readSyncV, updateSyncV } from 'use-sync-v'
 
 export const ExportPopup = () => {
   const theme = useTheme()
-  const [exportAs, setExportAs] = useState('google_csv')
+  const [exportAs, setExportAs] = useState('csv')
   const [exportSource, setExportSource] = useState('all_contacts')
 
   const exportContactsHandler = () => {
@@ -51,7 +52,8 @@ export const ExportPopup = () => {
         left: '0',
         right: '0',
         bottom: '0',
-        backgroundColor: 'hsla(100, 100%,100%,50%)',
+        background: 'inherit',
+        backdropFilter: 'blur(5px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -61,14 +63,15 @@ export const ExportPopup = () => {
         cancelExportHandler()
       }}
     >
-      <Box
+      <Paper
+        elevation={5}
         sx={{
           padding: '30px',
           borderRadius: '20px',
           zIndex: '200',
-          backgroundColor: theme.palette.background.paper,
           display: 'flex',
           flexDirection: 'column',
+          backgroundColor: 'hsla(10,100%,100%,50%)',
           maxWidth: '320px',
           gap: '10px',
         }}
@@ -95,13 +98,7 @@ export const ExportPopup = () => {
           </RadioGroup>
         </FormControl>
         <FormControl>
-          <Typography
-            sx={{
-              color: theme.palette.primary.dark,
-            }}
-          >
-            Export as
-          </Typography>
+          <Typography>Export as</Typography>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="google_csv"
@@ -110,19 +107,14 @@ export const ExportPopup = () => {
             value={exportAs}
           >
             <FormControlLabel
-              value="google_csv"
+              value="csv"
               control={<Radio />}
-              label="Google CSV"
+              label="CSV File"
             />
             <FormControlLabel
-              value="outlook_csv"
+              value="pdf"
               control={<Radio />}
-              label="Outlook CSV"
-            />
-            <FormControlLabel
-              value="v_card"
-              control={<Radio />}
-              label="vCard (for iOS contacts)"
+              label="PDF File"
             />
           </RadioGroup>
         </FormControl>
@@ -153,7 +145,7 @@ export const ExportPopup = () => {
             Export
           </Button>
         </Box>
-      </Box>
+      </Paper>
     </Box>
   )
 }

@@ -56,6 +56,7 @@ export const Sidebar = () => {
   }
 
   const showExportPopup = () => {
+    updateSyncV('show.sidebar', false)
     updateSyncV('show.exportPopup', true)
   }
   return (
