@@ -164,6 +164,7 @@ export const ExportPopup = () => {
             sx={{
               color: theme.palette.primary.dark,
               fontWeight: 'bold',
+              minWidth: '77px'
             }}
             onClick={cancelExportHandler}
           >
@@ -175,6 +176,7 @@ export const ExportPopup = () => {
             sx={{
               color: theme.palette.primary.dark,
               fontWeight: 'bold',
+              minWidth: '77px'
             }}
             onClick={exportContactsHandler}
           >
