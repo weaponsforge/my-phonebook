@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTheme } from '@emotion/react'
 import {
   Box,
@@ -18,28 +18,21 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 export const ExportPopup = () => {
   const theme = useTheme()
-  const [loading, setLoading] = useState(false)
   const [exportAs, setExportAs] = useState('csv')
   const [exportSource, setExportSource] = useState('all_contacts')
-  const { data: response, error } = useAsyncV('exportfile')
+  const { data: response, loading, error } = useAsyncV('exportfile')
+
+  const file = useMemo(() => {
+    return (!loading && response && error === false)
+      ? response
+      : null
+  }, [loading, response, error])
 
   useEffect(() => {
-    if (typeof error === 'object' && loading) {
-      setLoading(false)
-    }
-  }, [error, loading])
+    if (file) {
+      const fileType = file.headers['content-type']
+      const blob = new Blob([file.data], { type: fileType })
 
-  useEffect(() => {
-    if (response && loading) {
-      if (loading) {
-        setLoading(false)
-      }
-
-      const fileType = (exportAs === 'csv')
-        ? 'text/csv'
-        : 'application/pdf'
-
-      const blob = new Blob([response.data], { type: fileType })
       const link = document.createElement('a')
       link.href = URL.createObjectURL(blob)
       link.setAttribute('download', decodeURI('contacts'))
@@ -48,7 +41,7 @@ export const ExportPopup = () => {
       link.click()
       document.body.removeChild(link)
     }
-  }, [response, loading, exportAs])
+  }, [file])
 
   const exportContactsHandler = async () => {
     const params = { type: exportAs }
@@ -57,17 +50,12 @@ export const ExportPopup = () => {
       params.ids = readSyncV('data.searchResults')?.sorting?.map(item => item.doc_id) ?? []
     }
 
-    setLoading(true)
     updateAsyncV('exportfile', async () => exportContacts(params))
   }
 
   const cancelExportHandler = () => {
     updateSyncV('show.exportPopup', false)
     updateSyncV('exportfile')
-
-    if (loading) {
-      setLoading(false)
-    }
   }
 
   const handleExportAsChange = (e) => {
@@ -188,7 +176,7 @@ export const ExportPopup = () => {
         </Box>
       </Paper>
 
-      {(response === null && typeof error !== 'boolean' && error?.message !== '') &&
+      {(typeof error !== 'boolean' && error?.message !== '') &&
         <SimpleSnackbar
           message={error?.message}
         />
