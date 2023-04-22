@@ -44,7 +44,7 @@ service firebase.storage {
     // Checks if the Firestore metadata name follows the pattern:
     // "photos/{userId}/photo_{docId}"
     function validFileName (requestData) {
-      return requestData.name.size() < 400 && requestData.name.matches('photos/.*/photo_.*');
+      return requestData.name.size() < 100 && requestData.name.matches('photos/.*/photo_.*');
     }
 
     // Only allow uploads of any image file that's less than 3MB
