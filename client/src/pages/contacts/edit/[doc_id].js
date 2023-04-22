@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
 
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { uploadFileToStorage } from '@/lib/utils/firebase/storageutils'
+import { uploadFileToStorage, deleteFileFromStorage } from '@/lib/utils/firebase/storageutils'
 import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
 
 import ProtectedPage from '@/common/auth/protectedpage'
@@ -90,10 +90,22 @@ const EditContact = () => {
   const profilePictureHandler = () => {
 
   }
-  const deleteHandler = () => {
-    FirebaseFirestore.deleteDoc(`users/${authUser.uid}/contacts/${doc_id}`)
-    setForm(initialState)
-    router.push('/contacts')
+  const deleteHandler = async () => {
+    try {
+      await Promise.all([
+        FirebaseFirestore.deleteDoc(`users/${authUser.uid}/contacts/${doc_id}`),
+        deleteFileFromStorage({
+          pathToStorageDirectory: `photos/${authUser.uid}`,
+          fileName: `photo_${doc_id}`,
+          allowMissingError: true
+        })
+      ])
+
+      setForm(initialState)
+      router.push('/contacts')
+    } catch (err) {
+      setErrorUpload(err?.response?.data ?? err.message)
+    }
   }
   return (
     <Page>
