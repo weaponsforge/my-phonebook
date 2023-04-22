@@ -37,9 +37,13 @@ const EditContact = () => {
   const [errorUpload, setErrorUpload] = useState(null)
 
   const photoPictureSrc = useMemo(() => {
-    return (!initialPhotoCleared)
-      ? editedContact?.profile_picture_url ?? ''
-      : photoFile?.imgSrc ?? ''
+    if (!initialPhotoCleared) {
+      return (editedContact?.profile_picture_url ?? '' !== '')
+        ? editedContact.profile_picture_url
+        : ''
+    } else {
+      return photoFile?.imgSrc ?? ''
+    }
   }, [photoFile, editedContact, initialPhotoCleared])
 
   useEffect(()=>{
@@ -68,7 +72,7 @@ const EditContact = () => {
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
 
-    if (photoFile) {
+    if ((photoFile?.file ?? null) !== null) {
       try {
         createdContact.profile_picture_url = await uploadFileToStorage(
           `photos/${authUser.uid}`,
@@ -78,6 +82,10 @@ const EditContact = () => {
       } catch (err) {
         setErrorUpload(err?.response?.data ?? err.message)
         return
+      }
+    } else {
+      if (initialPhotoCleared) {
+        createdContact.profile_picture_url = ''
       }
     }
 
@@ -160,6 +168,11 @@ const EditContact = () => {
               styles={{position: 'absolute', bottom: '0', right: '0'}}
               errorCallback={(error) => setErrorUpload(error)}
               clearFileCallback={() => {
+                if (!initialPhotoCleared) {
+                  setInitialPhotoCleared(true)
+                }
+              }}
+              setFileCallback={() => {
                 if (!initialPhotoCleared) {
                   setInitialPhotoCleared(true)
                 }

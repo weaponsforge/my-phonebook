@@ -33,6 +33,7 @@ const IMAGE_MIME_TYPES = [
  * @param {Bool} props.hasFile - Start displaying the FileUploadButton Component with a Cancel Icon if true.
  * @param {Function} props.errorCallback - Passes the Error string generated inside this Component to the callback.
  * @param {Function} props.clearFileCallback - Callback after pressing the Cancel Icon.
+ * @param {Function} props.setFileCallback - Callback after selecting a new picture file.
  * @param {String} [props.styles] - Custom MUI "sx" styles to apply on the `<IconButton />` button container.
  */
 function FileUploadButton ({
@@ -40,13 +41,14 @@ function FileUploadButton ({
   hasFile = false,
   errorCallback,
   clearFileCallback,
+  setFileCallback,
   styles = {}
 }) {
   const fileId = useMemo(() => fileDomID, [fileDomID])
   const [icon, setIcon] = useState((hasFile)
     ? ICON_STATES.CANCEL
     : ICON_STATES.SEARCH
-  )
+  , [hasFile])
 
   useEffect(() => {
     if (fileId !== undefined) {
@@ -74,6 +76,10 @@ function FileUploadButton ({
     }
 
     setIcon(ICON_STATES.CANCEL)
+
+    if (setFileCallback) {
+      setFileCallback(e.target.files[0].name)
+    }
 
     updateSyncV(fileDomID, {
       file: e.target.files[0],
@@ -125,6 +131,7 @@ FileUploadButton.propTypes = {
   hasFile: PropTypes.bool,
   errorCallback: PropTypes.func.isRequired,
   clearFileCallback: PropTypes.func,
+  setFileCallback: PropTypes.func,
   styles: PropTypes.object
 }
 
