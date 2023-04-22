@@ -1,11 +1,16 @@
+import { useEffect, useState, useMemo } from 'react'
+import { useRouter } from 'next/router'
+import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
+
+import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import { uploadFileToStorage } from '@/lib/utils/firebase/storageutils'
+import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
+
 import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
-import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { Avatar, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import FileUploadButton from '@/common/ui/fileuploadbutton'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+
 const initialState = {
   sorting:'',
   first_name: '',
@@ -16,15 +21,26 @@ const initialState = {
   profile_picture_url: '',
 }
 
+const CONTACT_PHOTO_ID = 'picturefile'
+
 const EditContact = () => {
   const router = useRouter()
   const { doc_id } = router.query
   const { authUser } = useSyncV('auth')
   const contacts = useAsyncV('contacts')
+  const photoFile = useSyncV(CONTACT_PHOTO_ID)
   const editedContact = contacts.data.filter((el) => el.doc_id === doc_id)[0]
   const [form, setForm] = useState(editedContact ?? initialState)
+  const [initialPhotoCleared, setInitialPhotoCleared] = useState(false)
 
   const [isFormChanged, setIsFormChanged] = useState(false)
+  const [errorUpload, setErrorUpload] = useState(null)
+
+  const photoPictureSrc = useMemo(() => {
+    return (!initialPhotoCleared)
+      ? editedContact?.profile_picture_url ?? ''
+      : photoFile?.imgSrc ?? ''
+  }, [photoFile, editedContact, initialPhotoCleared])
 
   useEffect(()=>{
     setForm(editedContact)
@@ -45,12 +61,26 @@ const EditContact = () => {
     }
   }
   updateSyncV('contacts.loading', true)
-  const saveHandler = () => {
+  const saveHandler = async () => {
     const createdContact = {
       ...form,
       sorting:
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
+
+    if (photoFile) {
+      try {
+        createdContact.profile_picture_url = await uploadFileToStorage(
+          `photos/${authUser.uid}`,
+          photoFile.file,
+          `photo_${doc_id}`
+        )
+      } catch (err) {
+        setErrorUpload(err?.response?.data ?? err.message)
+        return
+      }
+    }
+
     FirebaseFirestore.updateDoc(
       `users/${authUser.uid}/contacts/${doc_id}`,
       createdContact
@@ -100,7 +130,7 @@ const EditContact = () => {
             }}
           >
             <Avatar
-              src={form?.profile_picture_url}
+              src={photoPictureSrc}
               alt="profile_picture_url"
               sx={(theme) => ({
                 width: '342px',
@@ -112,15 +142,18 @@ const EditContact = () => {
               })}
               onClick={profilePictureHandler}
             />
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-              sx={{ position: 'absolute', bottom: '0', right: '0' }}
-            >
-              <input hidden accept="image/*" type="file" />
-              <PhotoCameraIcon sx={{ color: 'black' }} />
-            </IconButton>
+
+            <FileUploadButton
+              fileDomID={CONTACT_PHOTO_ID}
+              styles={{position: 'absolute', bottom: '0', right: '0'}}
+              errorCallback={(error) => setErrorUpload(error)}
+              clearFileCallback={() => {
+                if (!initialPhotoCleared) {
+                  setInitialPhotoCleared(true)
+                }
+              }}
+              hasFile={(photoPictureSrc !== '')}
+            />
           </Box>
           <Typography variant="h7">First Name</Typography>
           <TextField
@@ -216,6 +249,13 @@ const EditContact = () => {
           </Button>
         </Paper>
       </Box>
+
+      {errorUpload &&
+        <SimpleSnackbar
+          message={errorUpload}
+          closeHandler={() => setErrorUpload(null)}
+        />
+      }
     </Page>
   )
 }

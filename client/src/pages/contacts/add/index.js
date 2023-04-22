@@ -35,9 +35,7 @@ const Add = () => {
     if (!photoFile) {
       return ''
     } else {
-      return (photoFile.imgSrc)
-        ? photoFile.imgSrc
-        : ''
+      return photoFile?.imgSrc ?? ''
     }
   }, [photoFile])
 
