@@ -1,10 +1,17 @@
+import { useMemo } from 'react'
+
+import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import { uploadFileToStorage } from '@/lib/utils/firebase/storageutils'
+import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
+
 import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
-import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
-import { Avatar, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
+import FileUploadButton from '@/common/ui/fileuploadbutton'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+
 import { useState } from 'react'
 import { useSyncV } from 'use-sync-v'
+
 const initialState = {
   sorting: '',
   first_name: '',
@@ -15,10 +22,24 @@ const initialState = {
   profile_picture_url: '',
 }
 
+const CONTACT_PHOTO_ID = 'picturefile'
+
 const Add = () => {
-  const { authUser } = useSyncV('auth')
   const [form, setForm] = useState(initialState)
+  const [errorUpload, setErrorUpload] = useState(null)
   const [isFormChanged, setIsFormChanged] = useState(false)
+  const { authUser } = useSyncV('auth')
+  const photoFile = useSyncV(CONTACT_PHOTO_ID)
+
+  const photoPictureSrc = useMemo(() => {
+    if (!photoFile) {
+      return ''
+    } else {
+      return (photoFile.imgSrc)
+        ? photoFile.imgSrc
+        : ''
+    }
+  }, [photoFile])
 
   const inputHandler = (e) => {
     const fieldID = e.target.id
@@ -35,15 +56,32 @@ const Add = () => {
     }
   }
 
-  const saveHandler = () => {
+  const saveHandler = async () => {
+    const docPath = `users/${authUser.uid}/contacts/`
+    const docId = FirebaseFirestore.generateDocId(docPath)
+
     const createdContact = {
       ...form,
+      id: docId,
       sorting:
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
 
+    if (photoFile) {
+      try {
+        createdContact.profile_picture_url = await uploadFileToStorage(
+          `photos/${authUser.uid}`,
+          photoFile.file,
+          `photo_${docId}`
+        )
+      } catch (err) {
+        setErrorUpload(err?.response?.data ?? err.message)
+        return
+      }
+    }
+
     FirebaseFirestore.createDoc(
-      `users/${authUser.uid}/contacts/`,
+      `users/${authUser.uid}/contacts/${docId}`,
       createdContact
     )
     setForm(initialState)
@@ -85,23 +123,24 @@ const Add = () => {
             }}
           >
             <Avatar
-              src={form?.profile_picture_url}
+              src={photoPictureSrc}
               alt="profile_picture_url"
-              sx={{
-                width: '100%',
-                height: '100%',
-              }}
+              sx={(theme) => ({
+                width: '342px',
+                height: '342px',
+                [theme.breakpoints.down('400')]: {
+                  width: '100%',
+                  height: '100%'
+                },
+              })}
               onClick={profilePictureHandler}
             />
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-              sx={{ position: 'absolute', bottom: '0', right: '0' }}
-            >
-              <input hidden accept="image/*" type="file" />
-              <PhotoCameraIcon sx={{ color: 'black' }} />
-            </IconButton>
+
+            <FileUploadButton
+              fileDomID={CONTACT_PHOTO_ID}
+              styles={{position: 'absolute', bottom: '0', right: '0'}}
+              errorCallback={(error) => setErrorUpload(error)}
+            />
           </Box>
           <Typography variant="h7">First Name</Typography>
           <TextField
@@ -187,6 +226,13 @@ const Add = () => {
           )}
         </Paper>
       </Box>
+
+      {errorUpload &&
+        <SimpleSnackbar
+          message={errorUpload}
+          closeHandler={() => setErrorUpload(null)}
+        />
+      }
     </Page>
   )
 }

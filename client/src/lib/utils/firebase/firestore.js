@@ -37,6 +37,11 @@ export class FirebaseFirestore {
     return pathSegmentCount % 2 === 0
   }
 
+  static generateDocId = (pathToCollection) => {
+    const docRef = doc(collection(this.db, pathToCollection))
+    return docRef.id
+  }
+
   /**
    * Creates or updates a Firestore document in the specified collection path.
    * @param {string} path - The path of the Firestore collection / doc,
@@ -49,6 +54,11 @@ export class FirebaseFirestore {
     case this.#isDocPath(path): {
       const docRef = doc(this.db, path)
       const doc_id = docRef.id
+
+      if (data.id) {
+        delete data.id
+      }
+
       // Set the data for the document, including the doc_id and timestamps.
       const response = await setDoc(docRef, {
         ...data,
@@ -62,6 +72,11 @@ export class FirebaseFirestore {
       const colRef = collection(this.db, path)
       const docRef = doc(colRef)
       const doc_id = docRef.id
+
+      if (data.id) {
+        delete data.id
+      }
+
       // Set the data for the document, including the doc_id and timestamps.
       const response = await setDoc(docRef, {
         ...data,
