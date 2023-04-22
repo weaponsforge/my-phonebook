@@ -72,7 +72,7 @@ const EditContact = () => {
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
 
-    if ((photoFile?.file ?? null) !== null) {
+    if (photoFile?.file) {
       try {
         createdContact.profile_picture_url = await uploadFileToStorage(
           `photos/${authUser.uid}`,
@@ -94,9 +94,6 @@ const EditContact = () => {
       createdContact
     )
     router.push('/contacts')
-  }
-  const profilePictureHandler = () => {
-
   }
   const deleteHandler = async () => {
     try {
@@ -160,7 +157,6 @@ const EditContact = () => {
                   height: '100%'
                 },
               })}
-              onClick={profilePictureHandler}
             />
 
             <FileUploadButton

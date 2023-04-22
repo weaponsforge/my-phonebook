@@ -65,7 +65,7 @@ const Add = () => {
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
 
-    if ((photoFile?.file ?? null) !== null) {
+    if (photoFile?.file) {
       try {
         createdContact.profile_picture_url = await uploadFileToStorage(
           `photos/${authUser.uid}`,
@@ -85,7 +85,6 @@ const Add = () => {
     setForm(initialState)
   }
 
-  const profilePictureHandler = () => {}
   return (
     <Page>
       <Box
@@ -131,7 +130,6 @@ const Add = () => {
                   height: '100%'
                 },
               })}
-              onClick={profilePictureHandler}
             />
 
             <FileUploadButton
