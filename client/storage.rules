@@ -47,9 +47,9 @@ service firebase.storage {
       return requestData.name.size() < 100 && requestData.name.matches('photos/.*/photo_.*');
     }
 
-    // Only allow uploads of any image file that's less than 3MB
+    // Only allow uploads of any image file that's less than 1MB
     function validFileSize (requestData) {
-      return requestData.size < 3 * 1024 * 1024;
+      return requestData.size < 1 * 1024 * 1024;
     }
 
     // FILES matching rules  --------------------------------------------------------
