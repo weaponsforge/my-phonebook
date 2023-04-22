@@ -65,7 +65,7 @@ const Add = () => {
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
 
-    if (photoFile) {
+    if ((photoFile?.file ?? null) !== null) {
       try {
         createdContact.profile_picture_url = await uploadFileToStorage(
           `photos/${authUser.uid}`,
