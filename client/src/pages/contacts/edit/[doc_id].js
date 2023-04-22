@@ -102,10 +102,14 @@ const EditContact = () => {
             <Avatar
               src={form?.profile_picture_url}
               alt="profile_picture_url"
-              sx={{
-                width: '100%',
-                height: '100%',
-              }}
+              sx={(theme) => ({
+                width: '342px',
+                height: '342px',
+                [theme.breakpoints.down('400')]: {
+                  width: '100%',
+                  height: '100%'
+                },
+              })}
               onClick={profilePictureHandler}
             />
             <IconButton
