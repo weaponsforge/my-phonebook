@@ -1,6 +1,8 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    // AUTH --------------------------------------------------------
+
     // Is the user signed-in using basic authentication?
     function isSignedIn() {
       return request.auth != null;
@@ -12,9 +14,51 @@ service firebase.storage {
       return isSignedIn() && request.auth.token.account_level != null
     }
 
+
+    // Does the signed-in user's auth uid match the requested userId?
+    function isAccountOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // FILES --------------------------------------------------------
+
+    // Checks if the File type supported
+    function supportedFileType (requestData) {
+      let fileTypes = [
+        'image/bmp',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif',
+        'image/webp'
+      ];
+
+      return requestData.contentType in fileTypes;
+    }
+
     match /{allPaths=**} {
       allow read;
-      allow write: if isValidUser();
+      allow write: if false;
+    }
+
+    // Checks if the Firestore metadata name follows the pattern:
+    // "photos/{userId}/photo_{docId}"
+    function validFileName (requestData) {
+      return requestData.name.size() < 400 && requestData.name.matches('photos/.*/photo_.*');
+    }
+
+    // Only allow uploads of any image file that's less than 3MB
+    function validFileSize (requestData) {
+      return requestData.size < 3 * 1024 * 1024;
+    }
+
+    // FILES matching rules  --------------------------------------------------------
+
+    match /photos/{userId}/{imageFile=**} {
+      allow write: if isValidUser() && isAccountOwner(userId)
+        && validFileSize(request.resource)
+        && supportedFileType(request.resource)
+        && validFileName(request.resource);
     }
   }
 }
