@@ -95,11 +95,21 @@ const EditContact = () => {
       }
     }
 
-    FirebaseFirestore.updateDoc(
-      `users/${authUser.uid}/contacts/${doc_id}`,
-      createdContact
-    )
-    router.push('/contacts')
+    try {
+      await FirebaseFirestore.updateDoc(
+        `users/${authUser.uid}/contacts/${doc_id}`,
+        createdContact
+      )
+      router.push('/contacts')
+    } catch (err) {
+      let errMsg = err?.response?.data ?? err.message
+
+      if (errMsg.includes('Missing or insufficient permissions')) {
+        errMsg = 'Contact update failed. Please check your input.'
+      }
+
+      setErrorUpload(errMsg)
+    }
   }
   const deleteHandler = async () => {
     try {

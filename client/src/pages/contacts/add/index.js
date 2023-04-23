@@ -84,11 +84,21 @@ const Add = () => {
       }
     }
 
-    FirebaseFirestore.createDoc(
-      `users/${authUser.uid}/contacts/${docId}`,
-      createdContact
-    )
-    setForm(initialState)
+    try {
+      await FirebaseFirestore.createDoc(
+        `users/${authUser.uid}/contacts/${docId}`,
+        createdContact
+      )
+      setForm(initialState)
+    } catch (err) {
+      let errMsg = err?.response?.data ?? err.message
+
+      if (errMsg.includes('Missing or insufficient permissions')) {
+        errMsg = 'Creating a new Contact failed. Please check your input.'
+      }
+
+      setErrorUpload(errMsg)
+    }
   }
 
   return (
