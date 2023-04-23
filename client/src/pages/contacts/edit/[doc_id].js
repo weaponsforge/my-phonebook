@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
+import { updateSyncV, useAsyncV, useSyncV, updateAsyncV } from 'use-sync-v'
 
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { uploadFileToStorage, deleteFileFromStorage } from '@/lib/utils/firebase/storageutils'
+import { uploadFileToStorage, deleteFileFromStorage, downloadBlobFromStorage } from '@/lib/utils/firebase/storageutils'
 import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
 
 import ProtectedPage from '@/common/auth/protectedpage'
@@ -24,31 +24,49 @@ const initialState = {
 const CONTACT_PHOTO_ID = 'picturefile'
 
 const EditContact = () => {
+  const [isFormChanged, setIsFormChanged] = useState(false)
+  const [errorUpload, setErrorUpload] = useState(null)
+  const [initialPhotoCleared, setInitialPhotoCleared] = useState(false)
+  const [formInitialized, setFormInitialized] = useState(false)
+
   const router = useRouter()
   const { doc_id } = router.query
   const { authUser } = useSyncV('auth')
   const contacts = useAsyncV('contacts')
+  const savedPhotoFile = useAsyncV('savedPhotoBlob')
   const photoFile = useSyncV(CONTACT_PHOTO_ID)
+
   const editedContact = contacts.data.filter((el) => el.doc_id === doc_id)[0]
   const [form, setForm] = useState(editedContact ?? initialState)
-  const [initialPhotoCleared, setInitialPhotoCleared] = useState(false)
 
-  const [isFormChanged, setIsFormChanged] = useState(false)
-  const [errorUpload, setErrorUpload] = useState(null)
+  useEffect(() => {
+    // Reset the Storage photo Blob
+    updateAsyncV('savedPhotoBlob', null, { deleteExistingData: true })
+  }, [])
 
+  // Set the Avatar <img /> source from local Blob, saved Storage (downloaded) Blob or blank ("")
   const photoPictureSrc = useMemo(() => {
     if (!initialPhotoCleared) {
-      return (editedContact?.profile_picture_url ?? '' !== '')
-        ? editedContact.profile_picture_url
+      return (savedPhotoFile.data !== null && !savedPhotoFile.loading)
+        ? URL.createObjectURL(savedPhotoFile.data)
         : ''
     } else {
       return photoFile?.imgSrc ?? ''
     }
-  }, [photoFile, editedContact, initialPhotoCleared])
+  }, [photoFile, savedPhotoFile, initialPhotoCleared])
+
 
   useEffect(()=>{
-    setForm(editedContact)
-  },[editedContact])
+    if (!formInitialized) {
+      setForm(editedContact)
+      setFormInitialized(true)
+
+      if (editedContact?.profile_picture_url ?? '' !== '') {
+        // Download the photo from Storage as Blob just once on page load
+        updateAsyncV('savedPhotoBlob', async () => downloadBlobFromStorage(editedContact.profile_picture_url))
+      }
+    }
+  },[editedContact, formInitialized])
 
   const inputHandler = (e) => {
     const fieldID = e.target.id
@@ -74,11 +92,14 @@ const EditContact = () => {
 
     if (photoFile?.file) {
       try {
-        createdContact.profile_picture_url = await uploadFileToStorage(
+        await uploadFileToStorage(
           `photos/${authUser.uid}`,
           photoFile.file,
           `photo_${doc_id}`
         )
+
+        // Store the Firebase Storage file reference instead of the public downloadURL
+        createdContact.profile_picture_url = `photos/${authUser.uid}/photo_${doc_id}`
       } catch (err) {
         let errMsg = err?.response?.data ?? err.message
 
@@ -182,11 +203,13 @@ const EditContact = () => {
               clearFileCallback={() => {
                 if (!initialPhotoCleared) {
                   setInitialPhotoCleared(true)
+                  setIsFormChanged(true)
                 }
               }}
               setFileCallback={() => {
                 if (!initialPhotoCleared) {
                   setInitialPhotoCleared(true)
+                  setIsFormChanged(true)
                 }
               }}
               hasFile={(photoPictureSrc !== '')}

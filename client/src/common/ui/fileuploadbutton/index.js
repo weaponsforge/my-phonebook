@@ -47,8 +47,13 @@ function FileUploadButton ({
   const fileId = useMemo(() => fileDomID, [fileDomID])
   const [icon, setIcon] = useState((hasFile)
     ? ICON_STATES.CANCEL
-    : ICON_STATES.SEARCH
-  , [hasFile])
+    : ICON_STATES.SEARCH)
+
+  useEffect(() => {
+    setIcon((hasFile)
+      ? ICON_STATES.CANCEL
+      : ICON_STATES.SEARCH)
+  }, [hasFile])
 
   useEffect(() => {
     if (fileId !== undefined) {

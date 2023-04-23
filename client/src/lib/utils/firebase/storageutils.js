@@ -1,5 +1,5 @@
 import { storage } from '@/utils/firebase/config'
-import { ref, uploadBytes, deleteObject, getDownloadURL } from 'firebase/storage'
+import { ref, uploadBytes, deleteObject, getDownloadURL, getBlob } from 'firebase/storage'
 
 /**
  * Upload a file from the File API to Firebase Storage.
@@ -51,7 +51,18 @@ const deleteFileFromStorage = async ({
   }
 }
 
+/**
+ * Downloads the Blob data at the object's location (file path) on Firebase Storage.
+ * @param {String} pathToStorageFile - Full Firebase Storage file path.
+ * @returns {Promise}
+ */
+const downloadBlobFromStorage = async (pathToStorageFile) => {
+  const storageRef = ref(storage, pathToStorageFile)
+  return await getBlob(storageRef)
+}
+
 export {
   uploadFileToStorage,
-  deleteFileFromStorage
+  deleteFileFromStorage,
+  downloadBlobFromStorage
 }

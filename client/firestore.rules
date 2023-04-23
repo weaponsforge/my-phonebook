@@ -45,14 +45,15 @@ service cloud.firestore {
         (!('last_name' in requestData.keys()) || requestData.last_name.size() < 50) &&
         (!('middle_name' in requestData.keys()) || requestData.middle_name.size() < 50) &&
         (!('phone_number' in requestData.keys()) || requestData.phone_number.size() < 20) &&
-        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url.size() < 600) &&
+        (!('profile_picture_url' in requestData.keys()) || requestData.profile_picture_url.size() < 100) &&
         (!('sorting' in requestData.keys()) || requestData.phone_number.size() < 200);
     }
 
     // Check if Contact fields satisfies other requirements
     function validContactField (requestData) {
     	return
-      	(!('email_address' in requestData.keys()) || requestData.email_address.matches('.*@.*[.].*'))
+        (!('email_address' in requestData.keys()) || requestData.email_address.matches('.*@.*[.].*')) &&
+        (!('profile_picture_url' in requestData.keys()) || !requestData.profile_picture_url.matches('http.*'));
     }
 
     // New Contact documents should contain only the specified keys

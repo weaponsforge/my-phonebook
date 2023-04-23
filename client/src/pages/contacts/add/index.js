@@ -67,11 +67,14 @@ const Add = () => {
 
     if (photoFile?.file) {
       try {
-        createdContact.profile_picture_url = await uploadFileToStorage(
+        await uploadFileToStorage(
           `photos/${authUser.uid}`,
           photoFile.file,
           `photo_${docId}`
         )
+
+        // Store the Firebase Storage file reference instead of the public downloadURL
+        createdContact.profile_picture_url = `photos/${authUser.uid}/photo_${docId}`
       } catch (err) {
         let errMsg = err?.response?.data ?? err.message
 
