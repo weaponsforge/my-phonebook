@@ -80,7 +80,13 @@ const EditContact = () => {
           `photo_${doc_id}`
         )
       } catch (err) {
-        setErrorUpload(err?.response?.data ?? err.message)
+        let errMsg = err?.response?.data ?? err.message
+
+        if (errMsg.includes('storage/unauthorized')) {
+          errMsg = 'Photo upload failed. Please verify that the photo you are uploading is less than 1 MB in file size. Only .jpg, .jpeg, .png, .gif, .bmp and .webp image file types are supported.'
+        }
+
+        setErrorUpload(errMsg)
         return
       }
     } else {
