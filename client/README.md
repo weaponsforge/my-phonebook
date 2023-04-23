@@ -32,6 +32,8 @@ The following dependecies are used for this project. Feel free to experiment usi
 
 ## Installation
 
+### General Set-up and Configuration
+
 1. Install dependencies.<br>
 `npm install`
 
@@ -53,11 +55,42 @@ The following dependecies are used for this project. Feel free to experiment usi
    | NEXT_PUBLIC_MEDIA_BG1                        | Firebase storage download URL of the hi-resolution asset file "loginBgResized.jpg"                                                                                                                                                                                                                                                                       |
    | NEXT_PUBLIC_RANDOM_JOKE_API                  | Access URL to the JokeAPI, a REST API that serves uniformly and well formatted jokes.                                                                                                                                                                                                                                                                    |
 
-4. Deploy the Firestore Security Rules defined in the "firestore.rules" file using the Firebase CLI.<br>
+## Firebase Setup and Configuration
+
+The following steps and instructions requires login to Firebase CLI. Read on the [Firebase CLI Quick Usage Reference](#firebase-cli-quick-usage-reference) section for more information on common Firebase CLI usage and examples.
+
+### Firestore Database
+
+1. Create and initialize a Firestore Database in the [Firebase Web console](https://firebase.google.com/).
+2. Deploy the Firestore Security Rules defined in the `"firestore.rules"` file using the Firebase CLI.<br>
 `firebase deploy --only firestore:rules`
 
-5. Deploy the Firebase Storage Security Rules defined in the "storage.rules" file using the Firebase CLI.<br>
+### Firebase Storage
+
+1. Create and initialize a Firestore Storage in the [Firebase Web console](https://firebase.google.com/).
+2. Deploy the Firebase Storage Security Rules defined in the `"storage.rules"` file using the Firebase CLI.<br>
 `firebase deploy --only storage:dev`
+3. Allow CORS on Firebase Storage using Google Cloud Shell
+   - Go to your Firebase project’s google cloud console on http://console.cloud.google.com/home.
+   - Activate the cloud shell by clicking the **Activate Cloud Shell** button on the upper right menu.
+   - Create a cors.json file on the cloud shell using any of it's cloud-based text editors. Copy and paste the following contents to the JSON file:<br>
+
+      ```
+      [
+         {
+            "origin": ["*"],
+            "method": ["GET"],
+            "maxAgeSeconds": 3600
+         }
+      ]
+      ```
+   - Put whitelisted domains in the cors.json file's `"origin"` field value as needed. For example:<br>
+`"origin": ["https://weaponsforge.github.io"]`
+      - Run the command on cloud shell. Replace `BUCKET_NAME` with your Firebase Storage bucket name:
+         - `gsutil cors set cors.json gs://BUCKET_NAME`
+         - `gsutil cors set cors.json gs://mybucket.appspot.com` (Example)
+      - View the current cors configuration of a bucket:
+         - `gsutil cors get gs://BUCKET_NAME`
 
 ## Usage
 
@@ -67,6 +100,21 @@ The following dependecies are used for this project. Feel free to experiment usi
 2. Create or update React files and other scripts.
 
 3. Run the `"npm run lint"` script to check for lint errors before committing to the repository.
+
+## Firebase CLI Quick Usage Reference
+
+- Install Firebase CLI (using NodeJS), run:<br>
+`npm install -g firebase-tools`
+
+- Login/logout to your Firebase account using the Firebase CLI.
+   - `firebase login` (login)
+   - `firebase logout` (logout)
+- Generate a Firebase CI token.
+   - `firebase login:ci`
+   - Copy the resulting token on the command line.
+- Switch/use another firebase project.
+   - `firebase use --add`
+   - Select a firebase project from the list.
 
 
 ## Available Scripts
