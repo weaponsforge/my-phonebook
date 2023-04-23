@@ -1,11 +1,16 @@
+import { useEffect, useState, useMemo } from 'react'
+import { useRouter } from 'next/router'
+import { updateSyncV, useAsyncV, useSyncV, updateAsyncV } from 'use-sync-v'
+
+import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import { uploadFileToStorage, deleteFileFromStorage, downloadBlobFromStorage } from '@/lib/utils/firebase/storageutils'
+import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
+
 import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
-import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { Avatar, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import FileUploadButton from '@/common/ui/fileuploadbutton'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+
 const initialState = {
   sorting:'',
   first_name: '',
@@ -16,19 +21,52 @@ const initialState = {
   profile_picture_url: '',
 }
 
+const CONTACT_PHOTO_ID = 'picturefile'
+
 const EditContact = () => {
+  const [isFormChanged, setIsFormChanged] = useState(false)
+  const [errorUpload, setErrorUpload] = useState(null)
+  const [initialPhotoCleared, setInitialPhotoCleared] = useState(false)
+  const [formInitialized, setFormInitialized] = useState(false)
+
   const router = useRouter()
   const { doc_id } = router.query
   const { authUser } = useSyncV('auth')
   const contacts = useAsyncV('contacts')
+  const savedPhotoFile = useAsyncV('savedPhotoBlob')
+  const photoFile = useSyncV(CONTACT_PHOTO_ID)
+
   const editedContact = contacts.data.filter((el) => el.doc_id === doc_id)[0]
   const [form, setForm] = useState(editedContact ?? initialState)
 
-  const [isFormChanged, setIsFormChanged] = useState(false)
+  useEffect(() => {
+    // Reset the Storage photo Blob
+    updateAsyncV('savedPhotoBlob', null, { deleteExistingData: true })
+  }, [])
+
+  // Set the Avatar <img /> source from local Blob, saved Storage (downloaded) Blob or blank ("")
+  const photoPictureSrc = useMemo(() => {
+    if (!initialPhotoCleared) {
+      return (savedPhotoFile.data !== null && !savedPhotoFile.loading)
+        ? URL.createObjectURL(savedPhotoFile.data)
+        : ''
+    } else {
+      return photoFile?.imgSrc ?? ''
+    }
+  }, [photoFile, savedPhotoFile, initialPhotoCleared])
+
 
   useEffect(()=>{
-    setForm(editedContact)
-  },[editedContact])
+    if (!formInitialized) {
+      setForm(editedContact)
+      setFormInitialized(true)
+
+      if (editedContact?.profile_picture_url ?? '' !== '') {
+        // Download the photo from Storage as Blob just once on page load
+        updateAsyncV('savedPhotoBlob', async () => downloadBlobFromStorage(editedContact.profile_picture_url))
+      }
+    }
+  },[editedContact, formInitialized])
 
   const inputHandler = (e) => {
     const fieldID = e.target.id
@@ -45,25 +83,71 @@ const EditContact = () => {
     }
   }
   updateSyncV('contacts.loading', true)
-  const saveHandler = () => {
+  const saveHandler = async () => {
     const createdContact = {
       ...form,
       sorting:
         `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
-    FirebaseFirestore.updateDoc(
-      `users/${authUser.uid}/contacts/${doc_id}`,
-      createdContact
-    )
-    router.push('/contacts')
-  }
-  const profilePictureHandler = () => {
 
+    if (photoFile?.file) {
+      try {
+        await uploadFileToStorage(
+          `photos/${authUser.uid}`,
+          photoFile.file,
+          `photo_${doc_id}`
+        )
+
+        // Store the Firebase Storage file reference instead of the public downloadURL
+        createdContact.profile_picture_url = `photos/${authUser.uid}/photo_${doc_id}`
+      } catch (err) {
+        let errMsg = err?.response?.data ?? err.message
+
+        if (errMsg.includes('storage/unauthorized')) {
+          errMsg = 'Photo upload failed. Please verify that the photo you are uploading is less than 1 MB in file size. Only .jpg, .jpeg, .png, .gif, .bmp and .webp image file types are supported.'
+        }
+
+        setErrorUpload(errMsg)
+        return
+      }
+    } else {
+      if (initialPhotoCleared) {
+        createdContact.profile_picture_url = ''
+      }
+    }
+
+    try {
+      await FirebaseFirestore.updateDoc(
+        `users/${authUser.uid}/contacts/${doc_id}`,
+        createdContact
+      )
+      router.push('/contacts')
+    } catch (err) {
+      let errMsg = err?.response?.data ?? err.message
+
+      if (errMsg.includes('Missing or insufficient permissions')) {
+        errMsg = 'Contact update failed. Please check your input.'
+      }
+
+      setErrorUpload(errMsg)
+    }
   }
-  const deleteHandler = () => {
-    FirebaseFirestore.deleteDoc(`users/${authUser.uid}/contacts/${doc_id}`)
-    setForm(initialState)
-    router.push('/contacts')
+  const deleteHandler = async () => {
+    try {
+      await Promise.all([
+        FirebaseFirestore.deleteDoc(`users/${authUser.uid}/contacts/${doc_id}`),
+        deleteFileFromStorage({
+          pathToStorageDirectory: `photos/${authUser.uid}`,
+          fileName: `photo_${doc_id}`,
+          allowMissingError: true
+        })
+      ])
+
+      setForm(initialState)
+      router.push('/contacts')
+    } catch (err) {
+      setErrorUpload(err?.response?.data ?? err.message)
+    }
   }
   return (
     <Page>
@@ -100,23 +184,36 @@ const EditContact = () => {
             }}
           >
             <Avatar
-              src={form?.profile_picture_url}
+              src={photoPictureSrc}
               alt="profile_picture_url"
-              sx={{
-                width: '100%',
-                height: '100%',
-              }}
-              onClick={profilePictureHandler}
+              sx={(theme) => ({
+                width: '342px',
+                height: '342px',
+                [theme.breakpoints.down('400')]: {
+                  width: '100%',
+                  height: '100%'
+                },
+              })}
             />
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-              sx={{ position: 'absolute', bottom: '0', right: '0' }}
-            >
-              <input hidden accept="image/*" type="file" />
-              <PhotoCameraIcon sx={{ color: 'black' }} />
-            </IconButton>
+
+            <FileUploadButton
+              fileDomID={CONTACT_PHOTO_ID}
+              styles={{position: 'absolute', bottom: '0', right: '0'}}
+              errorCallback={(error) => setErrorUpload(error)}
+              clearFileCallback={() => {
+                if (!initialPhotoCleared) {
+                  setInitialPhotoCleared(true)
+                  setIsFormChanged(true)
+                }
+              }}
+              setFileCallback={() => {
+                if (!initialPhotoCleared) {
+                  setInitialPhotoCleared(true)
+                  setIsFormChanged(true)
+                }
+              }}
+              hasFile={(photoPictureSrc !== '')}
+            />
           </Box>
           <Typography variant="h7">First Name</Typography>
           <TextField
@@ -212,6 +309,13 @@ const EditContact = () => {
           </Button>
         </Paper>
       </Box>
+
+      {errorUpload &&
+        <SimpleSnackbar
+          message={errorUpload}
+          closeHandler={() => setErrorUpload(null)}
+        />
+      }
     </Page>
   )
 }

@@ -43,6 +43,7 @@ export default function SimpleSnackbar({ message, closeHandler }) {
         onClose={handleClose}
         message={message}
         action={action}
+        sx={{ maxWidth: 600 }}
       />
     </div>
   )
