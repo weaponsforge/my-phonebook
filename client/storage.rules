@@ -58,11 +58,12 @@ service firebase.storage {
     }
 
     match /photos/{userId}/{imageFile=**} {
-      allow get: if isValidUser() && isAccountOwner(userId);
-      allow write: if isValidUser() && isAccountOwner(userId)
+      allow read: if isValidUser() && isAccountOwner(userId);
+      allow create, update: if isValidUser() && isAccountOwner(userId)
         && validFileSize(request.resource)
         && supportedFileType(request.resource)
         && validFileName(request.resource);
+      allow delete: if isValidUser() && isAccountOwner(userId);
     }
   }
 }
