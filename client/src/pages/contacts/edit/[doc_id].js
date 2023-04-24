@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { updateSyncV, useAsyncV, useSyncV, updateAsyncV } from 'use-sync-v'
+import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
 
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { uploadFileToStorage, deleteFileFromStorage, downloadBlobFromStorage } from '@/lib/utils/firebase/storageutils'
+import { uploadFileToStorage, deleteFileFromStorage } from '@/lib/utils/firebase/storageutils'
 import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -11,6 +11,8 @@ import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
 import FileUploadButton from '@/common/ui/fileuploadbutton'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+
+import useFetchContactPhoto from '@/lib/hooks/useFetchContactPhoto'
 
 const initialState = {
   sorting:'',
@@ -34,37 +36,40 @@ const EditContact = () => {
   const { doc_id } = router.query
   const { authUser } = useSyncV('auth')
   const contacts = useAsyncV('contacts')
-  const savedPhotoFile = useAsyncV('savedPhotoBlob')
   const photoFile = useSyncV(CONTACT_PHOTO_ID)
 
   const editedContact = contacts.data.filter((el) => el.doc_id === doc_id)[0]
   const [form, setForm] = useState(editedContact ?? initialState)
 
-  useEffect(() => {
-    // Reset the Storage photo Blob
-    updateAsyncV('savedPhotoBlob', async () => null, { deleteExistingData: true })
-  }, [])
+  // Latest Contact photo saved in Firebase Storage
+  const { loading: loadingPhoto, error: errorPhoto, photo } = useFetchContactPhoto(
+    (form.profile_picture_url === '')
+      ? null
+      : form.profile_picture_url)
 
-  // Set the Avatar <img /> source from local Blob, saved Storage (downloaded) Blob or blank ("")
+  // Set the Avatar <img /> source from local Blob or saved Storage (downloaded) Blob
   const photoPictureSrc = useMemo(() => {
-    if (!initialPhotoCleared) {
-      return (savedPhotoFile.data !== null && !savedPhotoFile.loading)
-        ? URL.createObjectURL(savedPhotoFile.data)
-        : ''
-    } else {
-      return photoFile?.imgSrc ?? ''
+    return (!initialPhotoCleared)
+      ? photo
+      : photoFile?.imgSrc ?? ''
+  }, [photoFile, photo, initialPhotoCleared])
+
+  const errorMessage = useMemo(() => {
+    if (errorPhoto !== '') {
+      return errorPhoto
     }
-  }, [photoFile, savedPhotoFile, initialPhotoCleared])
+
+    if (errorUpload) {
+      return errorUpload
+    }
+
+    return ''
+  }, [errorUpload, errorPhoto])
 
   useEffect(()=>{
     if (!formInitialized) {
       setForm(editedContact)
       setFormInitialized(true)
-
-      if (editedContact?.profile_picture_url ?? '' !== '') {
-        // Download the photo from Storage as Blob just once on page load
-        updateAsyncV('savedPhotoBlob', async () => downloadBlobFromStorage(editedContact.profile_picture_url))
-      }
     }
   },[editedContact, formInitialized])
 
@@ -197,7 +202,7 @@ const EditContact = () => {
             >
               {(initialPhotoCleared)
                 ? null
-                : (savedPhotoFile.loading || form.profile_picture_url !== '')
+                : (loadingPhoto || form.profile_picture_url !== '')
                   ? <CircularProgress size={24} color="info" />
                   : null
               }
@@ -317,9 +322,9 @@ const EditContact = () => {
         </Paper>
       </Box>
 
-      {errorUpload &&
+      {(errorMessage) &&
         <SimpleSnackbar
-          message={errorUpload}
+          message={errorMessage}
           closeHandler={() => setErrorUpload(null)}
         />
       }
