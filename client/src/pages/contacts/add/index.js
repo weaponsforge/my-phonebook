@@ -10,7 +10,7 @@ import FileUploadButton from '@/common/ui/fileuploadbutton'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 
 import { useState } from 'react'
-import { useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 
 const initialState = {
   sorting: '',
@@ -93,6 +93,10 @@ const Add = () => {
         createdContact
       )
       setForm(initialState)
+      updateSyncV(CONTACT_PHOTO_ID, {
+        file: null,
+        imgSrc: null
+      })
     } catch (err) {
       let errMsg = err?.response?.data ?? err.message
 
@@ -155,6 +159,7 @@ const Add = () => {
               fileDomID={CONTACT_PHOTO_ID}
               styles={{position: 'absolute', bottom: '0', right: '0'}}
               errorCallback={(error) => setErrorUpload(error)}
+              hasFile={(photoPictureSrc !== '')}
             />
           </Box>
           <Typography variant="h7">First Name</Typography>
