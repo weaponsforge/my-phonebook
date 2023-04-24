@@ -5,6 +5,7 @@ import { updateSyncV, useAsyncV, useSyncV, updateAsyncV } from 'use-sync-v'
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { uploadFileToStorage, deleteFileFromStorage, downloadBlobFromStorage } from '@/lib/utils/firebase/storageutils'
 import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
@@ -41,7 +42,7 @@ const EditContact = () => {
 
   useEffect(() => {
     // Reset the Storage photo Blob
-    updateAsyncV('savedPhotoBlob', null, { deleteExistingData: true })
+    updateAsyncV('savedPhotoBlob', async () => null, { deleteExistingData: true })
   }, [])
 
   // Set the Avatar <img /> source from local Blob, saved Storage (downloaded) Blob or blank ("")
@@ -54,7 +55,6 @@ const EditContact = () => {
       return photoFile?.imgSrc ?? ''
     }
   }, [photoFile, savedPhotoFile, initialPhotoCleared])
-
 
   useEffect(()=>{
     if (!formInitialized) {
@@ -194,7 +194,14 @@ const EditContact = () => {
                   height: '100%'
                 },
               })}
-            />
+            >
+              {(initialPhotoCleared)
+                ? null
+                : (savedPhotoFile.loading || form.profile_picture_url !== '')
+                  ? <CircularProgress size={24} color="info" />
+                  : null
+              }
+            </Avatar>
 
             <FileUploadButton
               fileDomID={CONTACT_PHOTO_ID}
