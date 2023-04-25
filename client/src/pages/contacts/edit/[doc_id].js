@@ -1,21 +1,21 @@
-import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
+import { useEffect, useMemo, useState } from 'react'
+import { deleteSyncV, updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
 
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { uploadFileToStorage, deleteFileFromStorage } from '@/lib/utils/firebase/storageutils'
+import { deleteFileFromStorage, uploadFileToStorage } from '@/lib/utils/firebase/storageutils'
 import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
 import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
-import FileUploadButton from '@/common/ui/fileuploadbutton'
 import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+import FileUploadButton from '@/common/ui/fileuploadbutton'
 
 import useFetchContactPhoto from '@/lib/hooks/useFetchContactPhoto'
 
 const initialState = {
-  sorting:'',
+  sorting: '',
   first_name: '',
   middle_name: '',
   last_name: '',
@@ -66,12 +66,12 @@ const EditContact = () => {
     return ''
   }, [errorUpload, errorPhoto])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!formInitialized) {
       setForm(editedContact)
       setFormInitialized(true)
     }
-  },[editedContact, formInitialized])
+  }, [editedContact, formInitialized])
 
   const inputHandler = (e) => {
     const fieldID = e.target.id
@@ -105,6 +105,8 @@ const EditContact = () => {
 
         // Store the Firebase Storage file reference instead of the public downloadURL
         createdContact.profile_picture_url = `photos/${authUser.uid}/photo_${doc_id}`
+        deleteSyncV(`public_picture.${JSON.stringify(createdContact.profile_picture_url)}`)
+
       } catch (err) {
         let errMsg = err?.response?.data ?? err.message
 
@@ -163,7 +165,7 @@ const EditContact = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          maxWidth:'100%'
+          maxWidth: '100%'
         }}
       >
         <Paper
@@ -210,7 +212,7 @@ const EditContact = () => {
 
             <FileUploadButton
               fileDomID={CONTACT_PHOTO_ID}
-              styles={{position: 'absolute', bottom: '0', right: '0'}}
+              styles={{ position: 'absolute', bottom: '0', right: '0' }}
               errorCallback={(error) => setErrorUpload(error)}
               clearFileCallback={() => {
                 if (!initialPhotoCleared) {
@@ -260,7 +262,7 @@ const EditContact = () => {
                 height: '20px',
               },
             }}
-            value={form?.last_name ??''}
+            value={form?.last_name ?? ''}
             onChange={inputHandler}
           />
 
@@ -286,7 +288,7 @@ const EditContact = () => {
                 height: '20px',
               },
             }}
-            value={form?.phone_number ??''}
+            value={form?.phone_number ?? ''}
             onChange={inputHandler}
           />
           {isFormChanged ? (
