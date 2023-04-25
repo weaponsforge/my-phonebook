@@ -5,7 +5,7 @@ export const LoadingLinear = () => {
     <LinearProgress
       sx={{
         position: 'fixed',
-        width: '100vw',
+        width: '100%',
       }}
     />
   )

@@ -8,7 +8,7 @@ function Footer() {
     <>
       {!mobile && (
         <Paper
-          elevation={1}
+          elevation={10}
           sx={{
             width: '100%',
             minHeight: (theme) => theme.spacing(4),

@@ -1,12 +1,19 @@
+import { useMemo } from 'react'
+
+import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
+import { uploadFileToStorage } from '@/lib/utils/firebase/storageutils'
+import { Avatar, Box, Button, Paper, TextField, Typography } from '@mui/material'
+
 import ProtectedPage from '@/common/auth/protectedpage'
 import Page from '@/common/layout/page'
-import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
-import { Avatar, Box, Button, TextField, Typography } from '@mui/material'
+import FileUploadButton from '@/common/ui/fileuploadbutton'
+import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
+
 import { useState } from 'react'
-import { useSyncV } from 'use-sync-v'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 
 const initialState = {
-  sorting:'',
+  sorting: '',
   first_name: '',
   middle_name: '',
   last_name: '',
@@ -15,13 +22,24 @@ const initialState = {
   profile_picture_url: '',
 }
 
+const CONTACT_PHOTO_ID = 'picturefile'
+
 const Add = () => {
-  const {authUser} = useSyncV('auth')
-
   const [form, setForm] = useState(initialState)
+  const [errorUpload, setErrorUpload] = useState(null)
   const [isFormChanged, setIsFormChanged] = useState(false)
+  const { authUser } = useSyncV('auth')
+  const photoFile = useSyncV(CONTACT_PHOTO_ID)
 
-  const editContactHandler = (e) => {
+  const photoPictureSrc = useMemo(() => {
+    if (!photoFile) {
+      return ''
+    } else {
+      return photoFile?.imgSrc ?? ''
+    }
+  }, [photoFile])
+
+  const inputHandler = (e) => {
     const fieldID = e.target.id
     const fieldValue = e.target.value
     const updatedValue = {
@@ -36,152 +54,205 @@ const Add = () => {
     }
   }
 
-  const saveHandler = () => {
+  const saveHandler = async () => {
+    const docPath = `users/${authUser.uid}/contacts/`
+    const docId = FirebaseFirestore.generateDocId(docPath)
+
     const createdContact = {
       ...form,
-      sorting:`${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase()
+      id: docId,
+      sorting:
+        `${form.first_name}${form.middle_name}${form.last_name}`.toUpperCase(),
     }
 
-    FirebaseFirestore.createDoc(`users/${authUser.uid}/contacts/`, createdContact)
-    setForm(initialState)
+    if (photoFile?.file) {
+      try {
+        await uploadFileToStorage(
+          `photos/${authUser.uid}`,
+          photoFile.file,
+          `photo_${docId}`
+        )
+
+        // Store the Firebase Storage file reference instead of the public downloadURL
+        createdContact.profile_picture_url = `photos/${authUser.uid}/photo_${docId}`
+      } catch (err) {
+        let errMsg = err?.response?.data ?? err.message
+
+        if (errMsg.includes('storage/unauthorized')) {
+          errMsg = 'Photo upload failed. Please verify that the photo you are uploading is less than 1 MB in file size. Only .jpg, .jpeg, .png, .gif, .bmp and .webp image file types are supported.'
+        }
+
+        setErrorUpload(errMsg)
+        return
+      }
+    }
+
+    try {
+      await FirebaseFirestore.createDoc(
+        `users/${authUser.uid}/contacts/${docId}`,
+        createdContact
+      )
+      setForm(initialState)
+      updateSyncV(CONTACT_PHOTO_ID, {
+        file: null,
+        imgSrc: null
+      })
+    } catch (err) {
+      let errMsg = err?.response?.data ?? err.message
+
+      if (errMsg.includes('Missing or insufficient permissions')) {
+        errMsg = 'Creating a new Contact failed. Please check your input.'
+      }
+
+      setErrorUpload(errMsg)
+    }
   }
 
   return (
     <Page>
       <Box
         sx={{
+          flex: '1',
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
-          gap: '10px',
-          width: '100%',
-          height: 'auto',
-          padding:'20px'
+          alignItems: 'center',
+          maxWidth: '100%',
         }}
       >
-        <Box
+        <Paper
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: 'grid',
+            gridTemplateColumns: '1fr auto',
             gap: '10px',
             alignItems: 'center',
+            padding: '30px',
+            borderRadius: '20px',
+            backgroundColor: 'inherit',
+            backdropFilter: 'contrast(120%)',
           }}
         >
-          <Typography variant="h4" sx={{ alignSelf: 'start' }}>
-            Add Contact
+          <Typography variant="h5" sx={{ gridColumn: '1/-1' }}>
+            add Contact
           </Typography>
-          <Avatar
+          <Box
             sx={{
-              width: '50vw',
-              maxWidth: '200px',
-              maxHeight: '200px',
-              height: '50vw',
-              justifySelf: 'center',
+              aspectRatio: '1',
               gridColumn: '1/-1',
-              border: '5px dashed gray',
-              margin: '10px',
-              src: `${form?.profile_picture_url}`,
+              position: 'relative',
             }}
+          >
+            <Avatar
+              src={photoPictureSrc}
+              alt="profile_picture_url"
+              sx={(theme) => ({
+                width: '342px',
+                height: '342px',
+                [theme.breakpoints.down('400')]: {
+                  width: '100%',
+                  height: '100%'
+                },
+              })}
+            />
+
+            <FileUploadButton
+              fileDomID={CONTACT_PHOTO_ID}
+              styles={{position: 'absolute', bottom: '0', right: '0'}}
+              errorCallback={(error) => setErrorUpload(error)}
+              hasFile={(photoPictureSrc !== '')}
+            />
+          </Box>
+          <Typography variant="h7">First Name</Typography>
+          <TextField
+            id="first_name"
+            size="small"
+            inputProps={{
+              style: {
+                height: '20px',
+              },
+            }}
+            value={form?.first_name ?? ''}
+            onChange={inputHandler}
           />
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '10px',
-              width: '100%',
+          <Typography variant="h7">Middle Name</Typography>
+          <TextField
+            id="middle_name"
+            size="small"
+            inputProps={{
+              style: {
+                height: '20px',
+              },
             }}
-          >
-            <Typography variant="h8">First Name :</Typography>
-            <TextField
-              id="first_name"
-              value={form.first_name}
-              size="small"
-              sx={{ width: '100%' }}
-              onChange={editContactHandler}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '10px',
-              width: '100%',
+            value={form?.middle_name ?? ''}
+            onChange={inputHandler}
+          />
+          <Typography variant="h7">Last Name</Typography>
+          <TextField
+            id="last_name"
+            size="small"
+            inputProps={{
+              style: {
+                height: '20px',
+              },
             }}
-          >
-            <Typography variant="h8">Middle Name :</Typography>
-            <TextField
-              id="middle_name"
-              value={form.middle_name}
-              size="small"
-              sx={{ width: '100%' }}
-              onChange={editContactHandler}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '10px',
-              width: '100%',
+            value={form?.last_name ?? ''}
+            onChange={inputHandler}
+          />
+
+          <Typography variant="h7">Email Address</Typography>
+          <TextField
+            id="email_address"
+            size="small"
+            inputProps={{
+              style: {
+                height: '20px',
+              },
             }}
-          >
-            <Typography variant="h8">Last Name:</Typography>
-            <TextField
-              id="last_name"
-              value={form.last_name}
-              size="small"
-              sx={{ width: '100%' }}
-              onChange={editContactHandler}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '10px',
-              width: '100%',
+            value={form?.email_address ?? ''}
+            onChange={inputHandler}
+          />
+
+          <Typography variant="h7">Phone Number</Typography>
+          <TextField
+            id="phone_number"
+            size="small"
+            inputProps={{
+              style: {
+                height: '20px',
+              },
             }}
-          >
-            <Typography variant="h8">Phone Number:</Typography>
-            <TextField
-              id="phone_number"
-              value={form.phone_number}
-              size="small"
-              sx={{ width: '100%' }}
-              onChange={editContactHandler}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '10px',
-              width: '100%',
-            }}
-          >
-            <Typography variant="h8">Email Address:</Typography>
-            <TextField
-              id="email_address"
-              value={form.email_address}
-              size="small"
-              sx={{ width: '100%' }}
-              onChange={editContactHandler}
-            />
-          </Box>
-          <Button
-            variant="contained"
-            fullWidth
-            disabled={!isFormChanged}
-            onClick={saveHandler}
-          >
-            Save
-          </Button>
-        </Box>
+            value={form?.phone_number ?? ''}
+            onChange={inputHandler}
+          />
+          {isFormChanged ? (
+            <Button
+              variant="contained"
+              sx={{
+                gridColumn: '1/-1',
+                fontWeight: 'bold',
+              }}
+              onClick={saveHandler}
+            >
+              SAVE CHANGE
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              disabled
+              sx={{ gridColumn: '1/-1', fontWeight: 'bold' }}
+            >
+              SAVE CHANGE
+            </Button>
+          )}
+        </Paper>
       </Box>
+
+      {errorUpload &&
+        <SimpleSnackbar
+          message={errorUpload}
+          closeHandler={() => setErrorUpload(null)}
+        />
+      }
     </Page>
   )
 }

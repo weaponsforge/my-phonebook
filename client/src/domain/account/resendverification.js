@@ -16,7 +16,7 @@ function ResendVerificationComponent ({
   handleResendEmailVerification
 }) {
   const [email, setPassword] = useState(defaultState)
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
 
   const handleInputChange = (e) => {
     const { id } = e.target

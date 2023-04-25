@@ -18,7 +18,7 @@ const INPUT_ID = {
 function ResetPasswordComponent ({ loading, locked, handleResetPasswordSubmit }) {
   const [password, setPassword] = useState(defaultState)
   const [confirmpassword, setConfirmPassword] = useState(defaultState)
-  const [activeTheme] = useSyncLocalStorage('activeTheme')
+  const activeTheme = useSyncLocalStorage('activeTheme')
 
   const handleInputChange = (e) => {
     const { id } = e.target

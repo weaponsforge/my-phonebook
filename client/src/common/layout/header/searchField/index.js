@@ -6,11 +6,6 @@ export const SearchFieldComponent = () => {
   const searchFieldHandler = (e) => {
     e.stopPropagation()
     updateSyncV('ui.search.searchKeyword', e.target.value)
-    updateSyncV('ui.phase', (p) => ({
-      ...p,
-      createContact: false,
-      editContact: false,
-    }))
     if (e.target.value === '') {
       updateSyncV('ui.phase.search', false)
     } else {

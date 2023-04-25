@@ -1,6 +1,9 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+
+    // AUTH --------------------------------------------------------
+
     // Is the user signed-in using basic authentication?
     function isSignedIn() {
       return request.auth != null;
@@ -12,9 +15,55 @@ service firebase.storage {
       return isSignedIn() && request.auth.token.account_level != null
     }
 
+    // Does the signed-in user's auth uid match the requested userId?
+    function isAccountOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // FILES --------------------------------------------------------
+
+    // Checks if the File type supported
+    function supportedFileType (requestData) {
+      let fileTypes = [
+        'image/bmp',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif',
+        'image/webp'
+      ];
+
+      return requestData.contentType in fileTypes;
+    }
+
+    // Checks if the Firestore metadata name is valid
+    function validFileName (requestData) {
+      return
+        // Firestore metadata name is less than 100 characters
+        requestData.name.size() < 100
+        // Firestore metadata name follows the pattern: "photos/{userId}/photo_{docId}"
+        && requestData.name.matches('photos/.*/photo_.*');
+    }
+
+    // Only allow uploads of any image file that's less than 1MB
+    function validFileSize (requestData) {
+      return requestData.size < 1 * 1024 * 1024;
+    }
+
+    // FILES matching rules  --------------------------------------------------------
+
     match /{allPaths=**} {
-      allow read;
-      allow write: if isValidUser();
+      allow read: if false;
+      allow write: if false;
+    }
+
+    match /photos/{userId}/{imageFile=**} {
+      allow read: if isValidUser() && isAccountOwner(userId);
+      allow create, update: if isValidUser() && isAccountOwner(userId)
+        && validFileSize(request.resource)
+        && supportedFileType(request.resource)
+        && validFileName(request.resource);
+      allow delete: if isValidUser() && isAccountOwner(userId);
     }
   }
 }

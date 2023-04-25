@@ -22,7 +22,7 @@ const loggedInSettings = [
   },
   {
     name: 'Account',
-    route: '/',
+    route: '/settings',
   },
   {
     name: 'Logout',
@@ -32,15 +32,15 @@ const loggedInSettings = [
 const loggedOutSettings = [
   {
     name: 'Register',
-    route: 'register',
+    route: '/register',
   },
   {
     name: 'Login',
-    route: 'login',
+    route: '/login',
   },
   {
     name: 'Recover Password',
-    route: 'recoverPassword',
+    route: '/recoverPassword',
   },
 ]
 
@@ -84,7 +84,7 @@ function Header() {
 
   return (
     <Paper
-      elevation={1}
+      elevation={10}
       sx={{
         position: 'relative',
         zIndex: 100,
@@ -95,13 +95,30 @@ function Header() {
         alignItems: 'center',
         gap: '10px',
         borderRadius: 0,
-        width:'100%'
+        width: '100%',
       }}
     >
-      {authUser && isMobile && (
+      {authUser && (
         <IconButton onClick={toggleSidebar}>
           <MenuIcon />
         </IconButton>
+      )}
+      {!isMobile && (
+        <Typography
+          variant="h5"
+          sx={{
+            display: 'flex',
+            fontFamily: 'monospace',
+            fontWeight: 'bold',
+            // letterSpacing: ".1rem",
+            textDecoration: 'none',
+            width: '270px',
+            color: (theme) => theme.palette.text.primary,
+            userSelect: 'none',
+          }}
+        >
+          myPhonebook
+        </Typography>
       )}
       <Box
         sx={{

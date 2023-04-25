@@ -13,13 +13,13 @@ import SimpleSnackbar from '@/common/snackbars/simpleSnackbar'
 import TransparentTextfield from '@/common/ui/transparentfield'
 import LoadingButton from '@/common/ui/loadingbutton'
 import { useTheme } from '@emotion/react'
-import { useAsyncV } from 'use-sync-v'
+import { useSyncV } from 'use-sync-v'
 
 function LoginComponent ({ state, eventsHandler, resetError }) {
   const theme = useTheme()
   const { username, password, joke } = state
   const { usernameHandler, passwordHandler, loginHandler } = eventsHandler
-  const { authLoading, authError } = useAsyncV('auth')
+  const { authLoading, authError } = useSyncV('auth')
 
   return (
     <Page>
@@ -137,6 +137,25 @@ function LoginComponent ({ state, eventsHandler, resetError }) {
               Forgot your password ?
             </Typography>
           </Link>
+
+          {authError && (authError?.includes('Email not verified')) &&
+          <Typography
+            sx={{
+              fontSize: '12px',
+              textAlign: 'center',
+              marginTop: '16px',
+              color:theme.palette.text.primary,
+              a: {
+                color:theme.palette.text.primary
+              }
+            }}
+            style={{gridArea: 'forgot'}}
+          >
+            Did not receive the account verification email? Resend it &nbsp;
+            <Link href="/account?mode=resend_email_verification">here</Link>.
+          </Typography>
+          }
+
           {(authError) &&
             <SimpleSnackbar message={authError} closeHandler={resetError} />
           }

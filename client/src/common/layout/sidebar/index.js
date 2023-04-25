@@ -1,5 +1,4 @@
 import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
-import { Avalon } from '@/lib/mui/theme'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
@@ -9,15 +8,15 @@ import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PrintIcon from '@mui/icons-material/Print'
+import SettingsIcon from '@mui/icons-material/Settings'
 import {
-  Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Paper,
-  Slide
+  Slide,
 } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
@@ -51,9 +50,14 @@ export const Sidebar = () => {
     updateSyncV('show.sidebar', false)
   }
 
-  const homePageHandler = () => {
-    router.push('/')
+  const settingsHandler = () => {
+    router.push('/settings')
     updateSyncV('show.sidebar', false)
+  }
+
+  const showExportPopup = () => {
+    updateSyncV('show.sidebar', false)
+    updateSyncV('show.exportPopup', true)
   }
   return (
     <Box>
@@ -65,42 +69,25 @@ export const Sidebar = () => {
         in={true}
       >
         <Paper
-          elevation={1}
+          elevation={0}
           sx={{
             width: '200px',
-            zIndex: 300,
+            zIndex: 50,
             height: '100%',
             background: 'inherit',
             backdropFilter: 'blur(5px)',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <List>
+          <List
+            sx={{
+              flex: '1',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             <ListItem disablePadding>
-              <ListItemButton onClick={homePageHandler}>
-                <ListItemText
-                  primary="myPhonebook"
-                  className={Avalon.className}
-                  primaryTypographyProps={{
-                    fontSize: 20,
-                    fontWeight: 'bolder',
-                  }}
-                  sx={{
-                    display: 'flex',
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.1rem',
-                    textDecoration: 'none',
-                    width: '270px',
-                    color: (theme) => theme.palette.text.primary,
-                    userSelect: 'none',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider/>
-            <ListItem disablePadding sx={{
-              mt:'20px'
-            }}>
               <ListItemButton onClick={contactsHandler}>
                 <ListItemIcon>
                   <PersonIcon />
@@ -116,7 +103,6 @@ export const Sidebar = () => {
                 <ListItemText primary="Add Contact" />
               </ListItemButton>
             </ListItem>
-            <Divider />
             <ListItem disablePadding>
               <ListItemButton disabled>
                 <ListItemIcon>
@@ -126,7 +112,7 @@ export const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton disabled>
+              <ListItemButton onClick={showExportPopup}>
                 <ListItemIcon>
                   <CloudDownloadIcon />
                 </ListItemIcon>
@@ -141,7 +127,6 @@ export const Sidebar = () => {
                 <ListItemText primary="Print" />
               </ListItemButton>
             </ListItem>
-            <Divider />
             <ListItem disablePadding>
               <ListItemButton onClick={animateHandler}>
                 <ListItemIcon>
@@ -162,6 +147,22 @@ export const Sidebar = () => {
                 </ListItemIcon>
                 <ListItemText primary="Theme" />
               </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={settingsHandler}>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem
+              sx={{
+                flex: '1',
+              }}
+            ></ListItem>
+            <ListItem>
+              <ListItemText primary="myPhonebook@2023" />
             </ListItem>
           </List>
         </Paper>

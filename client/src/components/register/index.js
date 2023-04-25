@@ -146,6 +146,25 @@ const RegisterComponent = ({ state, eventsHandler }) => {
               Already have an account? Login instead.
             </Typography>
           </Link>
+
+          {(errorMessage?.includes('auth/email-already-in-use')) &&
+          <Typography
+            sx={{
+              fontSize: '12px',
+              textAlign: 'center',
+              marginTop: '16px',
+              color:theme.palette.text.primary,
+              a: {
+                color:theme.palette.text.primary
+              }
+            }}
+            style={{gridArea: 'login'}}
+          >
+            Did not receive the account verification email? Resend it &nbsp;
+            <Link href="/account?mode=resend_email_verification">here</Link>.
+          </Typography>
+          }
+
           {(errorMessage || successMessage) &&
             <SimpleSnackbar
               message={errorMessage || successMessage}
