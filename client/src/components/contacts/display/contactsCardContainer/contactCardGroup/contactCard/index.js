@@ -1,6 +1,7 @@
+import { downloadBlobFromStorage } from '@/lib/utils/firebase/storageutils'
 import { Avatar, Paper, Typography, useTheme } from '@mui/material'
 import { useRouter } from 'next/router'
-import { updateSyncV } from 'use-sync-v'
+import { updateSyncV, useQueryV } from 'use-sync-v'
 
 const getInitial = (first, second, last) => {
   const firstInitial = (first.match(
@@ -27,6 +28,12 @@ const backgroundColorGenerator = (name) => {
 export const ContactCard = ({ contact }) => {
   const router = useRouter()
   const theme = useTheme()
+
+  const { data } = useQueryV(`public_picture.${JSON.stringify(contact.profile_picture_url)}`, async () => {
+    const response = await downloadBlobFromStorage(contact.profile_picture_url)
+    const public_picture_url = URL.createObjectURL(response)
+    return public_picture_url
+  })
 
   const initial = getInitial(
     contact.first_name,
@@ -68,6 +75,7 @@ export const ContactCard = ({ contact }) => {
             backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
             border: '1px solid grey',
           }}
+          src={data}
         >
           {initial}
         </Avatar>
@@ -109,6 +117,7 @@ export const ContactCard = ({ contact }) => {
             backgroundColor: `hsla(${backgroundColor},50%,80%,50%)`,
             border: '1px solid grey',
           }}
+          src={data}
         >
           {initial}
         </Avatar>
