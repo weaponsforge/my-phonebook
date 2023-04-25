@@ -137,6 +137,25 @@ function LoginComponent ({ state, eventsHandler, resetError }) {
               Forgot your password ?
             </Typography>
           </Link>
+
+          {authError && (authError?.includes('Email not verified')) &&
+          <Typography
+            sx={{
+              fontSize: '12px',
+              textAlign: 'center',
+              marginTop: '16px',
+              color:theme.palette.text.primary,
+              a: {
+                color:theme.palette.text.primary
+              }
+            }}
+            style={{gridArea: 'forgot'}}
+          >
+            Did not receive the account verification email? Resend it &nbsp;
+            <Link href="/account?mode=resend_email_verification">here</Link>.
+          </Typography>
+          }
+
           {(authError) &&
             <SimpleSnackbar message={authError} closeHandler={resetError} />
           }
