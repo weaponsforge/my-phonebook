@@ -112,7 +112,7 @@ const Register = () => {
           initialized: true,
           errorMessage,
           successMessage: (sendVerificationStatus === PromiseWrapper.STATUS.SUCCESS)
-            ? 'Email sent. Please check your email.'
+            ? 'Email sent. Please check your email. Check your Spam folder or wait for at most 5 minutes if you do not see the email right away.'
             : ''
         }))
       })()
