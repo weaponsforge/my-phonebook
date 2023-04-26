@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 import Page from '@/common/layout/page'
 import { Paper, Typography } from '@mui/material'
 import LoadingButton from '@/common/ui/loadingbutton'
@@ -38,7 +39,8 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
           gridTemplateColumns: '1fr 20px',
           gridTemplateAreas:
               `"username icon1"
-              "recoverPassword ."`,
+              "recoverPassword ."
+              "resend ."`,
           alignItems:'stretch',
           gap: '10px',
           minWidth: '300px',
@@ -94,6 +96,23 @@ const RecoverPasswordComponent = ({state, eventsHandler}) => {
               />
           }
 
+          {(state?.message?.includes('User is not yet email-verified')) &&
+          <Typography
+            sx={{
+              fontSize: '12px',
+              textAlign: 'center',
+              marginTop: '-5px',
+              color:theme.palette.text.primary,
+              a: {
+                color:theme.palette.text.primary
+              }
+            }}
+            style={{gridArea: 'resend'}}
+          >
+            Did not receive the account verification email? Resend it &nbsp;
+            <Link href="/account?mode=resend_email_verification">here</Link>.
+          </Typography>
+          }
         </Paper>
       </Paper>
 

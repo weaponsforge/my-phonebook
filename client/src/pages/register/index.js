@@ -28,7 +28,8 @@ const defaultState = {
   },
   errorMessage: undefined,
   successMessage: '',
-  loading: false
+  loading: false,
+  initialized: false
 }
 
 const Register = () => {
@@ -108,6 +109,7 @@ const Register = () => {
         setState(prev=>({
           ...prev,
           loading: false,
+          initialized: true,
           errorMessage,
           successMessage: (sendVerificationStatus === PromiseWrapper.STATUS.SUCCESS)
             ? 'Email sent. Please check your email.'
