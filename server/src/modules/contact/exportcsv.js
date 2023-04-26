@@ -5,6 +5,7 @@ const { CONTACT_FIELDS } = require('../../utils/constants')
 
 /**
  * Exports Contacts Firestore document/s from a user's /contacts subcollection to a CSV file.
+ * Requires using the attachAccessControllAllowOrigin middleware for enhanced cross-origin security.
  * @param {Object[]} contacts - Firestore Contact documents.
  * @param {Object} res - Express response object.
  * @returns
@@ -18,7 +19,6 @@ const exportCSV = (contacts = [], res) => {
 
     res.setHeader('Content-Type', 'text/csv')
     res.setHeader('Content-Disposition', `'attachment; filename="${filename}"'`)
-    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_WEBSITE_URL)
 
     contacts.forEach((contact) => {
       const obj = Object.values(CONTACT_FIELDS).reduce((list, key) => ({

@@ -2,7 +2,7 @@ const { getAuth } = require('../utils/db')
 
 // Inspects if the Authorization Bearer token from client belongs to a valid signed-in user.
 // Injects the decoded Firebase Auth user's information to req.user if token is valid.
-module.exports.validToken = async (req, res, next) => {
+const validToken = async (req, res, next) => {
   if (
     (!req.headers.authorization ||
       !req.headers.authorization.startsWith('Bearer ')) &&
@@ -47,3 +47,5 @@ module.exports.validToken = async (req, res, next) => {
     return res.status(403).send('Unauthorized')
   }
 }
+
+module.exports = validToken
