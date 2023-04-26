@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useAsyncV, updateAsyncV } from 'use-sync-v'
 import { downloadBlobFromStorage } from '@/utils/firebase/storageutils'
 
@@ -8,6 +8,7 @@ const PHOTO_STORE_KEY = 'savedPhotoBlob'
  * Downloads a Contact photo directly as Blob from Firebase Storage, taking the defined Firebase Storage Rules into account.
  * Returns the downloaded photo's local URL converted from the downloaded Blob data, or blank String ''.
  * Returns the photo download error as String, or blank ''.
+ * Revokes the local object URL from storage on compoment unmount.
  *
  * @param {String} storageFilePath - Contact photo's full Firebase Storage file path
  * @returns {Object}
@@ -18,6 +19,7 @@ const PHOTO_STORE_KEY = 'savedPhotoBlob'
  */
 export default function useFetchContactPhoto (storageFilePath) {
   const storagePhotoFile = useAsyncV(PHOTO_STORE_KEY)
+  const [objectURL, setObjectURL] = useState('')
 
   useEffect(() => {
     // Reset the Storage photo Blob
@@ -29,17 +31,29 @@ export default function useFetchContactPhoto (storageFilePath) {
     return () => resetPhotoStore()
   }, [])
 
-  const photo = useMemo(() => {
-    return (storagePhotoFile.data !== null && !storagePhotoFile.loading)
-      ? URL.createObjectURL(storagePhotoFile.data)
-      : ''
+  useEffect(() => {
+    if (!objectURL) {
+      return
+    }
+
+    // Revoke/clear the local URL object URL on component unmount
+    return () => {
+      URL.revokeObjectURL(objectURL)
+    }
+  }, [objectURL])
+
+  useEffect(() => {
+    // Set the local URL object URL
+    if (storagePhotoFile.data !== null && !storagePhotoFile.loading) {
+      const url = URL.createObjectURL(storagePhotoFile.data)
+      setObjectURL(url)
+    }
   }, [storagePhotoFile])
 
   useEffect(() => {
+    // Download photo
     if (storageFilePath) {
       updateAsyncV(PHOTO_STORE_KEY, async () => downloadBlobFromStorage(storageFilePath))
-    } else {
-      updateAsyncV(PHOTO_STORE_KEY, async () => null, { deleteExistingData: true })
     }
   }, [storageFilePath])
 
@@ -53,6 +67,6 @@ export default function useFetchContactPhoto (storageFilePath) {
     data: storagePhotoFile.data,
     loading: storagePhotoFile.loading,
     error: errorString,
-    photo
+    photo: objectURL
   }
 }
