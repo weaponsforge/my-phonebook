@@ -19,6 +19,7 @@ const printer = new PDFPrinter(fonts)
 
 /**
  * Exports Contacts Firestore document/s from a user's /contacts subcollection to a PDF file.
+ * Requires using the attachAccessControllAllowOrigin middleware for enhanced cross-origin security.
  * @param {Object[]} contacts - Firestore Contact documents.
  * @param {Object} res - Express response object.
  * @returns
@@ -30,7 +31,6 @@ const exportPDF = (contacts = [], res) => {
 
     res.setHeader('Content-Type', 'application/pdf')
     res.setHeader('Content-Disposition', `'attachment; filename="${filename}"'`)
-    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_WEBSITE_URL)
 
     const docDefinition = {
       defaultStyle: {

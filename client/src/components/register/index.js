@@ -12,7 +12,7 @@ import { useTheme } from '@emotion/react'
 
 const RegisterComponent = ({ state, eventsHandler }) => {
   const theme = useTheme()
-  const {joke, username, password, passwordConfirmation, errorMessage, successMessage, loading } = state
+  const {joke, username, password, passwordConfirmation, errorMessage, successMessage, loading, initialized } = state
   const {usernameHandler, passwordHandler, passwordConfirmationHandler, registerHandler, resetError } = eventsHandler
   return (
     <Page>
@@ -147,7 +147,7 @@ const RegisterComponent = ({ state, eventsHandler }) => {
             </Typography>
           </Link>
 
-          {(errorMessage?.includes('auth/email-already-in-use')) &&
+          {(!loading && initialized) &&
           <Typography
             sx={{
               fontSize: '12px',

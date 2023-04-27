@@ -2,7 +2,10 @@ const { Router } = require('express')
 const router = new Router()
 
 // Middleware
-const { validToken } = require('../middleware/validtoken')
+const {
+  validToken,
+  attachAccessControllAllowOrigin
+} = require('../middleware')
 
 // Controllers
 const Email = require('./email')
@@ -263,6 +266,6 @@ router.post('/account/action', Account.manageAccount)
  * document.body.removeChild(link)
  */
 
-router.post('/contacts/export', validToken, Contact.exportContact)
+router.post('/contacts/export', validToken, attachAccessControllAllowOrigin, Contact.exportContact)
 
 module.exports = router

@@ -60,7 +60,7 @@ const RecoverPassword = () => {
         ...state,
         loading,
         message: (status === RequestStatus.SUCCESS)
-          ? 'Email sent. Please check your inbox.'
+          ? 'Email sent. Please check your inbox or your Spam folder. Wait for at most 5 minutes if you do not see the email right away.'
           : error
       }}
       eventsHandler={eventsHandler}
