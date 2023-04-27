@@ -12,7 +12,7 @@ import {
 import { usePromise, RequestStatus } from '@/lib/hooks/usePromise'
 
 import AccountComponent from '@/components/account'
-import messages from './messages'
+import messages from '@/components/account/messages'
 
 const defaultState = {
   loading: true,

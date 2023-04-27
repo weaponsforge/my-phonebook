@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from 'react'
-import { updateSyncV } from 'use-sync-v'
+import { useEffect, useState, useMemo, useRef } from 'react'
+import { updateSyncV, useSyncV } from 'use-sync-v'
 import PropTypes from 'prop-types'
 
 import IconButton from '@mui/material/IconButton'
@@ -45,6 +45,9 @@ function FileUploadButton ({
   styles = {}
 }) {
   const fileId = useMemo(() => fileDomID, [fileDomID])
+  const objectData = useSyncV(fileId)
+  const fileRef = useRef()
+
   const [icon, setIcon] = useState((hasFile)
     ? ICON_STATES.CANCEL
     : ICON_STATES.SEARCH)
@@ -63,6 +66,16 @@ function FileUploadButton ({
       })
     }
   }, [fileId])
+
+  useEffect(() => {
+    if (objectData?.imgSrc === null) {
+      return
+    }
+
+    return () => {
+      URL.revokeObjectURL(objectData?.imgSrc)
+    }
+  }, [objectData])
 
   const IconPicture = useMemo(() => {
     return (icon === ICON_STATES.SEARCH)
@@ -96,6 +109,9 @@ function FileUploadButton ({
   const clearFile = (e) => {
     e.preventDefault()
 
+    fileRef.current.value = null
+    URL.revokeObjectURL(objectData?.imgSrc)
+
     setIcon(ICON_STATES.SEARCH)
 
     updateSyncV(fileDomID, {
@@ -124,6 +140,7 @@ function FileUploadButton ({
         hidden
         accept="image/*"
         type="file"
+        ref={fileRef}
         onChange={setSelectedFile}
       />
       <IconPicture sx={{ color: 'black' }} />
