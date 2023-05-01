@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Header from '@/common/layout/header'
 import Section from '@/common/layout/section'
-import { useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { Sidebar } from '../sidebar'
 import { updateSyncV, useSyncV } from 'use-sync-v'
 import { Divider, useMediaQuery } from '@mui/material'
@@ -20,8 +20,7 @@ const Background = () => {
           top: 0,
           width: '100%',
           height: '100%',
-          animation: `animate 90s linear infinite, ${
-            activeTheme === 'dark' ? 'darkColorSwitcher' : 'lightColorSwitcher'
+          animation: `animate 90s linear infinite, ${activeTheme === 'dark' ? 'darkColorSwitcher' : 'lightColorSwitcher'
           } 42s linear infinite`,
         },
         '&:after': {
@@ -79,6 +78,11 @@ function Page({ children }) {
       updateSyncV('show.sidebar', true)
     }
   }, [isMobile])
+  useEffect(() => {
+    if (typeof animate === 'undefined') {
+      setSyncLocalStorage('animate', true)
+    }
+  },[animate])
   return (
     <>
       {animate && <Background />}
@@ -98,7 +102,7 @@ function Page({ children }) {
           sx={{
             flex: 1,
             display: 'flex',
-            overflowY:'scroll'
+            overflowY: 'scroll'
           }}
         >
           {showSidebar && auth.authStatus === 'signedIn' && <Sidebar />}
