@@ -84,10 +84,10 @@ function Login () {
   },[])
 
   useEffect(() => {
-    if (!authLoading && authUser) {
+    if (authUser) {
       router.push('/contacts')
     }
-  }, [router, authUser, authLoading])
+  }, [authUser])
 
   const resetError = () => {
     updateSyncV('auth', (p) => ({ ...p, authError: '' }))
