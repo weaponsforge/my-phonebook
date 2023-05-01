@@ -8,9 +8,10 @@ import '@/styles/globals.css'
 // MUI
 import createEmotionCache from '@/lib/mui/createEmotionCache'
 import { lightTheme, darkTheme } from '@/lib/mui/theme'
-import { useSyncLocalStorage } from '@/lib/hooks/useSync'
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { init } from '@/lib/store'
 import useInitAuth from '@/hooks/useInitAuth'
+import { useEffect } from 'react'
 
 init()
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
@@ -22,7 +23,11 @@ export default function MyApp(props) {
   const activeTheme = useSyncLocalStorage('activeTheme')
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   useInitAuth()
-
+  useEffect(()=>{
+    if (typeof activeTheme === 'undefined') {
+      setSyncLocalStorage('activeTheme', 'light')
+    }
+  }, [activeTheme])
   return (
     <CacheProvider value={emotionCache}>
       <Head>
