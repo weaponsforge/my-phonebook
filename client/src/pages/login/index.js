@@ -27,7 +27,7 @@ function Login () {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
   const router = useRouter()
-  const { authUser, authLoading } = useSyncV('auth')
+  const { authUser } = useSyncV('auth')
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -87,7 +87,7 @@ function Login () {
     if (authUser) {
       router.push('/contacts')
     }
-  }, [authUser])
+  }, [authUser, router])
 
   const resetError = () => {
     updateSyncV('auth', (p) => ({ ...p, authError: '' }))

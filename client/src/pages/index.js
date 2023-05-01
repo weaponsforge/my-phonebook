@@ -3,7 +3,7 @@ import { useSyncLocalStorage } from '@/lib/hooks/useSync'
 import { getRandomJoke } from '@/lib/services/random'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { debugSyncV, useSyncV } from 'use-sync-v'
+import { useSyncV } from 'use-sync-v'
 
 const defaultState = {
   joke:undefined,
@@ -15,7 +15,7 @@ function Index() {
   const activeTheme = useSyncLocalStorage('activeTheme')
   const auth = useSyncV('auth')
   const router = useRouter()
-  
+
   useEffect(()=>{
     if (auth.authUser) {
       router.push('/contacts')
