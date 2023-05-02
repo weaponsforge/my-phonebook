@@ -6,6 +6,7 @@ import { Sidebar } from '../sidebar'
 import { updateSyncV, useSyncV } from 'use-sync-v'
 import { Divider, useMediaQuery } from '@mui/material'
 import { useEffect } from 'react'
+import { LoadingLinear } from '@/common/ui/loadingLinear'
 
 const Background = () => {
   const activeTheme = useSyncLocalStorage('activeTheme')
@@ -71,6 +72,9 @@ function Page({ children }) {
   const animate = useSyncLocalStorage('animate')
   const showSidebar = useSyncV('show.sidebar')
   const isMobile = useMediaQuery('(max-width:900px)')
+  const loading = useSyncV('show.loading')
+
+
   useEffect(() => {
     if (isMobile) {
       updateSyncV('show.sidebar', false)
@@ -78,11 +82,13 @@ function Page({ children }) {
       updateSyncV('show.sidebar', true)
     }
   }, [isMobile])
+
   useEffect(() => {
     if (typeof animate === 'undefined') {
       setSyncLocalStorage('animate', true)
     }
-  },[animate])
+  }, [animate])
+
   return (
     <>
       {animate && <Background />}
@@ -98,6 +104,7 @@ function Page({ children }) {
         }}
       >
         <Header />
+        <LoadingLinear/>
         <Box
           sx={{
             flex: 1,
@@ -105,7 +112,7 @@ function Page({ children }) {
             overflowY: 'scroll'
           }}
         >
-          {showSidebar && auth.authStatus === 'signedIn' && <Sidebar />}
+          {(!loading && showSidebar && auth.authStatus === 'signedIn' && !auth.authLoading) && <Sidebar />}
           <Divider orientation="vertical" variant="middle" flexItem />
 
           <Section>{children}</Section>
