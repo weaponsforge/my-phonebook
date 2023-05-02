@@ -17,12 +17,13 @@ function Index() {
   const router = useRouter()
 
   useEffect(()=>{
-    if (auth.authUser) {
+    if (auth.authLoading) return
+    if (auth.authStatus === 'signedIn') {
       router.push('/contacts')
     } else {
       router.push('/login')
     }
-  })
+  },[auth.authLoading, auth.authStatus, router])
   useEffect(()=>{
     (async()=>{
       const randomJoke = await getRandomJoke()

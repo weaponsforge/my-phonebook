@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types'
-import Head from 'next/head'
-import { ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import { CacheProvider } from '@emotion/react'
 import '@/styles/globals.css'
+import { CacheProvider } from '@emotion/react'
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider } from '@mui/material/styles'
+import Head from 'next/head'
+import PropTypes from 'prop-types'
 
 // MUI
-import createEmotionCache from '@/lib/mui/createEmotionCache'
-import { lightTheme, darkTheme } from '@/lib/mui/theme'
-import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
-import { init } from '@/lib/store'
 import useInitAuth from '@/hooks/useInitAuth'
+import { setSyncLocalStorage, useSyncLocalStorage } from '@/lib/hooks/useSync'
+import createEmotionCache from '@/lib/mui/createEmotionCache'
+import { darkTheme, lightTheme } from '@/lib/mui/theme'
+import { init } from '@/lib/store'
 import { useEffect } from 'react'
+
 
 init()
 // Source: https://github.com/mui/material-ui/tree/master/examples/material-next
@@ -22,12 +23,14 @@ const clientSideEmotionCache = createEmotionCache()
 export default function MyApp(props) {
   const activeTheme = useSyncLocalStorage('activeTheme')
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+
   useInitAuth()
   useEffect(()=>{
     if (typeof activeTheme === 'undefined') {
       setSyncLocalStorage('activeTheme', 'light')
     }
   }, [activeTheme])
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
