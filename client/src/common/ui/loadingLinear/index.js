@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { updateSyncV, useSyncV } from 'use-sync-v'
 
 export const LoadingLinear = () => {
-  const authLoading = useSyncV('auth.loading')
+  const authLoading = useSyncV('auth.authLoading')
   const loadingContacts = useSyncV('contacts.loading')
   const loading = useSyncV('show.loading')
 
