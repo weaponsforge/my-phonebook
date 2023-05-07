@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { auth, onAuthStateChanged, signOut } from '@/lib/utils/firebase/config'
-import { updateSyncV } from 'use-sync-v'
+import { updateSyncV, updateAsyncV } from 'use-sync-v'
 import { USER_STATES } from '../store/constants'
 
 /**
@@ -82,6 +82,41 @@ export default function useInitAuth () {
           authError: '',
           authStatus: USER_STATES.SIGNED_OUT,
           authLoading: false
+        })
+
+        // Reset the contacts store list
+        updateAsyncV('contacts', () => {
+          return []
+        })
+
+        // Reset ui and other store states
+        updateSyncV('show',{
+          searchField:false,
+          searchResults:false,
+          createContactForm:false,
+          editContactForm:false,
+          contacts:true,
+          deleteContactButton:false,
+          sidebar:false
+        })
+
+        updateSyncV('data',{
+          activeContact:null,
+          contacts:null,
+
+        })
+
+        updateSyncV('ui', {
+          activeContact: null,
+          phase: {
+            createContact: false,
+            editContact: false,
+            search: false,
+            deleteContact: false,
+          },
+          search: {
+            searchKeyword: '',
+          },
         })
       }
     }
