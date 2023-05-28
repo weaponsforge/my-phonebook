@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { deleteSyncV, updateSyncV, useAsyncV, useSyncV } from 'use-sync-v'
+import { deleteSyncV, useAsyncV, useSyncV } from 'use-sync-v'
 
 import { FirebaseFirestore } from '@/lib/utils/firebase/firestore'
 import { deleteFileFromStorage, uploadFileToStorage } from '@/lib/utils/firebase/storageutils'
@@ -87,7 +87,7 @@ const EditContact = () => {
       setIsFormChanged(true)
     }
   }
-  updateSyncV('contacts.loading', true)
+
   const saveHandler = async () => {
     const createdContact = {
       ...form,

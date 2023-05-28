@@ -27,7 +27,7 @@ function Login () {
   const [state, setState] = useState(defaultState)
   const { username, password } = state
   const router = useRouter()
-  const { authUser, authLoading } = useSyncV('auth')
+  const auth = useSyncV('auth')
 
   class eventsHandler {
     static usernameHandler = (e) => {
@@ -84,10 +84,11 @@ function Login () {
   },[])
 
   useEffect(() => {
-    if (!authLoading && authUser) {
+    if (auth.authLoading) return
+    if (auth.authStatus === 'signedIn') {
       router.push('/contacts')
     }
-  }, [router, authUser, authLoading])
+  }, [auth.authStatus, auth.authLoading, router])
 
   const resetError = () => {
     updateSyncV('auth', (p) => ({ ...p, authError: '' }))

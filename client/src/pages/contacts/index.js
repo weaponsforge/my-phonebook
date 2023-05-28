@@ -7,12 +7,12 @@ import { useEffect } from 'react'
 import { updateAsyncV, useSyncV } from 'use-sync-v'
 
 function Contacts() {
-  const user = useSyncV('auth')
   const showExportPopup = useSyncV('show.exportPopup')
+  const auth = useSyncV('auth')
 
   useEffect(() => {
     FirebaseFirestore.subscribeCol(
-      `users/${user.authUser.uid}/contacts`,
+      `users/${auth.authUser.uid}/contacts`,
       (querySnapshot) => {
         const data = []
         querySnapshot.forEach((doc) => {
@@ -24,8 +24,7 @@ function Contacts() {
       },
       orderBy('sorting')
     )
-  }, [user.authUser.uid])
-
+  }, [auth.authUser.uid])
   return (
     <>
       {showExportPopup && <ExportPopup/>}
