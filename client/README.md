@@ -54,6 +54,7 @@ The following dependecies are used for this project. Feel free to experiment usi
    | NEXT_PUBLIC_FIREBASE_WEB_MEASUREMENT_ID      | Firebase web measurement ID from the Firebase Project Settings configuration file.                                                                                                                                                                                                                                                                       |
    | NEXT_PUBLIC_MEDIA_BG1                        | Firebase storage download URL of the hi-resolution asset file "loginBgResized.jpg"                                                                                                                                                                                                                                                                       |
    | NEXT_PUBLIC_RANDOM_JOKE_API                  | Access URL to the JokeAPI, a REST API that serves uniformly and well formatted jokes.                                                                                                                                                                                                                                                                    |
+   | WATCHPACK_POLLING | Enables hot reload on NextJS apps (tested on NextJS v13.2.1) running inside Docker containers on a Windows host. Set it to `true` if running Docker Desktop with WSL2 on a Windows OS.|
 
 ## Firebase Setup and Configuration
 
