@@ -31,7 +31,8 @@ services:
     networks:
       - my-phonebook-dev
     volumes:
-      - ./server/src:/opt/server/src
+      - ./server:/opt/server
+      - /opt/server/node_modules
     ports:
       - "3001:3001"
 

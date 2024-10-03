@@ -78,7 +78,7 @@ The following dependencies are used to build and run the image. Please feel feel
 
 ### Build Local Images
 
-1. Set up the environment variables for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
+1. Set up the environment variables (`.env` files) for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
 2. Verify that ports 3000 and 3001 are free because the client and server containers will use these ports.
 3. Stop current-running my-phonebook containers, if any.
    ```
@@ -119,7 +119,7 @@ https://hub.docker.com/r/weaponsforge/my-phonebook
    - Navigate to the gsites-components root project directory, then run:<br>
    `docker compose -f docker-compose.dev.yml pull`
 
-2. Set up the environment variables for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
+2. Set up the environment variables (`.env` files) for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
 
 3. Run the development images.<br>
 `docker compose -f docker-compose.dev.yml up`
