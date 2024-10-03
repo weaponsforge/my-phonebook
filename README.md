@@ -29,6 +29,7 @@ Server: https://myphonebook-app-dev.vercel.app/
    - [Build Local Images](#build-local-images)
    - [Use Pre-Built Development Images](#use-pre-built-development-images)
    - [Docker for Production Deployment](#docker-for-production-deployment)
+- [Deployment with GitHub Actions](#deployment-with-gitHub-actions)
 
 ## Software Documentation
 
