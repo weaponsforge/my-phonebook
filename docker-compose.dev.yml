@@ -35,6 +35,7 @@ services:
       - /opt/server/node_modules
     ports:
       - "3001:3001"
+      - "9229:9229"
 
 networks:
   my-phonebook-dev:

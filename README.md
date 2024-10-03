@@ -150,12 +150,12 @@ This project deploys the **development** environment to:
 - Firebase Hosting (front end)
 - Vercel (backend server)
 
-This project deploys the development environment to:
+This project deploys the **production** environment to:
 
 - GitHub Pages (front end)
 - Vercel (backend server)
 
-The following requirements are optional. They are only required if there is a need to deploy the web application for live demonstration purposes.
+The following requirements are optional. They are only required if there is a need to deploy the web application for live demonstration purposes. Be sure to check-out and setup the _**required**_ client and server environment variables before proceeding.
 
 ### Requirements
 
