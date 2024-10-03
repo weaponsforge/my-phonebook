@@ -18,6 +18,18 @@ Server: https://myphonebook-app.vercel.app/
 Website: https://myphonebook-app-dev.web.app/<br>
 Server: https://myphonebook-app-dev.vercel.app/
 
+### Table of Contents
+
+- [Live Preview](#live-preview)
+- [Software Documentation](#software-documentation)
+- [Requirements](#requirements)
+- [Manual Installation](#manual-installation)
+- [Installation Using Docker](#installation-using-docker)
+- [Docker for Localhost Development](#docker-for-localhost-development)
+   - [Build Local Images](#build-local-images)
+   - [Use Pre-Built Development Images](#use-pre-built-development-images)
+   - [Docker for Production Deployment](#docker-for-production-deployment)
+
 ## Software Documentation
 
 - [project plan v1.0](/project-plan.pdf)
@@ -62,7 +74,9 @@ The following dependencies are used to build and run the image. Please feel feel
 2. Docker version 23.0.1, build a5eeb1
 3. Docker Compose v2.16.0
 
-### Docker for Localhost Development
+## Docker for Localhost Development
+
+### Build Local Images
 
 1. Set up the environment variables for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
 2. Verify that ports 3000 and 3001 are free because the client and server containers will use these ports.
@@ -90,6 +104,26 @@ The following dependencies are used to build and run the image. Please feel feel
    docker compose -f docker-compose.dev.yml down
    ```
 
+### Use Pre-Built Development Images
+
+This project deploys the latest **client** and **server** development Docker images to Docker Hub on the creation of new Release/Tags. They are available at:
+
+https://hub.docker.com/r/weaponsforge/my-phonebook
+
+1. Pull the pre-built development Docker image using any of the two (2) options:
+   - Open a terminal and run:
+      ```
+      docker pull weaponsforge/my-phonebook:client
+      docker pull weaponsforge/my-phonebook:server
+      ```
+   - Navigate to the gsites-components root project directory, then run:<br>
+   `docker compose -f docker-compose.dev.yml pull`
+
+2. Set up the environment variables for the `/client` and `/server` directories like mentioned in the [Manual Installation](#manual-installation) section, step no. 2.
+
+3. Run the development images.<br>
+`docker compose -f docker-compose.dev.yml up`
+
 ### Docker for Production Deployment
 
 The following docker-compose commands build a small client image targeted for creating optimized dockerized apps running on self-managed production servers. An Nginx service serves the frontend client on port 3000. Hot reload is NOT available when editing source codes from the `/client` and `/server` directories.
@@ -109,5 +143,60 @@ The following docker-compose commands build a small client image targeted for cr
    docker compose -f docker-compose.prod.yml down
    ```
 
+## Deployment with GitHub Actions
+
+This project deploys the **development** environment to:
+
+- Firebase Hosting (front end)
+- Vercel (backend server)
+
+This project deploys the development environment to:
+
+- GitHub Pages (front end)
+- Vercel (backend server)
+
+The following requirements are optional. They are only required if there is a need to deploy the web application for live demonstration purposes.
+
+### Requirements
+
+1. GitHub Pages setup
+2. Vercel account (2x, for development and production)
+   - pre-configured with a [stand-alone Express server](https://vercel.com/guides/using-express-with-vercel) of the repository's **server** component
+3. Firebase projects (2x, for development and production) initialized with:
+   - Firestore database
+   - Firebase Hosting
+   - Firebase Storage
+4. Docker Hub account
+   - (Optional) required to push the development images to Docker Hub
+
+#### GitHub Secrets
+
+| GitHub Secrets | Description |
+| --- | --- |
+| NEXT_PUBLIC_BASE_PATH | Root directory path name that NextJS uses for assets, media and client-side routing for the app.<br><br>Set its value to blank `''` when working on development mode in localhost.<br><br>Set its value to the sub-directory name where the exported NextJS app is to be deployed, i.e. `/<YOUR_REPOSITORY_NAME>` when<br> deploying on a repository (sub-directory) of a root GitHub Pages site, i.e, on `https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPOSITORY_NAME>` |
+| NEXT_PUBLIC_BASE_API_URL_DEV,<br>NEXT_PUBLIC_BASE_API_URL_PROD | My Phonebook's Vercel development/production server base API url minus the forward slash. |
+| FIREBASE_WEB_API_KEY_DEV,<br>FIREBASE_WEB_API_KEY_PROD | Development/production Firebase web API key from the Firebase Project Settings configuration file. |
+| FIREBASE_WEB_AUTHDOMAIN_DEV,<br>FIREBASE_WEB_AUTHDOMAIN_PROD | Development/production Firebase web auth domain key from the Firebase Project Settings configuration file. |
+| FIREBASE_WEB_PROJECT_ID_DEV,<br>FIREBASE_WEB_PROJECT_ID_PROD | Development/production Firebase web project ID from the Firebase Project Settings configuration file. |
+| FIREBASE_WEB_STORAGE_BUCKET_DEV,<br>FIREBASE_WEB_STORAGE_BUCKET_PROD | Development/production Firebase web storage bucket key from the Firebase Project Settings configuration file. |
+| FIREBASE_WEB_MESSAGING_SENDER_ID_DEV,<br>FIREBASE_WEB_MESSAGING_SENDER_ID_PROD | Development/production Firebase web messaging sender ID from the Firebase Project Settings configuration file. |
+| FIREBASE_WEB_APP_ID_DEV,<br>FIREBASE_WEB_APP_ID_PROD | Development/production Firebase web web app key from the Firebase Project Settings configuration file. |
+| FIREBASE_WEB_MEASUREMENT_ID_DEV,<br>FIREBASE_WEB_MEASUREMENT_ID_PROD | Development/production Firebase web measurement ID from the Firebase Project Settings configuration file. |
+| NEXT_PUBLIC_MEDIA_BG1 | Firebase storage download URL of the hi-resolution asset file "loginBgResized.jpg" |
+| NEXT_PUBLIC_RANDOM_JOKE_API | Access URL to the JokeAPI, a REST API that serves uniformly and well formatted jokes. |
+| VERCEL_ORG_ID_DEV,<br>VERCEL_ORG_ID_PROD | Development/production Vercel app organization ID |
+| VERCEL_PROJECT_ID_DEV,<br>VERCEL_PROJECT_ID_PROD | Development/production Vercel app project ID |
+| VERCEL_TOKEN | Vercel account's deployment token. |
+| DOCKERHUB_USERNAME | (Optional) Docker Hub username. Required to enable pushing the development image to Docker Hub. |
+| DOCKERHUB_TOKEN | (Optional) Deploy token for the Docker Hub account. Required to enable pushing the development image to the Docker Hub. |
+
+#### GitHub Variables
+
+| GitHub Variable | Description |
+| --- | --- |
+| DOCKERHUB_USERNAME | (Optional) Docker Hub username. Required to enable pushing the development image to Docker Hub. |
+
 @weaponsforge<br>
-20220222
+20220222<br>
+20241004
+
