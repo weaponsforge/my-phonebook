@@ -53,9 +53,10 @@ jobs:
           touch out/.nojekyll
 
       - name: Archive Development Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: main-out
+          include-hidden-files: true
           path: client/out
           retention-days: 3
 
@@ -83,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: main-out
 
