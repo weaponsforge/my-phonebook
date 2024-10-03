@@ -1,9 +1,8 @@
-version: "3"
 services:
   # NextJS v13 app running on development mode
   my-phonebook-client-dev:
     container_name: my-phonebook-client-dev
-    image: weaponsforge/my-phonebook-client:dev
+    image: weaponsforge/my-phonebook:client
     env_file:
       - ./client/.env
     build:
@@ -19,10 +18,10 @@ services:
     ports:
       - "3000:3000"
 
-  # Express server for hosting KMZ files running in development mode
+  # Express server running in development mode
   my-phonebook-server-dev:
     container_name: my-phonebook-server-dev
-    image: weaponsforge/my-phonebook-server:dev
+    image: weaponsforge/my-phonebook:server
     env_file:
       - ./server/.env
     build:
@@ -32,9 +31,11 @@ services:
     networks:
       - my-phonebook-dev
     volumes:
-      - ./server/src:/opt/server/src
+      - ./server:/opt/server
+      - /opt/server/node_modules
     ports:
       - "3001:3001"
+      - "9229:9229"
 
 networks:
   my-phonebook-dev:
