@@ -4,6 +4,8 @@ services:
     container_name: my-phonebook-client-prod
     image: weaponsforge/my-phonebook-client:latest
     restart: always
+    env_file:
+      - ./client/.env
     build:
       context: ./client
       dockerfile: Dockerfile
